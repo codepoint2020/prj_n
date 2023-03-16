@@ -67,22 +67,30 @@
                                         <thead>
                                             <tr>
                                                 <th>Name</th>
-                                                <th>Position</th>
-                                                <th>Office</th>
-                                                <th>Age</th>
-                                                <th>Start date</th>
-                                                <th>Salary</th>
+                                                <th>Course</th>
+                                                <th>Instructor</th>
+                                                <th>Email</th>
+                                                <th>Address</th>
+                                                <th>Profile Pic</th>
+                                                <th>Registered date</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php
+                                                $get_students = $conn->query("SELECT * FROM tbl_students");
+                                                while ($row = $get_students->fetch_assoc()):
+                                            ?>
                                            <tr>
+                                               <td><?php echo $row['first_name'] . " " .$row['last_name'];?></td>
                                                <td>J</td>
                                                <td>J</td>
-                                               <td>J</td>
-                                               <td>J</td>
+                                               <td><?php echo $row['email']; ?></td>
+                                               <td><?php echo "nothing yet"; ?></td>
+                                               <?php echo $row['profile_pic']; ?>
                                                <td>J</td>
                                                <td>J</td>
                                            </tr>
+                                           <?php endwhile; ?>
                                         </tbody>
                                         <tfoot>
                                             <tr>
