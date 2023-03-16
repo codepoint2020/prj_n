@@ -67,12 +67,12 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
+                                                <th>Profile Pic</th>
                                                 <th>Name</th>
                                                 <th>Course</th>
                                                 <th>Instructor</th>
                                                 <th>Email</th>
                                                 <th>Address</th>
-                                                <th>Profile Pic</th>
                                                 <th>Registered date</th>
                                             </tr>
                                         </thead>
@@ -81,21 +81,27 @@
                                             // <!-- ============================================================== -->
                                             // <!-- FETCH USERS FROM DATABASE FOR users.php datatable-->
                                             // <!-- ============================================================== -->
-                                                $get_students = $conn->query("SELECT * FROM tbl_students");
+                                                // $get_students = $conn->query("SELECT * FROM tbl_students");
+                                                // $num = 0;
+                                                $get_students = $conn->prepare("SELECT first_name, last_name, email, profile_pic FROM tbl_students") or die("Failed to fetch students".$conn->error.__LINE__);
+
+                                                $get_students->execute();
+                                                $get_students->bind_result($first_name, $last_name, $email, $profile_pic);
                                                 $num = 0;
-                                                while ($row = $get_students->fetch_assoc()):
+
+                                                while ($get_students->fetch()):
                                                 $num++;
                                             ?>
                                            <tr>
-                                               <td><?php echo $num; ?></td>
-                                               <td><?php echo $row['first_name'] . " " .$row['last_name'];?></td>
-                                               <td>J</td>
-                                               <td>J</td>
-                                               <td><?php echo $row['email']; ?></td>
-                                               <td><?php echo "nothing yet"; ?></td>
-                                               <?php echo $row['profile_pic']; ?>
-                                               <td>J</td>
-                                               <td>J</td>
+                                            <td><?php echo $num; ?></td>
+                                            <td><img src="<?php echo $profile_pic; ?>" alt="Profile picture"></td>
+                                            <td><?php echo $first_name . " " . $last_name; ?></td>
+                                            <td>J</td>
+                                            <td>J</td>
+                                            <td><?php echo $email; ?></td>
+                                            <td><?php echo "nothing yet"; ?></td>
+                                            <td>J</td>
+                                            <td>J</td>
                                            </tr>
                                            <?php endwhile; ?>
                                         </tbody>
