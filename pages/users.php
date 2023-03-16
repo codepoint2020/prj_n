@@ -66,6 +66,7 @@
                                         style="width:100%">
                                         <thead>
                                             <tr>
+                                                <th>#</th>
                                                 <th>Name</th>
                                                 <th>Course</th>
                                                 <th>Instructor</th>
@@ -77,10 +78,16 @@
                                         </thead>
                                         <tbody>
                                             <?php
+                                            // <!-- ============================================================== -->
+                                            // <!-- FETCH USERS FROM DATABASE FOR users.php datatable-->
+                                            // <!-- ============================================================== -->
                                                 $get_students = $conn->query("SELECT * FROM tbl_students");
+                                                $num = 0;
                                                 while ($row = $get_students->fetch_assoc()):
+                                                $num++;
                                             ?>
                                            <tr>
+                                               <td><?php echo $num; ?></td>
                                                <td><?php echo $row['first_name'] . " " .$row['last_name'];?></td>
                                                <td>J</td>
                                                <td>J</td>
@@ -92,7 +99,7 @@
                                            </tr>
                                            <?php endwhile; ?>
                                         </tbody>
-                                        <tfoot>
+                                        <!-- <tfoot>
                                             <tr>
                                                 <th>Name</th>
                                                 <th>Position</th>
@@ -101,7 +108,7 @@
                                                 <th>Start date</th>
                                                 <th>Salary</th>
                                             </tr>
-                                        </tfoot>
+                                        </tfoot> -->
                                     </table>
                                 </div>
                             </div>
