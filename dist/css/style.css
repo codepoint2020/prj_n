@@ -481,6 +481,7 @@ select {
 
 select {
   word-wrap: normal;
+ 
 }
 select:disabled {
   opacity: 1;
