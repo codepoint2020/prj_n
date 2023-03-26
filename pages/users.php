@@ -2,11 +2,13 @@
 <!-- IMPORT(S): Php scripts, Header-->
 <!-- ============================================================== -->
 <?php 
+
 include "php/connection.php";
+include "components/head.php";
 include "php/common_variables.php";
 include "php/functions.php";
 include "php/objects.php";
-include "components/head.php";
+
 ?>
 
 
@@ -49,6 +51,8 @@ include "components/head.php";
         <!-- basic table -->
         
         <!-- order table -->
+
+        <?php add_record(); display_notification();?>
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -127,6 +131,7 @@ include "components/head.php";
         </div>
     
         
+        
         <!-- ============================================================== -->
         <!-- End PAge Content -->
         <!-- ============================================================== -->
@@ -134,6 +139,7 @@ include "components/head.php";
     <!-- ============================================================== -->
     <!-- End Container fluid  -->
     <!-- ============================================================== -->
+    
     <!-- ============================================================== -->
     <!-- footer -->
     <!-- ============================================================== -->
