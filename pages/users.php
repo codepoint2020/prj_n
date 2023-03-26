@@ -6,7 +6,6 @@ include "php/connection.php";
 include "php/common_variables.php";
 include "php/functions.php";
 include "php/objects.php";
-
 include "components/head.php";
 ?>
 
@@ -66,7 +65,6 @@ include "components/head.php";
                             
                             </div>
                             <div class="col-md-2">
-                                <!-- Large modal -->
                                 <button type="button" class="btn btn-info" data-bs-toggle="modal"
                                 data-bs-target="#bs-example-modal-lg">Add User</button>
                             
@@ -105,27 +103,19 @@ include "components/head.php";
                                     ?>
                                     <tr>
                                     <td><?php echo $num; ?></td>
-                                    <td><img src="<?php echo $profile_pic; ?>" alt="Profile picture"></td>
-                                    <td><?php echo $first_name . " " . $last_name; ?></td>
+                                    <td>PH</td>
+                                    <td>
+                                        <?php echo $first_name . " " . $last_name; ?>
+                                    </td>
                                     <td>J</td>
                                     <td>J</td>
                                     <td><?php echo $email; ?></td>
                                     <td><?php echo "nothing yet"; ?></td>
                                     <td>J</td>
-                                    <td>J</td>
                                     </tr>
                                     <?php endwhile; ?>
                                 </tbody>
-                                <!-- <tfoot>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
-                                    </tr>
-                                </tfoot> -->
+                             
                             </table>
                         </div>
                     </div>
@@ -133,94 +123,7 @@ include "components/head.php";
             </div>
         </div>
         <div class="row">
-            <!--  Modal content for the above example -->
-            <div class="modal fade" id="bs-example-modal-lg" tabindex="-1" role="dialog"
-                            aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title" id="myLargeModalLabel">User Registration Form</h4>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-hidden="true"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <!-- ==================================================== -->
-                                        <!-- Modal Body Start -->
-                                        <!-- ==================================================== -->
-                                        <div class="row">
-                                            <div class="col-sm-12 col-md-6 col-lg-4">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <h4 class="card-title">Name:</h4>
-                                                        <h6 class="card-subtitle"><code>Required</code></h6>
-                                                        
-                                                            <div class="form-group">
-                                                                <input type="text" class="form-control mb-2" name="first_name" placeholder="First name">
-                                                                <input type="text" class="form-control mb-2" name="middle_name" placeholder="Middle name">
-                                                                <input type="text" class="form-control mb-2" name="last_name" placeholder="Last name">
-                                                            </div>
-
-                                                        <h4 class="card-title mt-3">User Type:</h4>
-                                                        <h6 class="card-subtitle"><code>Required</code></h6>
-                                                        
-                                                            <div class="form-group mb-4">
-                                                                <label class="mr-sm-2" for="userType" name="user_type">Select</label>
-                                                                <select class="form-select mr-sm-2" id="userType">
-                                                                    <option selected="">Choose...</option>
-                                                                    <option value="student">Student</option>
-                                                                    <option value="external">External users</option>
-                                                                    <option value="personnel">NSSTC Personnel</option>
-                                                                </select>
-                                                            </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-12 col-md-6 col-lg-4">
-                                                <div class="card">
-                                                    <div class="row">
-                                                        <div class="card-body">
-                                                            <h4 class="card-title">Email:</h4>
-                                                            <h6 class="card-subtitle"><code>Required</code></h6>
-                                                            <div class="form-group">
-                                                                <input type="email" class="form-control mb-2" name="email" placeholder="Email address">
-                                                                <h6 class="card-title">Account/User name:<br /><code>Auto-generated</code></h6>
-                                                                <input type="username" value="<?php echo "jemor_231234" ?>" class="form-control mb-2" name="text" >
-                                                              
-                                                                
-
-                                                            </div>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <h4 class="card-title">Password:</h4>
-                                                            <h6 class="card-subtitle"><code>Auto-generated</code></h6>
-                                                           
-                                                                
-                                                                <div class="input-group">
-                                                                    <input id="gen_password" type="password" class="form-control" value="12345"
-                                                                        aria-label="Input group example" aria-describedby="passwordEye">
-                                                                    <div class="input-group-prepend">
-                                                                        <div class="input-group-text h-100" id="passwordEye"><i class="fas fa-eye-slash"></i></div>
-                                                                    </div>
-                                                                    
-                                                                </div>
-                                                                
-
-                                                        </div>
-                                                    </div>
-                                                    
-                                                </div>
-                                            </div>
-                                            
-                                        </div>
-                                        <!-- ==================================================== -->
-                                        <!-- Modal Body Start -->
-                                        <!-- ==================================================== -->
-                                        
-                                    </div>
-                                </div><!-- /.modal-content -->
-                            </div><!-- /.modal-dialog -->
-                        </div><!-- /.modal -->
+            <?php include 'components/modal_add_user.php'; ?>
         </div>
     
         
