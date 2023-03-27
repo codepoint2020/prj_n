@@ -10,7 +10,7 @@
                     <div class="navbar-brand">
                         <!-- Logo icon -->
                         <a href="index.html">
-                            <img src="../assets/images/freedashDark.svg" alt="" class="img-fluid">
+                            <img src="../assets/images/lib_logo.png" alt="" class="img-fluid">
                         </a>
                     </div>
                     <!-- ============================================================== -->
@@ -111,7 +111,7 @@
                         <!-- ============================================================== -->
                         <!-- create new -->
                         <!-- ============================================================== -->
-                        <li class="nav-item dropdown">
+                        <!-- <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i data-feather="settings" class="svg-icon"></i>
@@ -122,20 +122,8 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">Something else here</a>
                             </div>
-                        </li>
-                        <li class="nav-item d-none d-md-block">
-                            <a class="nav-link" href="javascript:void(0)">
-                                <div class="customize-input">
-                                    <select
-                                        class="custom-select form-control bg-white custom-radius custom-shadow border-0">
-                                        <option selected>EN</option>
-                                        <option value="1">AB</option>
-                                        <option value="2">AK</option>
-                                        <option value="3">BE</option>
-                                    </select>
-                                </div>
-                            </a>
-                        </li>
+                        </li> -->
+                        
                     </ul>
                     <!-- ============================================================== -->
                     <!-- Right side toggle and nav items -->
@@ -164,19 +152,17 @@
                                 <img src="../assets/images/users/profile-pic.jpg" alt="user" class="rounded-circle"
                                     width="40">
                                 <span class="ms-2 d-none d-lg-inline-block"><span>Hello,</span> <span
-                                        class="text-dark">Jason Doe</span> <i data-feather="chevron-down"
+                                        class="text-dark">Gani Ortiz</span> <i data-feather="chevron-down"
                                         class="svg-icon"></i></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end dropdown-menu-right user-dd animated flipInY">
                                 <a class="dropdown-item" href="javascript:void(0)"><i data-feather="user"
                                         class="svg-icon me-2 ms-1"></i>
                                     My Profile</a>
-                                <a class="dropdown-item" href="javascript:void(0)"><i data-feather="credit-card"
+                               
+                                <!-- <a class="dropdown-item" href="javascript:void(0)"><i data-feather="mail"
                                         class="svg-icon me-2 ms-1"></i>
-                                    My Balance</a>
-                                <a class="dropdown-item" href="javascript:void(0)"><i data-feather="mail"
-                                        class="svg-icon me-2 ms-1"></i>
-                                    Inbox</a>
+                                    Inbox</a> -->
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="javascript:void(0)"><i data-feather="settings"
                                         class="svg-icon me-2 ms-1"></i>

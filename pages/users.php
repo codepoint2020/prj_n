@@ -57,7 +57,7 @@ include "php/objects.php";
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">List of Users</h4>
+                        <h4 class="card-title">Users' Table</h4>
                         <div class="row ">
                             <div class="col-md-2">
                             <select class="custom-select custom-select-set form-control" name="cars" id="cars">
@@ -80,7 +80,7 @@ include "php/objects.php";
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Profile Pic</th>
+                                        <th>Lorem</th>
                                         <th>Name</th>
                                         <th>Course</th>
                                         <th>Instructor</th>

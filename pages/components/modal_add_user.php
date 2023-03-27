@@ -27,9 +27,9 @@ aria-hidden="true"></button>
                     <h6 class="card-subtitle"><code>Required</code></h6>
                     
                         <div class="form-group">
-                            <input type="text" class="form-control mb-2" name="first_name" placeholder="First name">
-                            <input type="text" class="form-control mb-2" name="middle_name" placeholder="Middle name">
-                            <input type="text" class="form-control mb-2" name="last_name" placeholder="Last name">
+                            <input type="text" class="form-control mb-2" name="first_name" id="firstName" placeholder="First name">
+                            <!-- <input type="text" class="form-control mb-2" name="middle_name" id="middleName" placeholder="Middle name"> -->
+                            <input type="text" class="form-control mb-2" name="last_name" placeholder="Last name" id="lastName">
                             <label class="mr-sm-2" for="userType" name="ext">Extension: (Ex. Jr., Sr., I, I, III)</label>
                             <select class="form-select mr-sm-2 mb-4" id="userType">
                                 <option selected="">None...</option>
@@ -57,7 +57,7 @@ aria-hidden="true"></button>
                         
                             <input type="email" class="form-control mb-2" name="email" placeholder="your_email@example.com">
                             <h6 class="card-title">Account/User name:<br /><code>Auto-generated</code></h6>
-                            <input type="text" value="<?php echo "jemor_231234" ?>" class="form-control mb-2" name="username" >
+                            <input type="text" id="userName" value="" class="form-control mb-2" name="username" >
                             <h4 class="card-title">Password:</h4>
                             <h6 class="card-subtitle"><code>Auto-generated</code></h6>
 
