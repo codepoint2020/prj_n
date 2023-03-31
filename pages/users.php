@@ -80,13 +80,12 @@ include "php/objects.php";
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Lorem</th>
+                                        <th>User Type</th>
                                         <th>Name</th>
-                                        <th>Course</th>
-                                        <th>Instructor</th>
                                         <th>Email</th>
-                                        <th>Address</th>
-                                        <th>Registered date</th>
+                                        <th>Status</th>
+                                        <th>Expiry Date</th>
+                                        <th>Operations</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -96,10 +95,10 @@ include "php/objects.php";
                                     // <!-- ============================================================== -->
                                         // $get_students = $conn->query("SELECT * FROM tbl_students");
                                         // $num = 0;
-                                        $get_students = $conn->prepare("SELECT first_name, last_name, email, profile_pic FROM tbl_students") or die("Failed to fetch students".$conn->error.__LINE__);
+                                        $get_students = $conn->prepare("SELECT student_id, first_name, last_name, email, profile_pic FROM tbl_students") or die("Failed to fetch students".$conn->error.__LINE__);
 
                                         $get_students->execute();
-                                        $get_students->bind_result($first_name, $last_name, $email, $profile_pic);
+                                        $get_students->bind_result($id, $first_name, $last_name, $email, $profile_pic);
                                         $num = 0;
 
                                         while ($get_students->fetch()):
@@ -107,15 +106,19 @@ include "php/objects.php";
                                     ?>
                                     <tr>
                                     <td><?php echo $num; ?></td>
-                                    <td>PH</td>
+                                    <td><?php echo "student"; ?></td>
                                     <td>
                                         <?php echo $first_name . " " . $last_name; ?>
                                     </td>
-                                    <td>J</td>
-                                    <td>J</td>
+                                    
                                     <td><?php echo $email; ?></td>
-                                    <td><?php echo "nothing yet"; ?></td>
-                                    <td>J</td>
+                                    <td><?php echo "active"; ?></td>
+                                    <td><?php echo "10-10-10"; ?></td>
+                                    <td>
+                                        <a href="users.php?edit=<?php echo $id; ?>" class="btn btn-sm btn-warning">Edit</a>
+                                        <a href="users.php?del=<?php echo $id; ?>" class="btn btn-sm btn-danger">Del</a>
+                                        <a href="users.php?view=<?php echo $id; ?>" class="btn btn-sm btn-primary">View</a>
+                                    </td>
                                     </tr>
                                     <?php endwhile; ?>
                                 </tbody>

@@ -1,5 +1,9 @@
 
 
 #passwordEye {
-    cursor: pointer;
+    cursor: pointer !important;
+}
+
+#btnSubmit {
+    display: none !important;
 }

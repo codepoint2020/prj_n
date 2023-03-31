@@ -5,13 +5,13 @@ const trigger_submit = document.querySelector("#trigger_submit");
 const myAlert = document.querySelector(".alert");
 const btnClose = document.querySelector(".btn-close");
 const firstName = document.querySelector("#firstName");
-const middleName = document.querySelector("#middleName");
 const lastName = document.querySelector("#lastName");
 const userName = document.querySelector("#userName");
 userName.disabled = true;
+// btnSubmit.style.display = "none";
 
 
-//generate random 4 digit numbers
+// generate random 4 digit numbers
 function rand4() {
     let myFour = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
     return myFour;
@@ -26,14 +26,12 @@ function genUsername() {
 
 firstName.addEventListener("input", () => {
     userName.setAttribute("value", genUsername());
-})
-
-middleName.addEventListener("input", () => {
-    userName.setAttribute("value", genUsername());
+   
 })
 
 lastName.addEventListener("input", () => {
     userName.setAttribute("value", genUsername());
+  
 })
 
 
@@ -44,7 +42,7 @@ btnClose.addEventListener("click", () => {
 })
 
 
-//toggle the text and password attribute for the user password in the registration form
+// toggle the text and password attribute for the user password in the registration form
 passwordEye.addEventListener("click", () => {
     if (gen_password.type == "text") {
         gen_password.type = "password";
@@ -58,11 +56,67 @@ passwordEye.addEventListener("click", () => {
 })
 
 //The actual button that will submit the User Registration button
-btnSubmit.style.display = 'none';
 trigger_submit.addEventListener("click", () => {
     btnSubmit.click();
     
 })
+
+
+
+
+
+const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
+    'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+    'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
+    'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
+    'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+  const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  
+  const symbols = ['!', '#', '$', '%', '&', '(', ')', '*',('_')];
+
+  let genChars = [];
+
+//   let randPassword = "";
+
+  function shuffleArray(array) {
+    array.sort(() => Math.random() - 0.5);
+    return array;
+  }
+
+//Function to generate 3 random letters, 3 random numbers, and 3 random symbols
+  const generatePassword = () => {
+    
+    for (let i = 0; i < 3; i++) {
+      const x = Math.floor(Math.random() * letters.length - 1);
+      genChars.push(letters[x]);
+    
+    }
+
+    for (let i = 0; i < 3; i++) {
+      const x = Math.floor(Math.random() * numbers.length);
+      genChars.push(numbers[x]);
+    }
+
+    for (let i = 0; i < 3; i++) {
+      const x = Math.floor(Math.random() * symbols.length);
+      genChars.push(symbols[x]);
+    }
+
+  
+    //shuffle randomly the sequencially generated password to improve security
+    const shuffledGenChars = shuffleArray(genChars);
+    let randPassword = shuffledGenChars.join('').trim();
+    return randPassword;
+
+  }
+
+  gen_password.setAttribute("value",  generatePassword());
+  
+
+
+
+
 
 
 
