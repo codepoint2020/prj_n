@@ -4,9 +4,10 @@
 <?php 
 
 include "php/connection.php";
-include "components/head.php";
+include "php/common_variables.php";
 include "php/functions.php";
 include "php/objects.php";
+include "components/head.php";
 
 ?>
 
@@ -83,7 +84,6 @@ include "php/objects.php";
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Status</th>
-                                        <th>Expiry Date</th>
                                         <th>Operations</th>
                                     </tr>
                                 </thead>
@@ -92,31 +92,35 @@ include "php/objects.php";
                                     // <!-- ============================================================== -->
                                     // <!-- FETCH USERS FROM DATABASE FOR users.php datatable-->
                                     // <!-- ============================================================== -->
-                                        // $get_students = $conn->query("SELECT * FROM tbl_students");
-                                        // $num = 0;
-                                        $get_students = $conn->prepare("SELECT student_id, first_name, last_name, email, profile_pic FROM tbl_students") or die("Failed to fetch students".$conn->error.__LINE__);
-
-                                        $get_students->execute();
-                                        $get_students->bind_result($id, $first_name, $last_name, $email, $profile_pic);
+                                        $get_students = $conn->query("SELECT * FROM tbl_students") or 
+                                        die(jm_error('Get students query failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
                                         $num = 0;
-
-                                        while ($get_students->fetch()):
+                                        
+                                        while ($student_data = $get_students->fetch_assoc()):
                                         $num++;
                                     ?>
                                     <tr>
                                     <td><?php echo $num; ?></td>
-                                    <td><?php echo "student"; ?></td>
+                                    <td><?php echo $student_data['user_type']; ?></td>
                                     <td>
-                                        <?php echo $first_name . " " . $last_name; ?>
+                                        <?php echo ucwords($student_data['first_name'] . " " . $student_data['last_name']); ?>
                                     </td>
                                     
-                                    <td><?php echo $email; ?></td>
-                                    <td><?php echo "active"; ?></td>
-                                    <td><?php echo "10-10-10"; ?></td>
+                                    <td><?php echo $student_data['email']; ?></td>
+                                    <td><?php 
+                                        if($student_data['is_active'] == "no") {
+                                            echo "Deactivated";
+                                        } elseif ($student_data['is_disabled'] == "yes") {
+                                            echo "Disabled";
+                                        } else {
+                                            echo "Active until " . date('F j, Y', strtotime($student_data["active_until"]));
+                                        }
+                                    ?>
+                                    </td>
                                     <td>
-                                        <a href="users.php?edit=<?php echo $id; ?>" class="btn btn-sm btn-warning">Edit</a>
-                                        <a href="users.php?del=<?php echo $id; ?>" class="btn btn-sm btn-danger">Del</a>
-                                        <a href="users.php?view=<?php echo $id; ?>" class="btn btn-sm btn-primary">View</a>
+                                        <a href="users.php?edit=<?php echo $student_data['student_id']; ?>" class="btn btn-sm btn-warning">Edit</a>
+                                        <a href="users.php?del=<?php echo $student_data['student_id']; ?>" class="btn btn-sm btn-danger">Del</a>
+                                        <a href="users.php?view=<?php echo $student_data['student_id']; ?>" class="btn btn-sm btn-primary">View</a>
                                     </td>
                                     </tr>
                                     <?php endwhile; ?>

@@ -124,21 +124,4 @@ echo "The difference between $date1 and $date2 is: " . $diff->format('%y year(s)
 
 
 
-  // $first_name 
-  // $last_name 
-  // $middle_name 
-  // $ext 
-  // $user_type 
-  // $email 
-  // $username 
-  // $gen_password 
-  // $profile_pic
-  // $contact_no 
-  // $house_no
-  // $street   $brgy 
-  // $city 
-  // $province 
-  // $zipcode 
-
- 
 

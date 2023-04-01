@@ -2,6 +2,7 @@
 //imported scripts
 
 include 'date_calc.php';
+
 // <!-- ==================================================== -->
 // <!-- secure string prior to inserting to database (for POST requests) -->
 // <!-- ==================================================== -->
@@ -31,7 +32,6 @@ function escape_string($string)
 
 function html_ent($string)
 {
-    global $conn;
     return htmlentities($string, ENT_QUOTES, 'UTF-8');
 }
 
@@ -56,6 +56,17 @@ function set_alert_info($message_alert)
 {
     if (!empty($message_alert)) {
         $_SESSION['message_alert'] = '<div class="alert alert-info alert-dismissible bg-info text-white border-0 fade show"
+        role="alert"><button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>' .$message_alert. "</div>";
+    } else {
+        $message_alert = "";
+    }
+}
+
+
+function set_alert_warning($message_alert)
+{
+    if (!empty($message_alert)) {
+        $_SESSION['message_alert'] = '<div class="alert alert-warning alert-dismissible bg-warning text-white border-0 fade show"
         role="alert"><button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>' .$message_alert. "</div>";
     } else {
         $message_alert = "";
@@ -100,182 +111,160 @@ function add_user()
 
     if (isset($_POST['submit_user'])) {
 
-        // $course_id = escape_string_lower($_POST['course_id']);
-        // $instructor_id = escape_string_lower($_POST['instructor_id']);
+   
+     
         $first_name = escape_string_lower($_POST['first_name']);
-        // $middle_name = escape_string_lower($_POST['middle_name']);
         $last_name = escape_string_lower($_POST['last_name']);
         $ext = escape_string_lower($_POST['ext']);
         $user_type = escape_string_lower($_POST['user_type']);
         $username = escape_string_lower($_POST['username']);
         $email = escape_string_lower($_POST['email']);
+
         $gen_password = escape_string_lower($_POST['gen_password']);
+
+        
+
         $contact_no = escape_string_lower($_POST['contact_no']);
-        // $address_id = escape_string_lower($_POST['address_id']);
         $profile_pic = $_FILES['profile_pic']['name'];
+
         $register_date = current_date();
-        $is_active = "yes";
-        $active_untill = set_default_exp_date($_POST['expiration_date']);
-        $is_disabled = "no";
-
+       
+        
+         
+        //==START==Data for insertion but not from the form or POST====//
         $password_e = password_hash($gen_password, PASSWORD_BCRYPT);
+        $is_active = escape_string_lower("yes");
+        
+        $active_until = set_default_exp_date(escape_string($_POST['expiration_date']));
+    
+        $is_disabled = escape_string_lower("no");
+        //==END==Data for insertion but not from the form or POST====//
 
-        $brgy = escape_string_lower($_POST['brgy']);
-        $city = escape_string_lower($_POST['city']);
+
+        $house_no = escape_string_lower($_POST['house_no']);
+        $street = escape_string_lower($_POST['street']);  
+        $brgy = escape_string_lower($_POST['brgy']); 
+        $city = escape_string_lower($_POST['city']); 
         $province = escape_string_lower($_POST['province']);
         $zipcode = escape_string_lower($_POST['zipcode']);
         $country = escape_string_lower($_POST['country']);
 
-        
-
-        if (empty($course_id)) {
-            $course_id = "";
-        }
-
-        if (empty($instructors_id)) {
-            $course_id = "";
-        }
-
-        if (empty($ext)) {
-            $ext = "";
-        }
-
-        if (empty($house_no)) {
-            $house_no = "";
-        }
-
-        if (empty($street)) {
-            $street = "";
-        }
-
-        if (empty($brgy)) {
-            $brgy = "";
-        }
-
-        if (empty($city)) {
-            $city = "";
-        }
-
-        if (empty($province)) {
-            $province = "";
-        }
-
-        if (empty($zipcode)) {
-            $zipcode = "";
-        }
-
-        if (empty($country)) {
-            $country = "Philippines";
-        }
 
         
 
-       
+    
+        //Insert first the tbl_address data and capture the last inserted id so it can be used to insert data for tbl_users
+        $insert_address = $conn->query("INSERT INTO tbl_address (
+        
+            house_no,
+            street,  
+            brgy, 
+            city, 
+            province, 
+            zipcode,
+            country
 
-            //Insert first the tbl_address data and capture the last inserted id so it can be used to insert data for tbl_users
-            $insert_address = $conn->query("INSERT INTO tbl_address (
-                house_no,
-                street, 
-                brgy, 
-                city, 
-                province, 
-                zipcode,
-                country, 
+        ) VALUES (
+            '$house_no',
+            '$street',  
+            '$brgy', 
+            '$city',
+            '$province',
+            '$zipcode',
+            '$country'
 
+        ); ") or die(jm_error('Insert Address Failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+
+        // Check if the query was successful
+        if ($insert_address) {
+            // Retrieve the last inserted ID
+            $last_id = $conn->insert_id;
+
+            // echo "New record created successfully. Last inserted ID is: " . $last_id;
+            $profile_pic_tmp = $_FILES['profile_pic']['tmp_name'];
+
+            $profile_pic_dir = "uploads/";
+
+            $insert_user_data = $conn->query("INSERT INTO tbl_students (
+        
+            
+                first_name,
+                last_name,
+                ext,
+                user_type,
+                username,
+                email,
+                password_e,
+                contact_no,
+               
+            
+                address_id,
+              
+                register_date,
+                is_active,
+                active_until,
+                is_disabled
             ) VALUES (
-                '$house_no',
-                '$street', 
-                '$brgy', 
-                '$city',
-                '$province',
-                '$zipcode',
-                '$country'
-
-            ); ") or die(jm_error('Insert Address Failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
-
-            // Check if the query was successful
-            if ($insert_address) {
-                // Retrieve the last inserted ID
-                $last_id = $conn->insert_id;
-
-                // echo "New record created successfully. Last inserted ID is: " . $last_id;
-                $profile_pic_tmp = $_FILES['profile_pic']['tmp_name'];
-
-                $profile_pic_dir = "./assets/images/users/";
-
-                $insert_user_data = $conn->query("INSERT INTO tbl_students (
-                    course_id,
-                    instructor_id,
-                    first_name,
-                    last_name,
-                    ext, 
-                    user_type, 
-                    username, 
-                    email, 
-                    gen_password, 
-                    contact_no, 
-                    address_id,
-                    profile_pic,
-                    register_date,
-                    is_active,
-                    active_untill,
-                    is_disabled
-                ) VALUES (
-                    '$course_id',
-                 
-                    '$first_name',
-                    '$last_name', 
-                    '$ext', 
-                    '$user_type', 
-                    '$username', 
-                    '$email', 
-                    '$password_e', 
-                    '$contact_no',
-                    '$last_id',
-                    '$profile_pic',
-                    '$register_date',
-                    '$is_active',
-                    '$active_untill',
-                    '$is_disabled'
-                ) ") or 
-                die(jm_error('Something went wrong while inserting data to tbl_students').$conn->error."<h2>At line: ".__LINE__."</h2>");
-
-                if ($insert_user_data) {
-                    move_uploaded_file($profile_pic_tmp, $profile_pic_dir . $profile_pic);
-                    set_alert_success('A new user has been added with address id: '.$last_id);
-                }
-
-            } else {
-                echo jm_error('Something went wrong while inserting last id for $insert_address query').$conn->error."<h2>At line: ".__LINE__."</h2>";
+                
+                '$first_name',
+                '$last_name', 
+                '$ext',
+                '$user_type',
+                '$username',
+                '$email',
+                '$password_e',
+                '$contact_no',
+    
+               
+            
+                $last_id,
+          
+                '$register_date',
+                '$is_active',
+                '$active_until',
+                '$is_disabled'
+            ); ") or 
+            die(jm_error('Something went wrong while inserting data to tbl_students').$conn->error."<h2>At line: ".__LINE__."</h2>");
+    
+            if ($insert_user_data) {
+                move_uploaded_file($profile_pic_tmp, $profile_pic_dir . $profile_pic);
+                set_alert_success('A new user has been added with address id: '.$last_id);
             }
+
+        } else {
+            echo jm_error('Something went wrong while inserting last id for $insert_address query').$conn->error."<h2>At line: ".__LINE__."</h2>";
+        }
+
+
+        
             
         
     }
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 function delete_user() {
     global $conn;
     if (isset($_GET['del'])) {
         $id = html_ent($_GET['del']);
-    
-        $delete_query = $conn->query("DELETE FROM tbl_students WHERE student_id = $id; ") or 
-                        die(jm_error('Delete Query Failed').$conn->error."<h2>At line: ".__LINE__."</h2>");
-        if ($delete_query) {
+
+        //set_alert_danger notification keeps showing up if the URL contains a var del and a number even if it doesn't exist
+        //This is the fix
+        $query_id = $conn->query("SELECT * FROM tbl_students WHERE student_id = $id") or 
+                    die(jm_error('Query id failed').$conn->error."<h2>At line: ".__LINE__."</h2>");
+
+        if ($query_id->num_rows > 0) {
+
+            $delete_query = $conn->query("DELETE FROM tbl_students WHERE student_id = $id; ") or 
+            die(jm_error('Delete Query Failed').$conn->error."<h2>At line: ".__LINE__."</h2>");
+
+            if ($delete_query) {
             set_alert_danger('User permanently deleted');
+            }
+        } else {
+            header("Location: users.php");
         }
+       
     
     }
 }
