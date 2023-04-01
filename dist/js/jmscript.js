@@ -7,7 +7,11 @@ const btnClose = document.querySelector(".btn-close");
 const firstName = document.querySelector("#firstName");
 const lastName = document.querySelector("#lastName");
 const userName = document.querySelector("#userName");
-userName.disabled = true;
+const userType = document.querySelector("#userType");
+const user_email = document.querySelector("#user_email");
+const contactNo = document.querySelector("#contactNo");
+
+
 // btnSubmit.style.display = "none";
 
 
@@ -57,13 +61,27 @@ passwordEye.addEventListener("click", () => {
 
 //The actual button that will submit the User Registration button
 trigger_submit.addEventListener("click", () => {
-    btnSubmit.click();
+  
+
+  // if(firstName.value == "") {
+  //    firstName.classList.add("is-invalid");
+  // }
+  // if(lastName.value == "") {
+  //   lastName.classList.add("is-invalid");
+  // }
+
+  // if (user_email.value == "") {
+  //   user_email.classList.add("is-invalid");
+  // }
+
+  // if (contactNo.value == "") {
+  //   contactNo.classList.add("is-invalid");
+  // }
     
+  btnSubmit.click();
+
+ 
 })
-
-
-
-
 
 const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
     'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
@@ -110,8 +128,10 @@ const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
     return randPassword;
 
   }
-
   gen_password.setAttribute("value",  generatePassword());
+
+
+
   
 
 

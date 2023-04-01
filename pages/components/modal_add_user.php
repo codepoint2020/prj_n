@@ -30,8 +30,8 @@ aria-hidden="true"></button>
                             <input type="text" class="form-control mb-2" name="first_name" id="firstName" placeholder="First name">
                             <!-- <input type="text" class="form-control mb-2" name="middle_name" id="middleName" placeholder="Middle name"> -->
                             <input type="text" class="form-control mb-2" name="last_name" placeholder="Last name" id="lastName">
-                            <label class="mr-sm-2" for="userType" name="ext">Extension: (Ex. Jr., Sr., I, I, III)</label>
-                            <select class="form-select mr-sm-2 mb-4" id="userType">
+                            <label class="mr-sm-2" for="userType" >Extension: (Ex. Jr., Sr., I, I, III)</label>
+                            <select class="form-select mr-sm-2 mb-4" id="userType" name="ext">
                                 <option selected="">None...</option>
                                 <option value="Jr.">Jr.</option>
                                 <option value="Sr.">Sr.</option>
@@ -45,8 +45,8 @@ aria-hidden="true"></button>
                     <h4 class="card-title mt-3">User Type:</h4>
                     <h6 class="card-subtitle"><code>Required</code></h6>
                         <div class="form-group mb-4">
-                            <label class="mr-sm-2" for="userType" name="user_type">Select</label>
-                            <select class="form-select mr-sm-2 mb-4" id="userType">
+                            <label class="mr-sm-2" for="userType">Select</label>
+                            <select class="form-select mr-sm-2 mb-4" id="userType" name="user_type">
                                 <option selected="">Choose...</option>
                                 <option value="student">Student</option>
                                 <option value="external">External users</option>
@@ -55,7 +55,7 @@ aria-hidden="true"></button>
                             <h4 class="card-title">Email:</h4>
                             <h6 class="card-subtitle"><code>Required</code></h6>
                         
-                            <input type="email" class="form-control mb-2" name="email" placeholder="your_email@example.com">
+                            <input type="email" class="form-control mb-2" name="email" placeholder="your_email@example.com" id="user_email">
                             <h6 class="card-title">Account/User name:<br /><code>Auto-generated</code></h6>
                             <input type="text" id="userName" value="" class="form-control mb-2" name="username" >
                             <h4 class="card-title">Password:</h4>
@@ -79,27 +79,37 @@ aria-hidden="true"></button>
                         <!-- use JS to preview image here after user select a file -->
                         <img src="../assets/images/users/user_def_img.png" alt="profile picture" class="col-md-5"></img>
                         
-                        <h4 class="card-title mt-3">Upload photo</h4>
+                        <h4 class="card-title mt-2">Upload photo</h4>
                         
-                        <input type="file" id="formFile" name="profile_pic">
+                        <input type="file" id="userphoto" name="profile_pic">
                         
-                        <label for="contactNo" class="mt-4">Contact No.</label>
+                        <label for="contactNo" class="mt-2">Contact No.</label>
                         <input type="text" id="contactNo" class="form-control" name="contact_no" placeholder="Ex. 094112345678">
                                 
                     </div>
                     
-                        <div class="card-body">
-                            <h4 class="card-title">Address:</h4>
+                        <div class="card-body jm-card-body">
+                            <h4 class="card-title jm-card-bod">Address:</h4>
                                 <input type="text" class="form-control mb-2" name="house_no" placeholder="Apt/Bldg/House No.">
                                 <input type="text" class="form-control mb-2" name="street" placeholder="Street">
                                 <input type="text" class="form-control mb-2" name="brgy" placeholder="Brgy.">
                                 <input type="text" class="form-control mb-2" name="city" placeholder="City/Town">
                                 <input type="text" class="form-control mb-2" name="province" placeholder="Province">
                                 <input type="text" class="form-control mb-2" name="zipcode" placeholder="Zipcode">
+                                <input type="text" class="form-control mb-2" name="country" value="Philippines" placeholder="Country">
+
+                                <label class="mr-sm-2" for="userType" name="expiration_date">Set Expiration</label>
+                                <select class="form-select mr-sm-2 mb-2" id="expiration_date" name="expiration_date">
+                                    <option selected value="3">3 months</option>
+                                    <option value="6">6 months</option>
+                                    <option value="9">9 months</option>
+                                    <option value="12">12 months</option>
+                                </select>
                         </div>
                 </div>
             </div>
-            <button class="btn btn-primary" name="btn_submit" id="btnSubmit">Submit</button>
+        
+            <button class="btn btn-primary" name="submit_user" id="btnSubmit">Submit</button>
             
         </div>
     </form>
