@@ -2,6 +2,7 @@
 //imported scripts
 
 include 'date_calc.php';
+include 'filename_randomizer.php';
 
 // <!-- ==================================================== -->
 // <!-- secure string prior to inserting to database (for POST requests) -->
@@ -185,6 +186,8 @@ function add_user()
 
             $profile_pic_dir = "uploads/";
 
+            
+
             $insert_user_data = $conn->query("INSERT INTO tbl_students (
         
             
@@ -199,6 +202,7 @@ function add_user()
                
             
                 address_id,
+               
               
                 register_date,
                 is_active,
@@ -227,8 +231,14 @@ function add_user()
             die(jm_error('Something went wrong while inserting data to tbl_students').$conn->error."<h2>At line: ".__LINE__."</h2>");
     
             if ($insert_user_data) {
-                move_uploaded_file($profile_pic_tmp, $profile_pic_dir . $profile_pic);
-                set_alert_success('A new user has been added with address id: '.$last_id);
+
+                $last_user_id = $conn->insert_id;
+                $profile_pic_new = "id_" . $last_user_id. "_" . filenameAppend() .$profile_pic;
+
+                $conn->query("UPDATE tbl_students SET profile_pic = '$profile_pic_new' WHERE student_id = $last_user_id;"); 
+                
+                move_uploaded_file($profile_pic_tmp, $profile_pic_dir . $profile_pic_new);
+                set_alert_success('A new user has been added with address id: '.$last_user_id);
             }
 
         } else {
