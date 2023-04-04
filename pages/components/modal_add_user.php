@@ -43,11 +43,11 @@ aria-hidden="true"></button>
                             </select>
                         </div>
                     <h4 class="card-title mt-3">User Type:</h4>
-                    <h6 class="card-subtitle"><code>Required</code></h6>
+                    <h6 class="card-subtitle"><code></code></h6>
                         <div class="form-group mb-4">
                             <label class="mr-sm-2" for="userType">Select</label>
                             <select class="form-select mr-sm-2 mb-4" id="userType" name="user_type">
-                                <option selected="">Choose...</option>
+                                <option selected value="">Choose...</option>
                                 <option value="student">Student</option>
                                 <option value="external">External users</option>
                                 <option value="personnel">NSSTC Personnel</option>

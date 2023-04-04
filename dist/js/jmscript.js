@@ -60,27 +60,73 @@ passwordEye.addEventListener("click", () => {
 })
 
 //The actual button that will submit the User Registration button
+//transferring to be triggered by PHP if statement
 trigger_submit.addEventListener("click", () => {
+
+  let errorArray = [];
+
+  if(firstName.value.trim() == "") {
+     errorArray.push({ 
+      targetInput: "firstName",  
+      appendedClass: "is-invalid" 
+     });
+  }
+  if(lastName.value.trim() == "") {
+    errorArray.push({ 
+      targetInput: "lastName",  
+      appendedClass: "is-invalid" 
+     });
+  }
+
+  if (user_email.value.trim() == "") {
+    errorArray.push({ 
+      targetInput: "user_email",  
+      appendedClass: "is-invalid" 
+     });
+  }
+
+  if (contactNo.value.trim() == "") {
+    errorArray.push({ 
+      targetInput: "contactNo",  
+      appendedClass: "is-invalid" 
+     });
+  }
+
+
+  // console.log(errorArray.length);
+
+  if (errorArray.length === 0) {
+    btnSubmit.click();
+
+  } else {
+
+    // if (errorArray.includes(targetInput[0])) {
+    //   console.log("yeah it includes firstname as error, it has an empty firstname");
+    // }
+    for (let i = 0; i < errorArray.length; i++) {
+      if (errorArray[i].targetInput == "firstName") {
+          firstName.classList.add(errorArray[i].appendedClass);
+          console.log("yes firstname is empty");
+      }
+
+      if (errorArray[i].targetInput == "lastName") {
+        lastName.classList.add(errorArray[i].appendedClass);
+        console.log("yes lastname is empty");
+      }
+
+      if (errorArray[i].targetInput == "user_email") {
+        user_email.classList.add(errorArray[i].appendedClass);
+        console.log("yes user_email is empty");
+      }
+
+      if (errorArray[i].targetInput == "contactNo") {
+        contactNo.classList.add(errorArray[i].appendedClass);
+        console.log("yes contactNo is empty");
+      }
+    }
   
-
-  // if(firstName.value == "") {
-  //    firstName.classList.add("is-invalid");
-  // }
-  // if(lastName.value == "") {
-  //   lastName.classList.add("is-invalid");
-  // }
-
-  // if (user_email.value == "") {
-  //   user_email.classList.add("is-invalid");
-  // }
-
-  // if (contactNo.value == "") {
-  //   contactNo.classList.add("is-invalid");
-  // }
-    
-  btnSubmit.click();
-
- 
+  }
+  
 })
 
 const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',

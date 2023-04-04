@@ -4,6 +4,18 @@
 include 'date_calc.php';
 include 'filename_randomizer.php';
 
+// <!-- =======================START============================= -->
+// <!-- VARIABLE TEST AREA -->
+// <!-- ==================================================== -->
+
+$add_user_required_field_meet = false;
+
+// <!-- ==================================================== -->
+// <!-- VARIABLE TEST AREA -->
+// <!-- ========================END============================ -->
+
+
+
 // <!-- ==================================================== -->
 // <!-- secure string prior to inserting to database (for POST requests) -->
 // <!-- ==================================================== -->
@@ -18,6 +30,7 @@ function escape_string_lower($string)
 
 }
 
+//no trim
 function escape_string($string)
 {
     global $conn;
@@ -112,7 +125,6 @@ function add_user()
 
     if (isset($_POST['submit_user'])) {
 
-   
      
         $first_name = escape_string_lower($_POST['first_name']);
         $last_name = escape_string_lower($_POST['last_name']);
@@ -150,105 +162,124 @@ function add_user()
         $zipcode = escape_string_lower($_POST['zipcode']);
         $country = escape_string_lower($_POST['country']);
 
+        $errorArray = [];
 
+        if (empty($first_name)) {
+            array_push($errorArray, "empty_first_name");
+        }
+
+        if (empty($last_name)) {
+            array_push($errorArray, "empty_last_name");
+        }
+
+        if (empty($email)) {
+            array_push($errorArray, "empty_email");
+        }
+
+        if (empty($contact_no)) {
+            array_push($errorArray, "empty_contact_no");
+        }
+
+        if (empty($errorArray)) {
+
+            //Insert first the tbl_address data and capture the last inserted id so it can be used to insert data for tbl_users
+            $insert_address = $conn->query("INSERT INTO tbl_address (
         
-
+                house_no,
+                street,  
+                brgy, 
+                city, 
+                province, 
+                zipcode,
+                country
     
-        //Insert first the tbl_address data and capture the last inserted id so it can be used to insert data for tbl_users
-        $insert_address = $conn->query("INSERT INTO tbl_address (
-        
-            house_no,
-            street,  
-            brgy, 
-            city, 
-            province, 
-            zipcode,
-            country
-
-        ) VALUES (
-            '$house_no',
-            '$street',  
-            '$brgy', 
-            '$city',
-            '$province',
-            '$zipcode',
-            '$country'
-
-        ); ") or die(jm_error('Insert Address Failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
-
-        // Check if the query was successful
-        if ($insert_address) {
-            // Retrieve the last inserted ID
-            $last_id = $conn->insert_id;
-
-            // echo "New record created successfully. Last inserted ID is: " . $last_id;
-            $profile_pic_tmp = $_FILES['profile_pic']['tmp_name'];
-
-            $profile_pic_dir = "uploads/";
-
-            
-
-            $insert_user_data = $conn->query("INSERT INTO tbl_students (
-        
-            
-                first_name,
-                last_name,
-                ext,
-                user_type,
-                username,
-                email,
-                password_e,
-                contact_no,
-               
-            
-                address_id,
-               
-              
-                register_date,
-                is_active,
-                active_until,
-                is_disabled
             ) VALUES (
-                
-                '$first_name',
-                '$last_name', 
-                '$ext',
-                '$user_type',
-                '$username',
-                '$email',
-                '$password_e',
-                '$contact_no',
+                '$house_no',
+                '$street',  
+                '$brgy', 
+                '$city',
+                '$province',
+                '$zipcode',
+                '$country'
     
-               
+            ); ") or die(jm_error('Insert Address Failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+    
+            // Check if the query was successful
+            if ($insert_address) {
+                // Retrieve the last inserted ID
+                $last_id = $conn->insert_id;
+    
+                // echo "New record created successfully. Last inserted ID is: " . $last_id;
+                $profile_pic_tmp = $_FILES['profile_pic']['tmp_name'];
+    
+                $profile_pic_dir = "uploads/";
+    
+                $insert_user_data = $conn->query("INSERT INTO tbl_students (
             
-                $last_id,
-          
-                '$register_date',
-                '$is_active',
-                '$active_until',
-                '$is_disabled'
-            ); ") or 
-            die(jm_error('Something went wrong while inserting data to tbl_students').$conn->error."<h2>At line: ".__LINE__."</h2>");
-    
-            if ($insert_user_data) {
-
-                $last_user_id = $conn->insert_id;
-                $profile_pic_new = "id_" . $last_user_id. "_" . filenameAppend() .$profile_pic;
-
-                $conn->query("UPDATE tbl_students SET profile_pic = '$profile_pic_new' WHERE student_id = $last_user_id;"); 
+                    first_name,
+                    last_name,
+                    ext,
+                    user_type,
+                    username,
+                    email,
+                    password_e,
+                    contact_no,
+                   
                 
-                move_uploaded_file($profile_pic_tmp, $profile_pic_dir . $profile_pic_new);
-                set_alert_success('A new user has been added with address id: '.$last_user_id);
+                    address_id,
+                   
+                  
+                    register_date,
+                    is_active,
+                    active_until,
+                    is_disabled
+                ) VALUES (
+                    
+                    '$first_name',
+                    '$last_name', 
+                    '$ext',
+                    '$user_type',
+                    '$username',
+                    '$email',
+                    '$password_e',
+                    '$contact_no',
+        
+                   
+                
+                    $last_id,
+              
+                    '$register_date',
+                    '$is_active',
+                    '$active_until',
+                    '$is_disabled'
+                ); ") or 
+                die(jm_error('Something went wrong while inserting data to tbl_students').$conn->error."<h2>At line: ".__LINE__."</h2>");
+        
+                if ($insert_user_data) {
+    
+                    $last_user_id = $conn->insert_id;
+                    $profile_pic_new = "id_" . $last_user_id. "_" . filenameAppend() .$profile_pic;
+    
+                    $conn->query("UPDATE tbl_students SET profile_pic = '$profile_pic_new' WHERE student_id = $last_user_id;"); 
+                    
+                    move_uploaded_file($profile_pic_tmp, $profile_pic_dir . $profile_pic_new);
+                    set_alert_success('A new user has been added with address id: '.$last_user_id);
+                }
+    
+            } else {
+                echo jm_error('Something went wrong while inserting last id for $insert_address query').$conn->error."<h2>At line: ".__LINE__."</h2>";
             }
 
-        } else {
-            echo jm_error('Something went wrong while inserting last id for $insert_address query').$conn->error."<h2>At line: ".__LINE__."</h2>";
+            header("Location: users.php");
+
+
+
         }
 
 
-        
             
         
+    
     }
 }
 
