@@ -3,7 +3,7 @@
 
 include 'date_calc.php';
 include 'filename_randomizer.php';
-include 'vars.php';
+include 'notify_error_handlers.php';
 
 // <!-- =======================START============================= -->
 // <!-- VARIABLE TEST AREA -->
@@ -153,21 +153,21 @@ function add_user()
                 if ($insert_user_data) {
     
                     $last_user_id = $conn->insert_id;
-                    $_SESSION['last_user_id_added'] = $last_user_id;
+                    $_SESSION['last_user_added'] = $first_name . " " .$last_name;
+                    $_SESSION['token'] = 'set';
                     $profile_pic_new = "id_" . $last_user_id. "_" . filenameAppend() .$profile_pic;
     
                     $conn->query("UPDATE tbl_students SET profile_pic = '$profile_pic_new' WHERE student_id = $last_user_id;"); 
                     
                     move_uploaded_file($profile_pic_tmp, $profile_pic_dir . $profile_pic_new);
-                    set_alert_success('A new user has been added with address id: '.$last_user_id);
+                    
                 }
     
             } else {
                 echo jm_error('Something went wrong while inserting last id for $insert_address query').$conn->error."<h2>At line: ".__LINE__."</h2>";
             }
 
-            header("Location: users.php?added_user=".$_SESSION['last_user_id_added']);
-
+            header("Location: users.php?added_user=".$_SESSION['last_user_added']);
 
 
         }
@@ -176,6 +176,14 @@ function add_user()
     }
 }
 
+//NOTIFICATION IF A NEW USER HAS BEEN ADDED
+
+if (isset($_GET['added_user']) && isset($_SESSION['token'])) {
+    $added_user = html_ent($_GET['added_user']);
+    set_alert_success($added_user . ' ' . 'has been successfully added');
+    unset($_SESSION['token']);
+    
+}
 
 //DELETE SELECTED USER
 function delete_user() {
