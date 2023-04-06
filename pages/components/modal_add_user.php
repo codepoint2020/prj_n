@@ -19,7 +19,7 @@ aria-hidden="true"></button>
     <div class="col-sm-12 col-md-6">
    
         
-    <form action="users.php" method="POST" enctype="multipart/form-data">
+    <form action="panel.php" method="POST" enctype="multipart/form-data">
                                 
             <div class="card">
                 <div class="card-body">

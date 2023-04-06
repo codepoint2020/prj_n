@@ -115,7 +115,7 @@ function add_user()
     
                 $profile_pic_dir = "uploads/";
     
-                $insert_user_data = $conn->query("INSERT INTO tbl_students (
+                $insert_user_data = $conn->query("INSERT INTO tbl_users (
             
                     first_name,
                     last_name,
@@ -154,7 +154,7 @@ function add_user()
                     '$active_until',
                     '$is_disabled'
                 ); ") or 
-                die(jm_error('Something went wrong while inserting data to tbl_students').$conn->error."<h2>At line: ".__LINE__."</h2>");
+                die(jm_error('Something went wrong while inserting data to tbl_users').$conn->error."<h2>At line: ".__LINE__."</h2>");
         
                 if ($insert_user_data) {
     
@@ -163,7 +163,7 @@ function add_user()
                     $_SESSION['token'] = 'set';
                     $profile_pic_new = "id_" . $last_user_id. "_" . filenameAppend() .$profile_pic;
     
-                    $conn->query("UPDATE tbl_students SET profile_pic = '$profile_pic_new' WHERE user_id = $last_user_id;"); 
+                    $conn->query("UPDATE tbl_users SET profile_pic = '$profile_pic_new' WHERE user_id = $last_user_id;"); 
                     
                     move_uploaded_file($profile_pic_tmp, $profile_pic_dir . $profile_pic_new);
                     
@@ -173,7 +173,7 @@ function add_user()
                 echo jm_error('Something went wrong while inserting last id for $insert_address query').$conn->error."<h2>At line: ".__LINE__."</h2>";
             }
 
-            header("Location: users.php?added_user=".$_SESSION['last_user_added']);
+            header("Location: panel.php?added_user=".$_SESSION['last_user_added']);
 
 
         }
@@ -199,19 +199,19 @@ function delete_user() {
 
         //set_alert_danger notification keeps showing up if the URL contains a var del and a number even if it doesn't exist
         //This is the fix
-        $query_id = $conn->query("SELECT * FROM tbl_students WHERE user_id = $id") or 
+        $query_id = $conn->query("SELECT * FROM tbl_users WHERE user_id = $id") or 
                     die(jm_error('Query id failed').$conn->error."<h2>At line: ".__LINE__."</h2>");
 
         if ($query_id->num_rows > 0) {
 
-            $delete_query = $conn->query("DELETE FROM tbl_students WHERE user_id = $id; ") or 
+            $delete_query = $conn->query("DELETE FROM tbl_users WHERE user_id = $id; ") or 
             die(jm_error('Delete Query Failed').$conn->error."<h2>At line: ".__LINE__."</h2>");
 
             if ($delete_query) {
             set_alert_danger('User permanently deleted');
             }
         } else {
-            header("Location: users.php");
+            header("Location: panel.php");
         }
        
     
@@ -227,82 +227,50 @@ function signin_user()
 
     if (isset($_POST['btn_signin'])) {
         $uname = escape_string($_POST['uname']);
-        // $user_password = escape_string($_POST['user_password']);
-        $user_type = escape_string($_POST['user_type']);
+        $user_password = escape_string($_POST['user_password']);
+ 
 
-    
-        // if ($user_type === 'guest') {
-        //     $get_user_info = $conn->query("SELECT * from tbl_external WHERE username = '$uname'") or die(jm_error('Fetching guest record failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
-        //     $row = $get_user_info->fetch_assoc();
-        //     $correct_password = $row['password_e'];
-        // }
+        $grab_pass = $conn->query("SELECT * from tbl_users WHERE username = '$uname'") or die(jm_error('Fetching users failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+        $row = $grab_pass->fetch_assoc();
 
-        if ($user_type === 'student') {
-            $get_user_info = $conn->query("SELECT * from tbl_students WHERE username = '$uname'") or die(jm_error('Fetching student record failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
-            $row = $get_user_info->fetch_assoc();
-            $correct_password = $row['password_e'];
-            echo $correct_password;
-            echo "===";
-            echo $user_type;
+     
+        $correct_password = $row['password_e'];
+        if (password_verify($user_password, $correct_password)) {
+            $_SESSION['user_id'] = $row['user_id'];
+            $_SESSION['profile_pic'] = $row['profile_pic'];
+            $_SESSION['user_email'] = $row['email'];
+            $_SESSION['user_type'] = $row['user_type'];
+            $auth_user = strtolower($row['first_name']) . " " . strtolower($row['last_name']);
+            $auth_user = ucwords($auth_user);
+            $_SESSION['is_in'] = 'true';
+            $_SESSION['system_user'] = $auth_user;
+
+            $_SESSION['user_type'] = strtolower($_SESSION['user_type']);
+
+            if ($_SESSION['user_type'] == "administrator") {
+                $_SESSION['is_admin'] = "yes";
+            } else {
+                $_SESSION['is_admin'] = "no";
+            }
             
+            redirect('panel.php');
+        } else {
+            $_SESSION['is_in'] = 'false';
+            set_alert_danger('Login failed.');
         }
         
-
-      
-
-        // if ($user_type === 'personnel') {
-
-        //     $get_user_info = $conn->query("SELECT * from tbl_personnel WHERE username = '$uname'") or die(jm_error('Fetching personnel record failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
-        //     $row = $get_user_info->fetch_assoc();
-        //     $correct_password = $row['password_e'];
-        // }
-
-        // if ($user_type === 'staff') {
-
-        //     $get_user_info = $conn->query("SELECT * from tbl_staff WHERE username = '$uname'") or die(jm_error('Fetching staff/librarian record failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
-        //     $row = $get_user_info->fetch_assoc();
-        //     $correct_password = $row['password_e'];
-        // }
-
-        // if ($user_type === 'administrator') {
-        //     $get_user_info = $conn->query("SELECT * from tbl_sysadmin WHERE username = '$uname'") or die(jm_error('Fetching sysadmin record failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
-        //     $row = $get_user_info->fetch_assoc();
-        //     $correct_password = $row['password_e'];
-        // }
-
         
-        
-        // if (!empty($get_user_info)) {
-
-        //     $correct_password = $row['password_e'];
-        //     if (password_verify($user_password, $correct_password)) {
-        //         $_SESSION['user_id'] = $row['user_id'];
-        //         $_SESSION['profile_pic'] = $row['profile_pic'];
-        //         $_SESSION['user_email'] = $row['email'];
-        //         $_SESSION['user_type'] = $row['user_type'];
-        //         $auth_user = strtolower($row['first_name']) . " " . strtolower($row['last_name']);
-        //         $auth_user = ucwords($auth_user);
-        //         $_SESSION['is_in'] = 'true';
-        //         $_SESSION['system_user'] = $auth_user;
-
-        //         $_SESSION['user_type'] = strtolower($_SESSION['user_type']);
-
-        //         if ($_SESSION['user_type'] == "administrator") {
-        //             $_SESSION['is_admin'] = "yes";
-        //         } else {
-        //             $_SESSION['is_admin'] = "no";
-        //         }
-             
-        //         redirect('users.php');
-        //     } else {
-        //         $_SESSION['is_in'] = 'false';
-        //         set_alert_danger('Login failed.');
-        //     }
-        
-        // }
 
         
     }
+}
+
+//LOGOUT FUNCTIONALITY
+
+if (isset($_GET['logout']) && $_GET['logout'] == 'true') {
+    session_destroy();
+    redirect('authentication.php');
+
 }
 
 

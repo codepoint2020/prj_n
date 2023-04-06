@@ -4,7 +4,7 @@
 
 <?php include "php/connection.php"; include "php/functions.php"; ?>
 
-<?php //if (isset($_SESSION['is_in']) || $_SESSION['is_in'] === 'true'): ?>
+<?php if ($_SESSION['is_in'] == 'true'): ?>
 
 <?php 
     include "php/common_variables.php";
@@ -52,10 +52,9 @@
         <!-- basic table -->
         
         <!-- order table -->
-
-        <?php add_user(); delete_user(); display_notification(); ?>
         <div class="row">
             <div class="col-12">
+                <?php add_user(); delete_user(); display_notification(); ?>
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Users' Table</h4>
@@ -91,9 +90,9 @@
                                 <tbody>
                                     <?php
                                     // <!-- ============================================================== -->
-                                    // <!-- FETCH USERS FROM DATABASE FOR users.php datatable-->
+                                    // <!-- FETCH USERS FROM DATABASE FOR panel.php datatable-->
                                     // <!-- ============================================================== -->
-                                        $get_students = $conn->query("SELECT * FROM tbl_students") or 
+                                        $get_students = $conn->query("SELECT * FROM tbl_users") or 
                                         die(jm_error('Get students query failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
                                         $num = 0;
                                         
@@ -119,9 +118,9 @@
                                     ?>
                                     </td>
                                     <td>
-                                        <a href="users.php?edit=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-warning">Edit</a>
-                                        <a href="users.php?del=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-danger">Del</a>
-                                        <a href="users.php?view=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-primary">View</a>
+                                        <a href="panel.php?edit=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-warning">Edit</a>
+                                        <a href="panel.php?del=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-danger">Del</a>
+                                        <a href="panel.php?view=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-primary">View</a>
                                     </td>
                                     </tr>
                                     <?php endwhile; ?>
@@ -169,11 +168,11 @@
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
-
-<?php //else: ?>
-<?php //redirect('authentication.php'); ?>
-<?php //endif; ?>
-
 <?php 
 include "components/foot.php";
 ?>
+
+<?php else: ?>
+<?php redirect('authentication.php'); ?>
+<?php endif; ?>
+

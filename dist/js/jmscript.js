@@ -1,5 +1,4 @@
-const passwordEye = document.querySelector("#passwordEye");
-const gen_password = document.querySelector("#gen_password");
+
 const btnSubmit = document.querySelector("#btnSubmit");
 const trigger_submit = document.querySelector("#trigger_submit");
 const myAlert = document.querySelector(".alert");
@@ -47,6 +46,9 @@ btnClose.addEventListener("click", () => {
 
 
 // toggle the text and password attribute for the user password in the registration form
+const passwordEye = document.querySelector("#passwordEye");
+const gen_password = document.querySelector("#gen_password");
+
 passwordEye.addEventListener("click", () => {
     if (gen_password.type == "text") {
         gen_password.type = "password";

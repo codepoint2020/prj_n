@@ -43,6 +43,7 @@
                              
                             </ul>
                         </li>
+                        <?php if ($_SESSION['user_type'] == 'administrator'): ?>
                         <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
                                 aria-expanded="false"><i data-feather="bar-chart" class="feather-icon"></i><span
                                     class="hide-menu">System Statistics </span></a>
@@ -63,6 +64,27 @@
                             </ul>
                         </li>
                         <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
+                                aria-expanded="false"><i data-feather="bar-chart" class="feather-icon"></i><span
+                                    class="hide-menu">e-Library Manager </span></a>
+                            <ul aria-expanded="false" class="collapse  first-level base-level-line">
+                                <li class="sidebar-item"><a href="chart-morris.html" class="sidebar-link"><span
+                                            class="hide-menu"> Users
+                                        </span></a>
+                                </li>
+                                <li class="sidebar-item"><a href="chart-chart-js.html" class="sidebar-link"><span
+                                            class="hide-menu"> References
+                                        </span></a>
+                                </li>
+                                <li class="sidebar-item"><a href="chart-knob.html" class="sidebar-link"><span
+                                            class="hide-menu">
+                                            Settings
+                                        </span></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <?php endif; ?>
+
+                        <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
                                 aria-expanded="false"><i data-feather="box" class="feather-icon"></i><span
                                     class="hide-menu">Saved References</span></a>
                             <ul aria-expanded="false" class="collapse  first-level base-level-line">
@@ -76,19 +98,21 @@
                                
                             </ul>
                         </li>
+
+                        
                         <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="ui-cards.html"
                                 aria-expanded="false"><i data-feather="sidebar" class="feather-icon"></i><span
                                     class="hide-menu">Request Assistance
                                 </span></a>
                         </li>
                       
-                        <li class="nav-small-cap"><span class="hide-menu">Status: Logged In</span></li>
+                        <li class="nav-small-cap"><span class="hide-menu">STATUS: <?php echo (isset($_SESSION['is_in'])) ? "LOGGED IN" : ""; ?></span></li>
                         
                         <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="authentication-login1.html"
                                 aria-expanded="false"><i data-feather="log-out" class="feather-icon"></i><span
                                     class="hide-menu">Logout</span></a></li>
                                    
-                            
+    
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->
