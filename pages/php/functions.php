@@ -10,6 +10,13 @@ include 'notify_error_handlers.php';
 // <!-- ==================================================== -->
 
 
+function redirect($location)
+{
+    header("Location: $location ");
+}
+
+
+
 
 function add_user()
 {
@@ -28,7 +35,7 @@ function add_user()
         $username = escape_string_lower($_POST['username']);
         $email = escape_string_lower($_POST['email']);
 
-        $gen_password = escape_string_lower($_POST['gen_password']);
+        $gen_password = escape_string($_POST['gen_password']);
 
         
 
@@ -157,7 +164,7 @@ function add_user()
                     $_SESSION['token'] = 'set';
                     $profile_pic_new = "id_" . $last_user_id. "_" . filenameAppend() .$profile_pic;
     
-                    $conn->query("UPDATE tbl_students SET profile_pic = '$profile_pic_new' WHERE student_id = $last_user_id;"); 
+                    $conn->query("UPDATE tbl_students SET profile_pic = '$profile_pic_new' WHERE user_id = $last_user_id;"); 
                     
                     move_uploaded_file($profile_pic_tmp, $profile_pic_dir . $profile_pic_new);
                     
@@ -193,12 +200,12 @@ function delete_user() {
 
         //set_alert_danger notification keeps showing up if the URL contains a var del and a number even if it doesn't exist
         //This is the fix
-        $query_id = $conn->query("SELECT * FROM tbl_students WHERE student_id = $id") or 
+        $query_id = $conn->query("SELECT * FROM tbl_students WHERE user_id = $id") or 
                     die(jm_error('Query id failed').$conn->error."<h2>At line: ".__LINE__."</h2>");
 
         if ($query_id->num_rows > 0) {
 
-            $delete_query = $conn->query("DELETE FROM tbl_students WHERE student_id = $id; ") or 
+            $delete_query = $conn->query("DELETE FROM tbl_students WHERE user_id = $id; ") or 
             die(jm_error('Delete Query Failed').$conn->error."<h2>At line: ".__LINE__."</h2>");
 
             if ($delete_query) {
@@ -209,6 +216,97 @@ function delete_user() {
         }
        
     
+    }
+}
+
+
+function signin_user()
+{
+
+    global $conn;
+    $row = "";
+    $correct_password = "";
+
+    if (isset($_POST['btn_signin'])) {
+        $uname = escape_string($_POST['uname']);
+        $user_password = escape_string($_POST['user_password']);
+        $user_type = escape_string($_POST['user_type']);
+
+    
+        if ($user_type === 'external') {
+            $get_user_info = $conn->query("SELECT * from tbl_external WHERE username = '$uname'") or die(jm_error('Fetching guest record failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+            $row = $get_user_info->fetch_assoc();
+            $correct_password = $row['password_e'];
+        }
+
+        if ($user_type === 'student') {
+            $get_user_info = $conn->query("SELECT * from tbl_students WHERE username = '$uname'") or die(jm_error('Fetching student record failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+            $row = $get_user_info->fetch_assoc();
+            $correct_password = $row['password_e'];
+        }
+
+        if ($user_type === 'personnel') {
+
+            $get_user_info = $conn->query("SELECT * from tbl_personnel WHERE username = '$uname'") or die(jm_error('Fetching personnel record failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+            $row = $get_user_info->fetch_assoc();
+            $correct_password = $row['password_e'];
+        }
+
+        if ($user_type === 'tbl_staff') {
+
+            $get_user_info = $conn->query("SELECT * from tbl_staff WHERE username = '$uname'") or die(jm_error('Fetching staff/librarian record failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+            $row = $get_user_info->fetch_assoc();
+            $correct_password = $row['password_e'];
+        }
+
+        if ($user_type === 'tbl_sysadmin') {
+            $get_user_info = $conn->query("SELECT * from tbl_sysadmin WHERE username = '$uname'") or die(jm_error('Fetching sysadmin record failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+            $row = $get_user_info->fetch_assoc();
+            $correct_password = $row['password_e'];
+        }
+
+        if (!empty($get_user_info)) {
+
+            $correct_password = $row['password_e'];
+            if (password_verify($user_password, $correct_password)) {
+                $_SESSION['user_id'] = $row['user_id'];
+                $_SESSION['profile_pic'] = $row['profile_pic'];
+                $_SESSION['user_email'] = $row['email'];
+                $_SESSION['user_type'] = $row['user_type'];
+                $auth_user = strtolower($row['first_name']) . " " . strtolower($row['last_name']);
+                $auth_user = ucwords($auth_user);
+                $_SESSION['is_in'] = 'true';
+                $_SESSION['system_user'] = $auth_user;
+
+                //Identify if the current user is administrator or not
+                // $current_user_id = $_SESSION['user_id'];
+                // $query_current_user = $conn->query("SELECT * FROM users WHERE user_id = $current_user_id; ") or die("Query Failed" . $conn->error . __LINE__);
+                // $query_user_result = $query_current_user->fetch_assoc();
+
+                $_SESSION['user_type'] = strtolower($_SESSION['user_type']);
+
+                if ($_SESSION['user_type'] == "administrator") {
+                    $_SESSION['is_admin'] = "yes";
+                } else {
+                    $_SESSION['is_admin'] = "no";
+                }
+                echo $_SESSION['user_type'] . " " . $_SESSION['system_user'];
+                redirect('users.php');
+            } else {
+                set_alert_danger('Login failed.');
+            }
+            
+
+
+            
+            // if (password_verify($user_password, $correct_password)) {
+            //     set_alert_success('Authentication Successful.');
+            // } else {
+            //     set_alert_danger('Password invalid.');
+            // }
+        }
+
+        
     }
 }
 

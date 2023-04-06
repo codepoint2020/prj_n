@@ -1,3 +1,7 @@
+*****Do i need a separate column for address_identifier, and that identifier will also be in the address table, maybe for entering the address
+users can just choose drop down button if each address line is already available in the database if not have them manually type, this also means
+that i need to create a code to enable the system to identify if what they are typing is in the database.
+
 
   $course_id
   $instructor_id
@@ -28,6 +32,8 @@ INSERT THIS TO TBL_ADDRESS
   $city 
   $province 
   $zipcode 
+
+
 
 
 

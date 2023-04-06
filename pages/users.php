@@ -118,9 +118,9 @@ include "components/head.php";
                                     ?>
                                     </td>
                                     <td>
-                                        <a href="users.php?edit=<?php echo $student_data['student_id']; ?>" class="btn btn-sm btn-warning">Edit</a>
-                                        <a href="users.php?del=<?php echo $student_data['student_id']; ?>" class="btn btn-sm btn-danger">Del</a>
-                                        <a href="users.php?view=<?php echo $student_data['student_id']; ?>" class="btn btn-sm btn-primary">View</a>
+                                        <a href="users.php?edit=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-warning">Edit</a>
+                                        <a href="users.php?del=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-danger">Del</a>
+                                        <a href="users.php?view=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-primary">View</a>
                                     </td>
                                     </tr>
                                     <?php endwhile; ?>
@@ -149,10 +149,10 @@ include "components/head.php";
     <!-- ============================================================== -->
     <!-- footer -->
     <!-- ============================================================== -->
-    <footer class="footer text-center text-muted">
+    <!-- <footer class="footer text-center text-muted">
         All Rights Reserved by Freedash. Designed and Developed by <a
             href="https://adminmart.com/">Adminmart</a>.
-    </footer>
+    </footer> -->
     <!-- ============================================================== -->
     <!-- End footer -->
     <!-- ============================================================== -->
