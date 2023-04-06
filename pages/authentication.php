@@ -72,12 +72,14 @@ signin_user();
                                     <div class="form-group mb-3">
                                         <label class="form-label text-dark" for="uname">Login as</label>
                                         <select class="form-select mr-sm-2 mb-2" id="expiration_date" name="user_type">
-                                            <option  value="">Choose...</option>
-                                            <option value="external">Guest</option>
-                                            <option selected value="student">Student</option>
-                                            <option value="personnel">NSSTC Personnel</option>
-                                            <option value="librarian">Librarian</option>
-                                            <option value="sysadmin">IT Personnel</option>
+                                        <option selected value="" hidden>Choose...</option>
+                                        <?php
+                                            $get_user_types = $conn->query("SELECT * FROM tbl_user_type") or die(jm_error('Get user type query Failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+                                            while ($row = $get_user_types->fetch_assoc()):
+                                        ?>
+                                            
+                                            <option value="<?php echo $row['type_name']; ?>"><?php echo ucwords($row['type_name']); ?></option>
+                                            <?php endwhile; ?>
                                         </select>
                                     </div>
                                 </div>

@@ -1,16 +1,17 @@
 <!-- ============================================================== -->
 <!-- IMPORT(S): Php scripts, Header-->
 <!-- ============================================================== -->
+
+<?php include "php/connection.php"; include "php/functions.php"; ?>
+
+<?php //if (isset($_SESSION['is_in']) || $_SESSION['is_in'] === 'true'): ?>
+
 <?php 
-
-include "php/connection.php";
-include "php/common_variables.php";
-include "php/functions.php";
-include "php/objects.php";
-include "components/head.php";
-
+    include "php/common_variables.php";
+    
+    include "php/objects.php";
+    include "components/head.php";        
 ?>
-
 
 <!-- ============================================================== -->
 <!-- Main wrapper - style you can find in pages.scss -->
@@ -168,4 +169,11 @@ include "components/head.php";
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
-<?php include "components/foot.php" ?>
+
+<?php //else: ?>
+<?php //redirect('authentication.php'); ?>
+<?php //endif; ?>
+
+<?php 
+include "components/foot.php";
+?>

@@ -2,6 +2,20 @@
 users can just choose drop down button if each address line is already available in the database if not have them manually type, this also means
 that i need to create a code to enable the system to identify if what they are typing is in the database.
 
+test accounts
+
+Administrator
+jmor_234701
+f6W_75!a!
+
+student
+jemor_230565
+z*7#oR4!5
+
+
+
+
+
 
   $course_id
   $instructor_id

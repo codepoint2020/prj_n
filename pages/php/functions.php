@@ -44,7 +44,6 @@ function add_user()
 
         $register_date = current_date();
        
-        
          
         //==START==Data for insertion but not from the form or POST====//
         $password_e = password_hash($gen_password, PASSWORD_BCRYPT);
@@ -224,94 +223,87 @@ function signin_user()
 {
 
     global $conn;
-    $row = "";
-    $correct_password = "";
+   
 
     if (isset($_POST['btn_signin'])) {
         $uname = escape_string($_POST['uname']);
-        $user_password = escape_string($_POST['user_password']);
+        // $user_password = escape_string($_POST['user_password']);
         $user_type = escape_string($_POST['user_type']);
 
     
-        if ($user_type === 'external') {
-            $get_user_info = $conn->query("SELECT * from tbl_external WHERE username = '$uname'") or die(jm_error('Fetching guest record failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
-            $row = $get_user_info->fetch_assoc();
-            $correct_password = $row['password_e'];
-        }
+        // if ($user_type === 'guest') {
+        //     $get_user_info = $conn->query("SELECT * from tbl_external WHERE username = '$uname'") or die(jm_error('Fetching guest record failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+        //     $row = $get_user_info->fetch_assoc();
+        //     $correct_password = $row['password_e'];
+        // }
 
         if ($user_type === 'student') {
             $get_user_info = $conn->query("SELECT * from tbl_students WHERE username = '$uname'") or die(jm_error('Fetching student record failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
             $row = $get_user_info->fetch_assoc();
             $correct_password = $row['password_e'];
-        }
-
-        if ($user_type === 'personnel') {
-
-            $get_user_info = $conn->query("SELECT * from tbl_personnel WHERE username = '$uname'") or die(jm_error('Fetching personnel record failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
-            $row = $get_user_info->fetch_assoc();
-            $correct_password = $row['password_e'];
-        }
-
-        if ($user_type === 'tbl_staff') {
-
-            $get_user_info = $conn->query("SELECT * from tbl_staff WHERE username = '$uname'") or die(jm_error('Fetching staff/librarian record failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
-            $row = $get_user_info->fetch_assoc();
-            $correct_password = $row['password_e'];
-        }
-
-        if ($user_type === 'tbl_sysadmin') {
-            $get_user_info = $conn->query("SELECT * from tbl_sysadmin WHERE username = '$uname'") or die(jm_error('Fetching sysadmin record failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
-            $row = $get_user_info->fetch_assoc();
-            $correct_password = $row['password_e'];
-        }
-
-        if (!empty($get_user_info)) {
-
-            $correct_password = $row['password_e'];
-            if (password_verify($user_password, $correct_password)) {
-                $_SESSION['user_id'] = $row['user_id'];
-                $_SESSION['profile_pic'] = $row['profile_pic'];
-                $_SESSION['user_email'] = $row['email'];
-                $_SESSION['user_type'] = $row['user_type'];
-                $auth_user = strtolower($row['first_name']) . " " . strtolower($row['last_name']);
-                $auth_user = ucwords($auth_user);
-                $_SESSION['is_in'] = 'true';
-                $_SESSION['system_user'] = $auth_user;
-
-                //Identify if the current user is administrator or not
-                // $current_user_id = $_SESSION['user_id'];
-                // $query_current_user = $conn->query("SELECT * FROM users WHERE user_id = $current_user_id; ") or die("Query Failed" . $conn->error . __LINE__);
-                // $query_user_result = $query_current_user->fetch_assoc();
-
-                $_SESSION['user_type'] = strtolower($_SESSION['user_type']);
-
-                if ($_SESSION['user_type'] == "administrator") {
-                    $_SESSION['is_admin'] = "yes";
-                } else {
-                    $_SESSION['is_admin'] = "no";
-                }
-                echo $_SESSION['user_type'] . " " . $_SESSION['system_user'];
-                redirect('users.php');
-            } else {
-                set_alert_danger('Login failed.');
-            }
+            echo $correct_password;
+            echo "===";
+            echo $user_type;
             
-
-
-            
-            // if (password_verify($user_password, $correct_password)) {
-            //     set_alert_success('Authentication Successful.');
-            // } else {
-            //     set_alert_danger('Password invalid.');
-            // }
         }
+        
+
+      
+
+        // if ($user_type === 'personnel') {
+
+        //     $get_user_info = $conn->query("SELECT * from tbl_personnel WHERE username = '$uname'") or die(jm_error('Fetching personnel record failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+        //     $row = $get_user_info->fetch_assoc();
+        //     $correct_password = $row['password_e'];
+        // }
+
+        // if ($user_type === 'staff') {
+
+        //     $get_user_info = $conn->query("SELECT * from tbl_staff WHERE username = '$uname'") or die(jm_error('Fetching staff/librarian record failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+        //     $row = $get_user_info->fetch_assoc();
+        //     $correct_password = $row['password_e'];
+        // }
+
+        // if ($user_type === 'administrator') {
+        //     $get_user_info = $conn->query("SELECT * from tbl_sysadmin WHERE username = '$uname'") or die(jm_error('Fetching sysadmin record failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+        //     $row = $get_user_info->fetch_assoc();
+        //     $correct_password = $row['password_e'];
+        // }
+
+        
+        
+        // if (!empty($get_user_info)) {
+
+        //     $correct_password = $row['password_e'];
+        //     if (password_verify($user_password, $correct_password)) {
+        //         $_SESSION['user_id'] = $row['user_id'];
+        //         $_SESSION['profile_pic'] = $row['profile_pic'];
+        //         $_SESSION['user_email'] = $row['email'];
+        //         $_SESSION['user_type'] = $row['user_type'];
+        //         $auth_user = strtolower($row['first_name']) . " " . strtolower($row['last_name']);
+        //         $auth_user = ucwords($auth_user);
+        //         $_SESSION['is_in'] = 'true';
+        //         $_SESSION['system_user'] = $auth_user;
+
+        //         $_SESSION['user_type'] = strtolower($_SESSION['user_type']);
+
+        //         if ($_SESSION['user_type'] == "administrator") {
+        //             $_SESSION['is_admin'] = "yes";
+        //         } else {
+        //             $_SESSION['is_admin'] = "no";
+        //         }
+             
+        //         redirect('users.php');
+        //     } else {
+        //         $_SESSION['is_in'] = 'false';
+        //         set_alert_danger('Login failed.');
+        //     }
+        
+        // }
 
         
     }
 }
-
-
-
 
 
 ?>

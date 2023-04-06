@@ -47,10 +47,14 @@ aria-hidden="true"></button>
                         <div class="form-group mb-4">
                             <label class="mr-sm-2" for="userType">Select</label>
                             <select class="form-select mr-sm-2 mb-4" id="userType" name="user_type">
-                                <option selected value="">Choose...</option>
-                                <option value="student">Student</option>
-                                <option value="external">External users</option>
-                                <option value="personnel">NSSTC Personnel</option>
+                            <option selected value="" hidden>Choose...</option>
+                            <?php
+                                $get_user_types = $conn->query("SELECT * FROM tbl_user_type") or die(jm_error('Get user type query Failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+                                while ($row = $get_user_types->fetch_assoc()):
+                            ?>
+                                <option value="<?php echo $row['type_name']; ?>"><?php echo ucwords($row['type_name']); ?></option>
+
+                                <?php endwhile; ?>
                             </select>
                             <h4 class="card-title">Email:</h4>
                             <h6 class="card-subtitle"><code>Required</code></h6>
@@ -99,6 +103,7 @@ aria-hidden="true"></button>
                                 <input type="text" class="form-control mb-2" name="country" value="Philippines" placeholder="Country">
 
                                 <label class="mr-sm-2" for="userType" name="expiration_date">Set Expiration</label>
+                               
                                 <select class="form-select mr-sm-2 mb-2" id="expiration_date" name="expiration_date">
                                     <option selected value="3">3 months</option>
                                     <option value="6">6 months</option>
