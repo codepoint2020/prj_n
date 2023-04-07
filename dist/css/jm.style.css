@@ -14,5 +14,9 @@
 }
 
 .card-text {
-    font-size: 0.9rem !important;
+    font-size: 0.8rem !important;
+}
+
+.card-body {
+    padding: 0.5rem !important;
 }

@@ -4,7 +4,7 @@
                 <!-- Sidebar navigation-->
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
-                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="index.html"
+                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="panel.php?home=true"
                                 aria-expanded="false"><i data-feather="home" class="feather-icon"></i><span
                                     class="hide-menu">Home Page</span></a></li>
                         <li class="list-divider"></li>
@@ -71,7 +71,7 @@
                                             class="hide-menu"> Users
                                         </span></a>
                                 </li>
-                                <li class="sidebar-item"><a href="chart-chart-js.html" class="sidebar-link"><span
+                                <li class="sidebar-item"><a href="panel.php?manage_references=true" class="sidebar-link"><span
                                             class="hide-menu"> References
                                         </span></a>
                                 </li>

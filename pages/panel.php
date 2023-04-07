@@ -53,7 +53,20 @@
         
         <!-- order table -->
         <div class="row">
-            <h1>THIS IS THE PANEL</h1>
+            <?php if (isset($_GET['home']) && $_SESSION['user_type'] == 'administrator'): ?>
+                <div class="col-12">
+                    <h1>THIS IS THE PANEL</h1>
+                </div>
+            <?php endif; ?>
+
+            <?php if (isset($_GET['manage_references']) && $_SESSION['user_type'] == 'administrator'): ?>
+                <?php include 'components/manage_ref.php'?>
+            <?php endif; ?>
+            
+
+            
+            
+            
             <!-- ============================================================== -->
             <!-- CARDS START -->
             <!-- ============================================================== -->
