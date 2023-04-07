@@ -53,6 +53,24 @@
         
         <!-- order table -->
         <div class="row">
+            <h1>THIS IS THE PANEL</h1>
+            <!-- ============================================================== -->
+            <!-- CARDS START -->
+            <!-- ============================================================== -->
+            <?php if (isset($_GET['all_references'])): ?>
+            <div class="col-12">
+                <?php include 'components/cards.php'?>
+            </div>
+            <?php endif; ?>
+            
+            <!-- ============================================================== -->
+            <!-- USERS' END START -->
+            <!-- ============================================================== -->
+
+            <!-- ============================================================== -->
+            <!-- USERS' TABLE START -->
+            <!-- ============================================================== -->
+            <?php if (isset($_GET['load_users']) && $_SESSION['user_type'] == 'administrator'): ?>
             <div class="col-12">
                 <?php add_user(); delete_user(); display_notification(); ?>
                 <div class="card">
@@ -131,6 +149,10 @@
                     </div>
                 </div>
             </div>
+            <?php endif; ?>
+            <!-- ============================================================== -->
+            <!-- USERS' TABLE END -->
+            <!-- ============================================================== -->
         </div>
         <div class="row">
             <?php include 'components/modal_add_user.php'; ?>

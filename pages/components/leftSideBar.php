@@ -22,7 +22,7 @@
                                             class="hide-menu"> Categories
                                         </span></a>
                                 </li>
-                                <li class="sidebar-item"><a href="form-checkbox-radio.html" class="sidebar-link"><span
+                                <li class="sidebar-item"><a href="panel.php?all_references=true" class="sidebar-link"><span
                                             class="hide-menu"> All References
                                         </span></a>
                                 </li>
@@ -67,7 +67,7 @@
                                 aria-expanded="false"><i data-feather="bar-chart" class="feather-icon"></i><span
                                     class="hide-menu">e-Library Manager </span></a>
                             <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                                <li class="sidebar-item"><a href="chart-morris.html" class="sidebar-link"><span
+                                <li class="sidebar-item"><a href="panel.php?load_users=true" class="sidebar-link"><span
                                             class="hide-menu"> Users
                                         </span></a>
                                 </li>
