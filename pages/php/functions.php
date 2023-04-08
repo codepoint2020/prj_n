@@ -23,8 +23,6 @@ function add_user()
 
     global $conn;
 
- 
-
     if (isset($_POST['submit_user'])) {
 
      
@@ -80,6 +78,8 @@ function add_user()
         if (empty($contact_no)) {
             array_push($errorArray, "empty_contact_no");
         }
+
+        
 
         if (empty($errorArray)) {
 
@@ -273,7 +273,87 @@ if (isset($_GET['logout']) && $_GET['logout'] == 'true') {
 
 }
 
+//Add Book/Reference
 
+function add_book() {
+    
+    global $conn;
 
+    if (isset($_POST['add_book'])) {
+
+        $title = escape_string($_POST['title']);
+        $details = escape_string($_POST['details']);
+        $category = escape_string($_POST['category']);
+
+        $formFile = $_FILES['formFile']['name'];
+        $formFile_temp = $_FILES['formFile']['tmp_name'];
+        $author = escape_string($_POST['author']);
+
+        $cover_image = $_FILES['cover_image']['name'];
+        $cover_image_temp = $_FILES['cover_image']['tmp_name'];
+
+        $register_date = current_date();
+
+    
+        $dir = "../assets/references/pdf/";
+        
+        $errorArray = [];
+    
+        if (empty($title)) {
+            array_push($errorArray, "empty_title");
+        }
+    
+        if (empty($details)) {
+            array_push($errorArray, "empty_details");
+        }
+    
+        if (empty($category)) {
+            array_push($errorArray, "empty_category");
+        }
+
+        if (empty($formFile)) {
+            array_push($errorArray, "empty_formFile");
+        }
+
+        if (empty($formFile_temp)) {
+            array_push($errorArray, "empty_formFile_temp");
+        }
+
+        
+
+        if (empty($errorArray)) {
+            $add_book_query = $conn->query("INSERT INTO tbl_books (
+                file_name,
+                title, 
+                details, 
+                category,
+                author,
+                cover_img
+
+                ) VALUES (
+                    '$formFile',
+                    '$title',
+                    '$details',
+                    '$category',
+                    '$author',
+                    '$cover_image'
+                    
+                    ); ");
+        
+                // move_uploaded_file($formFile_temp, $dir . $formFile);
+            // move_uploaded_file($cover_image_temp, $dir . $cover_image);
+            if ($add_book_query) {
+                move_uploaded_file($formFile_temp, $dir . $formFile);
+                move_uploaded_file($cover_image_temp, $dir . $cover_image);
+                set_alert_success("A new reference file has been added.");
+            }
+           
+        } else {
+            $_SESSION['error_array'] = $errorArray; 
+        }
+    
+    } 
+
+}
 
 ?>
