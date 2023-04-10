@@ -19,7 +19,7 @@ aria-hidden="true"></button>
     <div class="col-sm-12 col-md-6">
    
         
-    <form action="panel.php" method="POST" enctype="multipart/form-data">
+    <form action="panel.php?load_users=true" method="POST" enctype="multipart/form-data">
                                 
             <div class="card">
                 <div class="card-body">
@@ -121,7 +121,7 @@ aria-hidden="true"></button>
    
     
 </div>
-<button class="btn btn-primary" id="trigger_submit">Submit</button>
+<button class="btn btn-primary" id="trigger_submit" type="button">Submit</button>
 
 
 

@@ -16,14 +16,32 @@ function redirect($location)
 }
 
 
+//limit the number of text to based on character string on the description/details of references/books
+function short_desc($string)
+{
+    $max_length = 100;
+    $current_length = strlen($string);
+
+    if ($current_length <= $max_length) {
+        return $string;
+    } else {
+        return substr($string, 0, $max_length) . "...";
+    }
+}
+
+
 
 
 function add_user()
 {
-
+   
     global $conn;
 
+ 
+
     if (isset($_POST['submit_user'])) {
+
+       
 
      
         $first_name = escape_string_lower($_POST['first_name']);
@@ -41,6 +59,8 @@ function add_user()
         $profile_pic = $_FILES['profile_pic']['name'];
 
         $register_date = current_date();
+
+        
        
          
         //==START==Data for insertion but not from the form or POST====//
@@ -79,9 +99,9 @@ function add_user()
             array_push($errorArray, "empty_contact_no");
         }
 
-        
-
         if (empty($errorArray)) {
+
+           //GOOD FROM HERE
 
             //Insert first the tbl_address data and capture the last inserted id so it can be used to insert data for tbl_users
             $insert_address = $conn->query("INSERT INTO tbl_address (
@@ -104,11 +124,14 @@ function add_user()
                 '$country'
     
             ); ") or die(jm_error('Insert Address Failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+
+            //good from here
     
             // Check if the query was successful
             if ($insert_address) {
                 // Retrieve the last inserted ID
                 $last_id = $conn->insert_id;
+          
     
                 // echo "New record created successfully. Last inserted ID is: " . $last_id;
                 $profile_pic_tmp = $_FILES['profile_pic']['tmp_name'];
@@ -155,47 +178,55 @@ function add_user()
                     '$is_disabled'
                 ); ") or 
                 die(jm_error('Something went wrong while inserting data to tbl_users').$conn->error."<h2>At line: ".__LINE__."</h2>");
-        
+
+
                 if ($insert_user_data) {
-    
+
                     $last_user_id = $conn->insert_id;
                     $_SESSION['last_user_added'] = $first_name . " " .$last_name;
-                    $_SESSION['token'] = 'set';
+                    $_SESSION['prevent_reload_data'] = 'set';
                     $profile_pic_new = "id_" . $last_user_id. "_" . filenameAppend() .$profile_pic;
     
                     $conn->query("UPDATE tbl_users SET profile_pic = '$profile_pic_new' WHERE user_id = $last_user_id;"); 
                     
                     move_uploaded_file($profile_pic_tmp, $profile_pic_dir . $profile_pic_new);
                     
+                } else {
+                    echo jm_error('Something went wrong while inserting last id for $insert_address query').$conn->error."<h2>At line: ".__LINE__."</h2>";
                 }
-    
-            } else {
-                echo jm_error('Something went wrong while inserting last id for $insert_address query').$conn->error."<h2>At line: ".__LINE__."</h2>";
+
+                header("Location: panel.php?load_users=true&added_user=".$_SESSION['last_user_added']);
+
+
             }
-
-            header("Location: panel.php?added_user=".$_SESSION['last_user_added']);
-
-
         }
-
 
     }
 }
 
 //NOTIFICATION IF A NEW USER HAS BEEN ADDED
 
-if (isset($_GET['added_user']) && isset($_SESSION['token'])) {
-    $added_user = html_ent($_GET['added_user']);
+if (isset($_GET['added_user']) && isset($_SESSION['prevent_reload_data'])) {
+    $added_user = ucwords(html_ent($_GET['added_user']));
     set_alert_success($added_user . ' ' . 'has been successfully added');
-    unset($_SESSION['token']);
+    unset($_SESSION['prevent_reload_data']);
+    
+}
+
+//NOTIFICATION IF A USER HAS BEEN DELETED
+
+if (isset($_GET['user_deleted']) && isset($_SESSION['prevent_reload_data'])) {
+    $deleted_user = html_ent($_GET['uname']);
+    set_alert_warning($deleted_user . ' ' . 'deleted');
+    unset($_SESSION['prevent_reload_data']);
     
 }
 
 //DELETE SELECTED USER
 function delete_user() {
     global $conn;
-    if (isset($_GET['del'])) {
-        $id = html_ent($_GET['del']);
+    if (isset($_GET['confirm_delete'])) {
+        $id = html_ent($_GET['confirm_delete']);
 
         //set_alert_danger notification keeps showing up if the URL contains a var del and a number even if it doesn't exist
         //This is the fix
@@ -203,18 +234,46 @@ function delete_user() {
                     die(jm_error('Query id failed').$conn->error."<h2>At line: ".__LINE__."</h2>");
 
         if ($query_id->num_rows > 0) {
+            $row = $query_id->fetch_assoc();
+            $target_user = ucwords($row['first_name'] . " " .$row['last_name']);
+            $_SESSION['prevent_reload_data'] = "set";
 
             $delete_query = $conn->query("DELETE FROM tbl_users WHERE user_id = $id; ") or 
             die(jm_error('Delete Query Failed').$conn->error."<h2>At line: ".__LINE__."</h2>");
 
             if ($delete_query) {
-            set_alert_danger('User permanently deleted');
+                redirect("panel.php?load_users=true&user_deleted=true&uname=".$target_user);
             }
-        } else {
-            header("Location: panel.php");
-        }
-       
+        } 
     
+    }
+}
+
+
+//DELETE USER WITH CONFIRMATION
+function delete_user_confirm_box()
+{
+
+    global $conn;
+
+    if (isset($_GET['del'])) {
+        $id = html_ent($_GET['del']);
+
+        $query_student = $conn->query("SELECT * FROM tbl_users WHERE user_id = $id; ") or die("FAILED TO QUERY STUDENT" . $conn->error . __LINE__);
+        $row = $query_student->fetch_assoc();
+        $user = ucwords($row['first_name'] . " " . $row['last_name']);
+        $confirm_box = <<<DELIMETER
+        <div class="alert alert-warning" role="alert">
+    <h4 class="alert-heading">Warning: </h4>
+    <h4>You are about to PERMANENTLY delete this user:</h4>
+    <h3>{$user}</h3>
+    <hr>
+   
+    <a href="panel.php?load_users=true" class="btn btn-sm btn-secondary">Cancel</a>
+    <a href="panel.php?load_users=true&confirm_delete={$row['user_id']}" class="btn btn-sm btn-danger">Proceed</a>
+</div>
+DELIMETER;
+        echo $confirm_box;
     }
 }
 
@@ -296,6 +355,8 @@ function add_book() {
 
     
         $dir = "../assets/references/pdf/";
+
+    
         
         $errorArray = [];
     
@@ -328,24 +389,38 @@ function add_book() {
                 details, 
                 category,
                 author,
-                cover_img
+                register_date
 
                 ) VALUES (
+
                     '$formFile',
                     '$title',
                     '$details',
                     '$category',
                     '$author',
-                    '$cover_image'
-                    
+                    '$register_date'
+
                     ); ");
         
-                // move_uploaded_file($formFile_temp, $dir . $formFile);
-            // move_uploaded_file($cover_image_temp, $dir . $cover_image);
             if ($add_book_query) {
-                move_uploaded_file($formFile_temp, $dir . $formFile);
-                move_uploaded_file($cover_image_temp, $dir . $cover_image);
-                set_alert_success("A new reference file has been added.");
+
+                $last_book_id = $conn->insert_id;
+               
+                $newformFile = "id_" . $last_book_id. "_" . filenameAppend() .$formFile;
+                $new_cover_image = "id_" . $last_book_id. "_" . filenameAppend() .$cover_image;
+
+                $update_cover_image = $conn->query("UPDATE tbl_categories SET cover_img = '$new_cover_image' WHERE id = $last_book_id;");
+
+                if ($update_cover_image) {
+                    echo "<h1>COVER IMAGE UPDATED!</h2><h1>COVER IMAGE UPDATED!</h2><h1>COVER IMAGE UPDATED!</h2><h1>COVER IMAGE UPDATED!</h2><h1>COVER IMAGE UPDATED!</h2>";
+                }
+                move_uploaded_file($formFile_temp, $dir . $newformFile);
+                move_uploaded_file($cover_image_temp, $dir . $new_cover_image);
+              
+                set_alert_success("[".ucwords(strtolower($title)). "]  successfully uploaded!.");
+                
+                //if record has been recently changed prevent recently record to be added when user refreshes the page 1
+                redirect('panel.php?manage_references=true&record_changed=true');
             }
            
         } else {
@@ -354,6 +429,11 @@ function add_book() {
     
     } 
 
+}
+
+//if record has been recently changed prevent recently record to be added when user refreshes the page 2
+if (isset($_GET['manage_reference']) && isset($_GET['record_changed'])) {
+    display_notification();
 }
 
 ?>

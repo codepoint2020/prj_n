@@ -18,6 +18,7 @@
     <!-- Custom CSS -->
     <link href="../dist/css/style.min.css" rel="stylesheet">
     <link href="../dist/css/jm.style.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="../dist/css/tachyons.io.css"/> -->
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>

@@ -55,8 +55,8 @@ function html_ent($string)
 function set_alert_danger($message_alert)
 {
     if (!empty($message_alert)) {
-        $_SESSION['message_alert'] = '<div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show"
-        role="alert"><button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>' .$message_alert. "</div>";
+        $_SESSION['message_alert'] = "<div class='alert alert-danger alert-dismissible fade show'>"."<strong>".$message_alert."</strong>".
+        '<button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>'."</div>";
     } else {
         $message_alert = "";
     }
@@ -65,8 +65,8 @@ function set_alert_danger($message_alert)
 function set_alert_info($message_alert)
 {
     if (!empty($message_alert)) {
-        $_SESSION['message_alert'] = '<div class="alert alert-info alert-dismissible bg-info text-white border-0 fade show"
-        role="alert"><button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>' .$message_alert. "</div>";
+        $_SESSION['message_alert'] = "<div class='alert alert-info alert-dismissible fade show'>"."<strong>".$message_alert."</strong>".
+        '<button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>'."</div>";
     } else {
         $message_alert = "";
     }
@@ -76,8 +76,8 @@ function set_alert_info($message_alert)
 function set_alert_warning($message_alert)
 {
     if (!empty($message_alert)) {
-        $_SESSION['message_alert'] = '<div class="alert alert-warning alert-dismissible bg-warning text-white border-0 fade show"
-        role="alert"><button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>' .$message_alert. "</div>";
+        $_SESSION['message_alert'] = "<div class='alert alert-warning alert-dismissible fade show'>"."<strong>".$message_alert."</strong>".
+        '<button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>'."</div>";
     } else {
         $message_alert = "";
     }
@@ -87,10 +87,18 @@ function set_alert_success($message_alert)
 {
    
     if (!empty($message_alert)) {
-        $_SESSION['message_alert'] = '<div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show"
-        role="alert"><button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>' .$message_alert. "</div>";
+        $_SESSION['message_alert'] = "<div class='alert alert-success alert-dismissible fade show'>"."<strong>".$message_alert."</strong>".
+        '<button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>'."</div>";
     } else {
         $message_alert = "";
+    }
+}
+
+function display_notification_unset()
+{
+    if (isset($_SESSION['message_alert'])) {
+        echo $_SESSION['message_alert'];
+       
     }
 }
 
@@ -104,7 +112,8 @@ function display_notification()
 }
 
 function jm_error($error_description) {
-    return "<div class='alert alert-danger'>".$error_description."</div>";
+    return "<div class='alert alert-info alert-dismissible fade show'>"."<strong>".$error_description."</strong>".
+    '<button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>'."</div>";
 }
 
 ?>

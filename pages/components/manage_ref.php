@@ -91,7 +91,7 @@ unset($_SESSION['error_array']);
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="card">
-                                    <img class="card-img-top img-fluid" src="../assets/images/big/img1.jpg"
+                                    <img class="card-img-top img-fluid" src="../assets/images/default_cover.png"
                                         alt="Cover image" id="coverImage">
                                     <div class="card-body">
                                        

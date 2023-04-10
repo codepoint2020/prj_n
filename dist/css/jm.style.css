@@ -20,3 +20,9 @@
 .card-body {
     padding: 0.5rem !important;
 }
+
+.card-img-top {
+    /* width: 200px !important; */
+    height: 200px !important;
+    object-fit: cover !important;
+  }

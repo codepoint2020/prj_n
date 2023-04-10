@@ -49,13 +49,16 @@
         <!-- ============================================================== -->
         <!-- Start Page Content -->
         <!-- ============================================================== -->
+       
         <!-- basic table -->
         
         <!-- order table -->
+        
         <div class="row">
             <?php if (isset($_GET['home']) && $_SESSION['user_type'] == 'administrator'): ?>
                 <div class="col-12">
-                    <h1>THIS IS THE PANEL</h1>
+                    <h1>Panel Main Page</h1>
+                    <?php include 'components/under_construction.php'; ?>
                 </div>
             <?php endif; ?>
 
@@ -85,7 +88,7 @@
             <!-- ============================================================== -->
             <?php if (isset($_GET['load_users']) && $_SESSION['user_type'] == 'administrator'): ?>
             <div class="col-12">
-                <?php add_user(); delete_user(); display_notification(); ?>
+                <?php  add_user(); delete_user(); delete_user_confirm_box(); display_notification(); ?>
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Users' Table</h4>
@@ -126,11 +129,13 @@
                                         $get_students = $conn->query("SELECT * FROM tbl_users") or 
                                         die(jm_error('Get students query failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
                                         $num = 0;
-                                        
+
                                         while ($student_data = $get_students->fetch_assoc()):
                                         $num++;
+    
                                     ?>
                                     <tr>
+                                   
                                     <td><?php echo $num; ?></td>
                                     <td><?php echo $student_data['user_type']; ?></td>
                                     <td>
@@ -150,7 +155,11 @@
                                     </td>
                                     <td>
                                         <a href="panel.php?edit=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-warning">Edit</a>
-                                        <a href="panel.php?del=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-danger">Del</a>
+
+                                        <a href="panel.php?load_users=true&del=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-danger">Del</a>
+
+                                  
+
                                         <a href="panel.php?view=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-primary">View</a>
                                     </td>
                                     </tr>
@@ -167,9 +176,19 @@
             <!-- USERS' TABLE END -->
             <!-- ============================================================== -->
         </div>
-        <div class="row">
-            <?php include 'components/modal_add_user.php'; ?>
-        </div>
+
+        <!-- ============================================================== -->
+            <!-- IMPORTED COMPONENTS -->
+        <!-- ============================================================== -->
+        
+       
+      
+        <?php 
+        include 'components/modal_add_user.php';
+      
+       
+        ?>
+    
     
         
         

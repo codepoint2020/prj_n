@@ -97,7 +97,7 @@ trigger_submit.addEventListener("click", () => {
 
   // console.log(errorArray.length);
 
-  if (errorArray.length === 0) {
+  if (errorArray.length == 0) {
     btnSubmit.click();
 
   } else {

@@ -28,6 +28,7 @@
                                 </li>
                             </ul>
                         </li>
+
                         <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
                                 aria-expanded="false"><i data-feather="grid" class="feather-icon"></i><span
                                     class="hide-menu">Profile </span></a>
@@ -43,6 +44,7 @@
                              
                             </ul>
                         </li>
+
                         <?php if ($_SESSION['user_type'] == 'administrator'): ?>
                         <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
                                 aria-expanded="false"><i data-feather="bar-chart" class="feather-icon"></i><span
@@ -64,7 +66,8 @@
                             </ul>
                         </li>
                         <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
-                                aria-expanded="false"><i data-feather="bar-chart" class="feather-icon"></i><span
+                                aria-expanded="false"><i data-feather="settings"
+                                        class="svg-icon me-2 ms-1"></i><span
                                     class="hide-menu">e-Library Manager </span></a>
                             <ul aria-expanded="false" class="collapse  first-level base-level-line">
                                 <li class="sidebar-item"><a href="panel.php?load_users=true" class="sidebar-link"><span
@@ -100,12 +103,28 @@
                         </li>
 
                         
-                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="ui-cards.html"
+                        <!-- <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="ui-cards.html"
                                 aria-expanded="false"><i data-feather="sidebar" class="feather-icon"></i><span
                                     class="hide-menu">Request Assistance
                                 </span></a>
+                        </li> -->
+
+                        <!-- <?php //if ($_SESSION['user_type'] == 'administrator'): ?>
+                            <li class="sidebar-item"> <a class="sidebar-link" href="ticket-list.html"
+                                aria-expanded="false"><i data-feather="tag" class="feather-icon"></i><span
+                                    class="hide-menu">Ticket List
+                                </span></a>
                         </li>
-                      
+                        <?php //else: ?>
+
+                            <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="ui-cards.html"
+                                aria-expanded="false"><i data-feather="sidebar" class="feather-icon"></i><span
+                                    class="hide-menu">Request Assistance
+                                </span></a>
+                            </li>
+
+                        <?php //endif; ?> -->
+
                         <li class="nav-small-cap"><span class="hide-menu">STATUS: <?php echo (isset($_SESSION['is_in'])) ? "LOGGED IN" : ""; ?></span></li>
                         
                         <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="authentication-login1.html"
