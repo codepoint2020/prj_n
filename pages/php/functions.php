@@ -315,11 +315,9 @@ function signin_user()
             redirect('panel.php');
         } else {
             $_SESSION['is_in'] = 'false';
-            set_alert_danger('Login failed.');
+            auth_set_alert_danger('Login failed: Invalid username or password');
+            $_SESSION['entered_name'] = $uname;
         }
-        
-        
-
         
     }
 }

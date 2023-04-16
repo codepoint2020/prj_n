@@ -8,6 +8,10 @@
     display: none !important;
 }
 
+#signIn {
+    display: none !important;
+}
+
 .jm-card-body {
     padding-top: 0.1px !important;
     margin-top: 0.1px !important;

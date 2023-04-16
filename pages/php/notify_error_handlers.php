@@ -51,6 +51,20 @@ function html_ent($string)
 // <!-- notify Error Messages -->
 // <!-- ==================================================== -->
 
+function auth_set_alert_danger($message_alert)
+{
+    if (!empty($message_alert)) {
+        $_SESSION['message_alert'] = " <div class='alert alert-danger' role='alert'>
+        <strong>Error - </strong> $message_alert
+    </div>";
+
+       
+    } else {
+        $message_alert = "";
+    }
+}
+
+
 
 function set_alert_danger($message_alert)
 {
