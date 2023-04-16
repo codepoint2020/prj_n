@@ -440,6 +440,8 @@ function add_book() {
                 // $newformFile = "id_" . $last_book_id. "_" . filenameAppend() .$formFile;
                 // $new_cover_image = "id_" . $last_book_id. "_" . filenameAppend() .$cover_image;
 
+                $_SESSION['last_book_added'] = $title;
+
                 move_uploaded_file($formFile_temp, $dir . $formFile);
 
                 if(!empty($cover_image)){
@@ -448,8 +450,9 @@ function add_book() {
                
                 
                 //if record has been recently changed prevent recently record to be added when user refreshes the page 1
-                redirect('panel.php?manage_references=true&record_changed=true');
-                set_alert_success("[".ucwords(strtolower($title)). "]  successfully uploaded!.");
+                redirect('panel.php?manage_references=true&file_added='.$title);
+                // header("Location: panel.php?manage_references=true&file_added=".$_SESSION['last_book_added']);
+               
             }
            
         } else {
@@ -460,10 +463,23 @@ function add_book() {
 
 }
 
-//if record has been recently changed prevent recently record to be added when user refreshes the page 2
-if (isset($_GET['manage_reference']) && isset($_GET['record_changed'])) {
-    display_notification();
+//NOTIFICATION IF A NEW BOOK HAS BEEN ADDED
+
+if (isset($_GET['manage_references']) && isset($_GET['file_added'])) {
+    $added_file = ucwords(html_ent($_GET['file_added']));
+    set_alert_success($added_file . ' ' . 'has been successfully added');
+    // unset($_SESSION['prevent_reload_data']);
 }
+
+
+//NOTIFICATION IF A BOOK HAS BEEN DELETED
+
+// if (isset($_GET['user_deleted']) && isset($_SESSION['prevent_reload_data'])) {
+//     $deleted_user = html_ent($_GET['uname']);
+//     set_alert_warning($deleted_user . ' ' . 'deleted');
+//     unset($_SESSION['prevent_reload_data']);
+    
+// }
 
 function get_num_users() {
     global $conn;

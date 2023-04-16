@@ -1,5 +1,5 @@
 <?php
-add_book();
+
 if(!isset($_SESSION['error_array'])) {
     $_SESSION['array_array'] = "";
 } else {
@@ -85,7 +85,7 @@ unset($_SESSION['error_array']);
 
                         <div class="mb-2">
                             <label class="form-label" for="upload_file">Cover Image</label>
-                            <input class="form-control" type="file" id="upload_file" name="cover_image" onchange="getImagePreview(event)">
+                            <input class="form-control" type="file" id="upload_file" name="cover_image" onchange="getImagePreviewBook(event)">
                         </div>
 
                         <div class="row">
@@ -127,7 +127,7 @@ unset($_SESSION['error_array']);
 
 <script>
 
-    function getImagePreview(event) {
+    function getImagePreviewBook(event) {
         var image = URL.createObjectURL(event.target.files[0]);
         var coverImage = document.getElementById("coverImage");
         coverImage.setAttribute("src",image);

@@ -71,6 +71,7 @@
             <?php endif; ?>
 
             <?php if (isset($_GET['manage_references']) && $_SESSION['user_type'] == 'administrator'): ?>
+                <?php  add_book(); display_notification(); ?>
                 <?php include 'components/manage_ref.php'?>
             <?php endif; ?>
 
