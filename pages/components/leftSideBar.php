@@ -4,7 +4,16 @@
                 <!-- Sidebar navigation-->
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
-                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="panel.php?home=true"
+                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="
+                        <?php 
+                        if ($_SESSION['user_type'] == "administrator") {
+                            echo 'panel.php?adm_home=true';
+                        } else {
+                            echo 'panel.php?home=true';
+                        }
+                        
+                         ?>
+                        "
                                 aria-expanded="false"><i data-feather="home" class="feather-icon"></i><span
                                     class="hide-menu">Home Page</span></a></li>
                         <li class="list-divider"></li>
@@ -14,11 +23,11 @@
                                 aria-expanded="false"><i data-feather="file-text" class="feather-icon"></i><span
                                     class="hide-menu">References </span></a>
                             <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                                <li class="sidebar-item"><a href="form-inputs.html" class="sidebar-link"><span
+                                <!-- <li class="sidebar-item"><a href="form-inputs.html" class="sidebar-link"><span
                                             class="hide-menu"> Recently Uploaded
                                         </span></a>
-                                </li>
-                                <li class="sidebar-item"><a href="form-input-grid.html" class="sidebar-link"><span
+                                </li> -->
+                                <li class="sidebar-item"><a href="panel.php?categories=true" class="sidebar-link"><span
                                             class="hide-menu"> Categories
                                         </span></a>
                                 </li>
@@ -46,7 +55,7 @@
                         </li>
 
                         <?php if ($_SESSION['user_type'] == 'administrator'): ?>
-                        <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
+                        <!-- <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
                                 aria-expanded="false"><i data-feather="bar-chart" class="feather-icon"></i><span
                                     class="hide-menu">System Statistics </span></a>
                             <ul aria-expanded="false" class="collapse  first-level base-level-line">
@@ -64,7 +73,7 @@
                                         </span></a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> -->
                         <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
                                 aria-expanded="false"><i data-feather="settings"
                                         class="svg-icon me-2 ms-1"></i><span
@@ -78,11 +87,11 @@
                                             class="hide-menu"> References
                                         </span></a>
                                 </li>
-                                <li class="sidebar-item"><a href="chart-knob.html" class="sidebar-link"><span
+                                <!-- <li class="sidebar-item"><a href="chart-knob.html" class="sidebar-link"><span
                                             class="hide-menu">
                                             Settings
                                         </span></a>
-                                </li>
+                                </li> -->
                             </ul>
                         </li>
                         <?php endif; ?>
@@ -127,7 +136,7 @@
 
                         <li class="nav-small-cap"><span class="hide-menu">STATUS: <?php echo (isset($_SESSION['is_in'])) ? "LOGGED IN" : ""; ?></span></li>
                         
-                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="authentication-login1.html"
+                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="authentication.php?logout=true"
                                 aria-expanded="false"><i data-feather="log-out" class="feather-icon"></i><span
                                     class="hide-menu">Logout</span></a></li>
                                    

@@ -80,12 +80,15 @@ aria-hidden="true"></button>
             <div class="card">
                 <div class="row">
                     <div class="card-body">
+                    
                         <!-- use JS to preview image here after user select a file -->
-                        <img src="../assets/images/users/user_def_img.png" alt="profile picture" class="col-md-5"></img>
+                        <img src="../assets/images/users/user_def_img.png" alt="profile picture" class="col-md-5" id="cover_profile_pic"></img>
+
+                        <p class="card-text" id="filenamePreview">Cover image preview</p>
                         
                         <h4 class="card-title mt-2">Upload photo</h4>
                         
-                        <input type="file" id="userphoto" name="profile_pic">
+                        <input type="file" id="userphoto" name="profile_pic" onchange="getImagePreview(event)">
                         
                         <label for="contactNo" class="mt-2">Contact No.</label>
                         <input type="text" id="contactNo" class="form-control" name="contact_no" placeholder="Ex. 094112345678">
@@ -139,3 +142,18 @@ aria-hidden="true"></button>
 </div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<script>
+      function getImagePreview(event) {
+        var image = URL.createObjectURL(event.target.files[0]);
+        var cover_profile_pic = document.getElementById("cover_profile_pic");
+        cover_profile_pic.setAttribute("src",image);
+
+
+        var userphoto = document.getElementById("userphoto");
+        var filenamePreview = document.getElementById("filenamePreview");
+        var filename = userphoto.files[0].name
+
+        filenamePreview.textContent = filename;    
+    }
+</script>

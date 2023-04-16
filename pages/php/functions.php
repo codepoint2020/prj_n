@@ -42,8 +42,6 @@ function add_user()
     if (isset($_POST['submit_user'])) {
 
        
-
-     
         $first_name = escape_string_lower($_POST['first_name']);
         $last_name = escape_string_lower($_POST['last_name']);
         $ext = escape_string_lower($_POST['ext']);
@@ -82,6 +80,7 @@ function add_user()
         $country = escape_string_lower($_POST['country']);
 
         $errorArray = [];
+       
 
         if (empty($first_name)) {
             array_push($errorArray, "empty_first_name");
@@ -98,6 +97,8 @@ function add_user()
         if (empty($contact_no)) {
             array_push($errorArray, "empty_contact_no");
         }
+
+   
 
         if (empty($errorArray)) {
 
@@ -136,7 +137,8 @@ function add_user()
                 // echo "New record created successfully. Last inserted ID is: " . $last_id;
                 $profile_pic_tmp = $_FILES['profile_pic']['tmp_name'];
     
-                $profile_pic_dir = "uploads/";
+                $profile_pic_dir = "../assets/images/users/";
+             
     
                 $insert_user_data = $conn->query("INSERT INTO tbl_users (
             
@@ -185,18 +187,20 @@ function add_user()
                     $last_user_id = $conn->insert_id;
                     $_SESSION['last_user_added'] = $first_name . " " .$last_name;
                     $_SESSION['prevent_reload_data'] = 'set';
-                    $profile_pic_new = "id_" . $last_user_id. "_" . filenameAppend() .$profile_pic;
-    
-                    $conn->query("UPDATE tbl_users SET profile_pic = '$profile_pic_new' WHERE user_id = $last_user_id;"); 
                     
-                    move_uploaded_file($profile_pic_tmp, $profile_pic_dir . $profile_pic_new);
+                    
+                    if (!empty($profile_pic)) {
+                        $profile_pic_new = "id_" . $last_user_id. "_" . filenameAppend() .$profile_pic;
+                        $conn->query("UPDATE tbl_users SET profile_pic = '$profile_pic_new' WHERE user_id = $last_user_id;"); 
+                        move_uploaded_file($profile_pic_tmp, $profile_pic_dir . $profile_pic_new);
+                    } 
+                    
                     
                 } else {
                     echo jm_error('Something went wrong while inserting last id for $insert_address query').$conn->error."<h2>At line: ".__LINE__."</h2>";
                 }
 
                 header("Location: panel.php?load_users=true&added_user=".$_SESSION['last_user_added']);
-
 
             }
         }
@@ -303,16 +307,19 @@ function signin_user()
             $auth_user = ucwords($auth_user);
             $_SESSION['is_in'] = 'true';
             $_SESSION['system_user'] = $auth_user;
+            $_SESSION['system_user_fname'] = strtolower($row['first_name']);
 
             $_SESSION['user_type'] = strtolower($_SESSION['user_type']);
 
             if ($_SESSION['user_type'] == "administrator") {
                 $_SESSION['is_admin'] = "yes";
+                redirect('panel.php?adm_home=true');
             } else {
                 $_SESSION['is_admin'] = "no";
+                redirect('panel.php?home=true');
             }
             
-            redirect('panel.php');
+            
         } else {
             $_SESSION['is_in'] = 'false';
             auth_set_alert_danger('Login failed: Invalid username or password');
@@ -432,6 +439,22 @@ function add_book() {
 //if record has been recently changed prevent recently record to be added when user refreshes the page 2
 if (isset($_GET['manage_reference']) && isset($_GET['record_changed'])) {
     display_notification();
+}
+
+function get_num_users() {
+    global $conn;
+
+    $get_users = $conn->query("SELECT * FROM tbl_users") or die(jm_error('Get users query failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+    $num_of_users = $get_users->num_rows;
+    return $num_of_users;
+}
+
+function get_num_books() {
+    global $conn;
+
+    $get_books = $conn->query("SELECT * FROM tbl_books") or die(jm_error('Get books Failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+    $num_of_books = $get_books->num_rows;
+    return $num_of_books;
 }
 
 ?>

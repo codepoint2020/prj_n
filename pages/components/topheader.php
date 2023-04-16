@@ -10,7 +10,7 @@
                     <div class="navbar-brand">
                         <!-- Logo icon -->
                         <a href="index.html">
-                            <img src="../assets/images/lib_logo.png" alt="" class="img-fluid">
+                            <img src="../assets/images/lib_logo.png" alt="" class="img-fluid" id="lib_logo">
                         </a>
                     </div>
                     <!-- ============================================================== -->
@@ -34,12 +34,12 @@
                     <ul class="navbar-nav float-left me-auto ms-3 ps-1">
                         <!-- Notification -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle pl-md-3 position-relative" href="javascript:void(0)"
+                            <!-- <a class="nav-link dropdown-toggle pl-md-3 position-relative" href="javascript:void(0)"
                                 id="bell" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">
                                 <span><i data-feather="bell" class="svg-icon"></i></span>
                                 <span class="badge text-bg-primary notify-no rounded-circle">5</span>
-                            </a>
+                            </a> -->
                             <div class="dropdown-menu dropdown-menu-left mailbox animated bounceInDown">
                                 <ul class="list-style-none">
                                     <li>
@@ -149,8 +149,9 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-bs-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                <img src="../assets/images/users/profile-pic.jpg" alt="user" class="rounded-circle"
-                                    width="40">
+                                <img src="../assets/images/users/<?php echo isset($_SESSION['profile_pic']) ? $_SESSION['profile_pic'] : "user_def_img.png"; ?>" alt="user" class="rounded-circle" width="40" />
+
+                                    
                                 <span class="ms-2 d-none d-lg-inline-block"><span>Hello,</span> <span
                                         class="text-dark"><?php echo (isset($_SESSION['system_user'])) ? $_SESSION['system_user'] : ""; ?>
                                        </span> <i data-feather="chevron-down"
@@ -184,3 +185,10 @@
                 </div>
             </nav>
         </header>
+
+
+        <style>
+            #lib_logo {
+                max-height: 60px !important;
+            }
+        </style>
