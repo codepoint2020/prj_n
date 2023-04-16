@@ -44,21 +44,23 @@
     ?>    
 
      <div class="col-lg-2 col-md-4 col-sm-6 card-handle align-content-stretch">
-        <div class="card grow shadow-2">
-            <?php if (empty($row['cover_img'])): ?>
-            <img class="card-img-top img-fluid" src="../assets/images/default_cover.png"
-                alt="Card image cap">
-            <?php else: ?>
-                <img class="card-img-top img-fluid" src="../assets/references/pdf/<?php echo $row['cover_img'];?>"
-                alt="Card image cap">
-                <?php endif; ?>
-            <div class="card-body">
-                <h4 class="card-title"><?php echo ucwords(strtolower($row['title'])); ?></h4>
-                <small class="card-category">Category: <a href="#"><?php echo $row['category']; ?></a></small>
-                <p class="card-text"><?php echo short_desc($row['details']); ?></p>
-                <a href="javascript:void(0)">Read more</a>
+        <a target = "_blank" href="read.php?id=<?php echo $row['book_id']?>&file=<?php echo $row['file_name']; ?>">
+            <div class="card grow shadow-2">
+                <?php if (empty($row['cover_img'])): ?>
+                <img class="card-img-top img-fluid" src="../assets/images/default_cover.png"
+                    alt="Card image cap">
+                <?php else: ?>
+                    <img class="card-img-top img-fluid" src="../assets/references/pdf/<?php echo $row['cover_img'];?>"
+                    alt="Card image cap">
+                    <?php endif; ?>
+                <div class="card-body">
+                    <h4 class="card-title"><?php echo ucwords(strtolower($row['title'])); ?></h4>
+                    <small class="card-category">Category: <a href="#"><?php echo $row['category']; ?></a></small>
+                    <p class="card-text"><?php echo short_desc($row['details']); ?></p>
+                    <a target = "_blank" href="read.php?id=<?php echo $row['book_id']?>&file=<?php echo $row['file_name']; ?>">Read more</a>
+                </div>
             </div>
-        </div>
+        </a>
     </div>
     <?php endwhile ?>
     <!-- column -->

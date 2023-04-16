@@ -1,5 +1,5 @@
 <?php
-add_book(); display_notification();
+add_book();
 if(!isset($_SESSION['error_array'])) {
     $_SESSION['array_array'] = "";
 } else {

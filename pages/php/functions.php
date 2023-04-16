@@ -361,6 +361,30 @@ function add_book() {
     
         $dir = "../assets/references/pdf/";
 
+        $get_max_book_id = $conn->query("SELECT MAX(book_id) AS max_id FROM tbl_books");
+        $row = $get_max_book_id->fetch_assoc();
+        $max_id = intval($row['max_id']);
+        $next_id = $max_id + 1;
+
+        if (!empty($formFile)) {
+            $formFile = "id_" . $next_id. "_" . filenameAppend() .$formFile;
+            
+        } else {
+            $formFile = "";
+            $cover_image = "";    }
+
+        if (!empty($formFile)) {
+            $cover_image = "id_" . $next_id. "_" . filenameAppend() .$cover_image;
+            
+        } else {
+     
+            $cover_image = "";
+        }
+
+
+     
+        
+
     
         
         $errorArray = [];
@@ -394,6 +418,7 @@ function add_book() {
                 details, 
                 category,
                 author,
+                cover_img,
                 register_date
 
                 ) VALUES (
@@ -403,29 +428,28 @@ function add_book() {
                     '$details',
                     '$category',
                     '$author',
+                    '$cover_image',
                     '$register_date'
 
                     ); ");
         
             if ($add_book_query) {
 
-                $last_book_id = $conn->insert_id;
+                // $last_book_id = $conn->insert_id;
                
-                $newformFile = "id_" . $last_book_id. "_" . filenameAppend() .$formFile;
-                $new_cover_image = "id_" . $last_book_id. "_" . filenameAppend() .$cover_image;
+                // $newformFile = "id_" . $last_book_id. "_" . filenameAppend() .$formFile;
+                // $new_cover_image = "id_" . $last_book_id. "_" . filenameAppend() .$cover_image;
 
-                $update_cover_image = $conn->query("UPDATE tbl_categories SET cover_img = '$new_cover_image' WHERE id = $last_book_id;");
+                move_uploaded_file($formFile_temp, $dir . $formFile);
 
-                if ($update_cover_image) {
-                    echo "<h1>COVER IMAGE UPDATED!</h2><h1>COVER IMAGE UPDATED!</h2><h1>COVER IMAGE UPDATED!</h2><h1>COVER IMAGE UPDATED!</h2><h1>COVER IMAGE UPDATED!</h2>";
+                if(!empty($cover_image)){
+                    move_uploaded_file($cover_image_temp, $dir . $cover_image);
                 }
-                move_uploaded_file($formFile_temp, $dir . $newformFile);
-                move_uploaded_file($cover_image_temp, $dir . $new_cover_image);
-              
-                set_alert_success("[".ucwords(strtolower($title)). "]  successfully uploaded!.");
+               
                 
                 //if record has been recently changed prevent recently record to be added when user refreshes the page 1
                 redirect('panel.php?manage_references=true&record_changed=true');
+                set_alert_success("[".ucwords(strtolower($title)). "]  successfully uploaded!.");
             }
            
         } else {
