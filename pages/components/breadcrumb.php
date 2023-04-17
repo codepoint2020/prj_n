@@ -36,6 +36,10 @@
                 if (isset($_GET['adm_home']) && $_GET['adm_home'] =='true') {
                     echo  $panel_title = "Admin Panel";
                 }
+
+                if (isset($_GET['manage_all_ref']) && $_GET['manage_all_ref'] =='true') {
+                    echo  $panel_title = "References Table";
+                }
                     
           
                 ?>

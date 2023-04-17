@@ -435,11 +435,6 @@ function add_book() {
         
             if ($add_book_query) {
 
-                // $last_book_id = $conn->insert_id;
-               
-                // $newformFile = "id_" . $last_book_id. "_" . filenameAppend() .$formFile;
-                // $new_cover_image = "id_" . $last_book_id. "_" . filenameAppend() .$cover_image;
-
                 $_SESSION['last_book_added'] = $title;
 
                 move_uploaded_file($formFile_temp, $dir . $formFile);
@@ -447,11 +442,10 @@ function add_book() {
                 if(!empty($cover_image)){
                     move_uploaded_file($cover_image_temp, $dir . $cover_image);
                 }
-               
-                
+        
                 //if record has been recently changed prevent recently record to be added when user refreshes the page 1
                 redirect('panel.php?manage_references=true&file_added='.$title);
-                // header("Location: panel.php?manage_references=true&file_added=".$_SESSION['last_book_added']);
+              
                
             }
            
@@ -468,18 +462,77 @@ function add_book() {
 if (isset($_GET['manage_references']) && isset($_GET['file_added'])) {
     $added_file = ucwords(html_ent($_GET['file_added']));
     set_alert_success($added_file . ' ' . 'has been successfully added');
-    // unset($_SESSION['prevent_reload_data']);
+    
+}
+
+//DELETE REFERENCE WITH CONFIRMATION
+function delete_book_confirm_box()
+{
+
+    global $conn;
+
+    if (isset($_GET['delete_ref'])) {
+        $book_id = html_ent($_GET['id']);
+
+        $query_book = $conn->query("SELECT * FROM tbl_books WHERE book_id = $book_id; ") or die("FAILED TO QUERY BOOK" . $conn->error . __LINE__);
+        $row = $query_book->fetch_assoc();
+        $book = ucwords($row['title']);
+        $confirm_box = <<<DELIMETER
+        <div class="alert alert-warning" role="alert">
+    <h4 class="alert-heading">Warning: </h4>
+    <h4>You are about to PERMANENTLY delete this REFERENCE:</h4>
+    <h3>{$book}</h3>
+    <hr>
+   
+    <a href="panel.php?manage_all_ref=true" class="btn btn-sm btn-secondary">Cancel</a>
+    <a href="panel.php?manage_all_ref=true&confirm_delete_ref={$row['book_id']}" class="btn btn-sm btn-danger">Proceed</a>
+</div>
+DELIMETER;
+        echo $confirm_box;
+    }
 }
 
 
-//NOTIFICATION IF A BOOK HAS BEEN DELETED
+//CONFIRM DELETE REFERENCE/BOOK
 
-// if (isset($_GET['user_deleted']) && isset($_SESSION['prevent_reload_data'])) {
-//     $deleted_user = html_ent($_GET['uname']);
-//     set_alert_warning($deleted_user . ' ' . 'deleted');
-//     unset($_SESSION['prevent_reload_data']);
+function delete_book() {
+    global $conn;
+    if (isset($_GET['confirm_delete_ref'])) {
+        $book_id = html_ent($_GET['confirm_delete_ref']);
+
+        //set_alert_danger notification keeps showing up if the URL contains a var del and a number even if it doesn't exist
+        //This is the fix
+        $query_book = $conn->query("SELECT * FROM tbl_books WHERE book_id = $book_id") or 
+                    die(jm_error('Query book id failed').$conn->error."<h2>At line: ".__LINE__."</h2>");
+
+        if ($query_book->num_rows > 0) {
+            $row = $query_book->fetch_assoc();
+            $target_book = ucwords("Reference Title: ".$row['title']);
+            $target_file = $row["file_name"];
+            $_SESSION['prevent_reload_data'] = "set";
+
+            $file_dir = "../assets/references/pdf/";
+
+            $delete_book_query = $conn->query("DELETE FROM tbl_books WHERE book_id = $book_id; ") or 
+            die(jm_error('Delete reference Query Failed').$conn->error."<h2>At line: ".__LINE__."</h2>");
+
+            if ($delete_book_query) {
+                unlink($file_dir . $target_file);
+                redirect("panel.php?manage_all_ref=true&reference_deleted=true&book_title=".$target_book);
+            }
+        } 
     
-// }
+    }
+}
+
+// NOTIFICATION IF A BOOK HAS BEEN DELETED
+
+if (isset($_GET['reference_deleted']) && isset($_SESSION['prevent_reload_data'])) {
+    $deleted_book = html_ent($_GET['book_title']);
+    set_alert_info($deleted_book . ' ' . 'has been deleted');
+    unset($_SESSION['prevent_reload_data']);
+    
+}
 
 function get_num_users() {
     global $conn;

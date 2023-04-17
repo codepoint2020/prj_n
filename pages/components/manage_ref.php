@@ -12,7 +12,7 @@ unset($_SESSION['error_array']);
 <div class="row">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Manage References</h4>
+            <h4 class="card-title">Add New Reference</h4>
             <form action="panel.php?manage_references=true" method="POST" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-6">

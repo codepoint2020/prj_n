@@ -71,8 +71,13 @@
             <?php endif; ?>
 
             <?php if (isset($_GET['manage_references']) && $_SESSION['user_type'] == 'administrator'): ?>
-                <?php  add_book(); display_notification(); ?>
+                <?php  add_book(); display_notification();  ?>
                 <?php include 'components/manage_ref.php'?>
+            <?php endif; ?>
+
+            <?php if (isset($_GET['manage_all_ref']) && $_SESSION['user_type'] == 'administrator'): ?>
+                <?php  add_book(); display_notification(); delete_book_confirm_box(); delete_book()?>
+                <?php include 'components/manage_all_ref.php'?>
             <?php endif; ?>
 
 

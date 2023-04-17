@@ -84,7 +84,11 @@
                                         </span></a>
                                 </li>
                                 <li class="sidebar-item"><a href="panel.php?manage_references=true" class="sidebar-link"><span
-                                            class="hide-menu"> References
+                                            class="hide-menu"> Add New Reference
+                                        </span></a>
+                                </li>
+                                <li class="sidebar-item"><a href="panel.php?manage_all_ref=true" class="sidebar-link"><span
+                                            class="hide-menu"> Manage References
                                         </span></a>
                                 </li>
                                 <!-- <li class="sidebar-item"><a href="chart-knob.html" class="sidebar-link"><span
