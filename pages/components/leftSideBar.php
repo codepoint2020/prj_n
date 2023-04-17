@@ -27,7 +27,7 @@
                                             class="hide-menu"> Recently Uploaded
                                         </span></a>
                                 </li> -->
-                                <li class="sidebar-item"><a href="panel.php?categories=true" class="sidebar-link"><span
+                                <li class="sidebar-item"><a href="#" class="sidebar-link"><span
                                             class="hide-menu"> Categories
                                         </span></a>
                                 </li>
@@ -89,6 +89,10 @@
                                 </li>
                                 <li class="sidebar-item"><a href="panel.php?manage_all_ref=true" class="sidebar-link"><span
                                             class="hide-menu"> Manage References
+                                        </span></a>
+                                </li>
+                                <li class="sidebar-item"><a href="panel.php?categories=true" class="sidebar-link"><span
+                                            class="hide-menu"> Categories
                                         </span></a>
                                 </li>
                                 <!-- <li class="sidebar-item"><a href="chart-knob.html" class="sidebar-link"><span

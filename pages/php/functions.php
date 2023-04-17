@@ -534,6 +534,96 @@ if (isset($_GET['reference_deleted']) && isset($_SESSION['prevent_reload_data'])
     
 }
 
+//ADD A CATEGORY
+function add_category() {
+
+    global $conn;
+    if (isset($_POST['btn_add_category'])) {
+        $cat_title = escape_string($_POST['cat_title']);
+
+        if (!empty($cat_title)) {
+            $insert_new_category = $conn->query("INSERT INTO tbl_categories (name) VALUES ('$cat_title')");
+            if ($insert_new_category) {
+                $_SESSION['prevent_reload_data'] = 'set';
+                redirect('panel.php?categories=true&category_added='.$cat_title);
+            }
+        }
+    }
+}
+
+function delete_category_confirm_box()
+{
+
+    global $conn;
+
+    if (isset($_GET['category_delete'])) {
+        $category_id = html_ent($_GET['category_delete']);
+
+        $query_category = $conn->query("SELECT * FROM tbl_categories WHERE category_id = $category_id; ") or die("FAILED TO QUERY CATEGORY" . $conn->error . __LINE__);
+        $row = $query_category->fetch_assoc();
+        $category = ucwords($row['name']);
+        $confirm_box = <<<DELIMETER
+        <div class="alert alert-warning" role="alert">
+    <h4 class="alert-heading">Warning: </h4>
+    <h4>You are about to PERMANENTLY delete this REFERENCE:</h4>
+    <h3>{$category}</h3>
+    <hr>
+   
+    <a href="panel.php?categories=true" class="btn btn-sm btn-secondary">Cancel</a>
+    <a href="panel.php?categories=true&confirm_category_delete={$row['category_id']}" class="btn btn-sm btn-danger">Proceed</a>
+</div>
+DELIMETER;
+        echo $confirm_box;
+    }
+}
+
+function delete_category() {
+    global $conn;
+    if (isset($_GET['confirm_category_delete'])) {
+        $category_id = html_ent($_GET['confirm_category_delete']);
+
+
+        $query_category = $conn->query("SELECT * FROM tbl_categories WHERE category_id = $category_id") or 
+                    die(jm_error('Query category id failed').$conn->error."<h2>At line: ".__LINE__."</h2>");
+
+        if ($query_category->num_rows > 0) {
+            $row = $query_category->fetch_assoc();
+            $target_category = ucwords("Reference Title: ".$row['name']);
+         
+            $_SESSION['prevent_reload_data'] = "set";
+
+
+            $delete_category_query = $conn->query("DELETE FROM tbl_categories WHERE category_id = $category_id; ") or 
+            die(jm_error('Delete category Query Failed').$conn->error."<h2>At line: ".__LINE__."</h2>");
+
+            if ($delete_category_query) {
+              
+                redirect("panel.php?categories=true&category_deleted=".$target_category);
+            }
+        } 
+    
+    }
+}
+
+//NOTIFICATION: If a new category has been added
+if (isset($_GET['category_added']) && isset($_SESSION['prevent_reload_data'])) {
+    $added_category = ucwords(html_ent($_GET['category_added']));
+    set_alert_success($added_category . ' ' . 'has been successfully added');
+    unset($_SESSION['prevent_reload_data']);
+}
+
+
+//NOTIFICATION IF A category HAS BEEN DELETED
+
+if (isset($_GET['category_deleted']) && isset($_SESSION['prevent_reload_data'])) {
+    $deleted_category = html_ent($_GET['category_deleted']);
+    set_alert_warning($deleted_category . ' ' . 'deleted');
+    unset($_SESSION['prevent_reload_data']);
+    
+}
+
+
+
 function get_num_users() {
     global $conn;
 

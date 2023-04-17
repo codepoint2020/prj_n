@@ -92,6 +92,7 @@
 
 
             <?php if (isset($_GET['categories']) && $_SESSION['user_type'] == 'administrator'): ?>
+                <?php add_category(); display_notification(); delete_category_confirm_box(); delete_category(); ?>
                 <?php include 'components/categories.php'?>
             <?php endif; ?>
 
