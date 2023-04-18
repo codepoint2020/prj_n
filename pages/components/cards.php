@@ -1,4 +1,6 @@
 <!-- Row MARKED-->
+
+
 <div class="row mb-4">
  
     <div class="col-md-3">
@@ -15,32 +17,104 @@
         </li>
     </div>
     <div class="col-md-3">
-        <select class="form-select mr-sm-2 mb-2" id="categories" name="expiration_date">
-            <option selected value="">Choose category...</option>
-            <option value="6">6 months</option>
-            <option value="9">9 months</option>
-            <option value="12">12 months</option>
+        <form action="panel.php?all_references=true" method="POST">
+        <select class="form-select mr-sm-2 mb-2" id="cat_filter" name="cat_filter">
+            <option  value="">Choose category...</option>
+            <?php
+                $get_categories = $conn->query("SELECT name FROM tbl_categories ORDER BY name ASC");
+                while ($cat_name = $get_categories->fetch_assoc()):
+            ?>
+            <option value="<?php echo $cat_name["name"]; ?>"><?php echo ucwords($cat_name["name"]); ?></option>
+            <?php endwhile; ?>
+          
+            
         </select>
+            <button style="display: none" class="btn btn-sm btn-primary" name="btn_cat_filter" id="btn_cat_filter">btn_cat_filter</button>
+        </form>
     </div>
-    <div class="col-md-3">
-        <div class="btn-group me-2" role="group" aria-label="First group">
-            <button type="button" class="btn btn-secondary disabled"><<</button>
-            <button type="button" class="btn btn-secondary">1</button>
-            <button type="button" class="btn btn-info">2</button>
-            <button type="button" class="btn btn-secondary">3</button>
-            <button type="button" class="btn btn-secondary">4</button>
-            <button type="button" class="btn btn-secondary disabled">>></button>
-        </div>
+    <div class="col-md-3 alert_parent">
+ 
     </div>
-     
+    
 </div>
  <!-- card parent -->
 
 <div class="row card-parent">
 
     <?php 
-        $get_books = $conn->query("SELECT * FROM tbl_books; ");
-        while ($row = $get_books->fetch_assoc()):
+
+    //items per page
+    // $_SESSION['items_per_page'] =
+    $items_per_page = 10;
+
+
+    if (isset($_POST['btn_cat_filter'])) {
+
+        $selected_category = $_POST['cat_filter'];
+
+        set_alert_success($selected_category);
+
+        if (empty($selected_category)) {
+            //total books in tbl_books
+            $get_total_books = $conn->query("SELECT * FROM tbl_books") or die("Failed to get total books query" . $conn->error . __LINE__);
+            $total_books = $get_total_books->num_rows;
+          
+        }
+    
+        //total books in tbl_books
+        $get_total_books = $conn->query("SELECT * FROM tbl_books WHERE category = '$selected_category' ") or die("Failed to get total books query" . $conn->error . __LINE__);
+        $total_books = $get_total_books->num_rows;
+      
+
+    } else {
+
+        //total books in tbl_books
+        $get_total_books = $conn->query("SELECT * FROM tbl_books") or die("Failed to get total books query" . $conn->error . __LINE__);
+        $total_books = $get_total_books->num_rows;
+      
+
+    }
+    
+
+     //set page if user do not or if user starts clicking the pagination buttons
+
+     if (!isset($_GET['post_page'])) {
+        $page1 = 0;
+        $page = 1;
+      } else {
+        $page = html_ent($_GET['post_page']);
+
+        if ($page == "" || $page == "0" || $page == 1) {
+          $page1 = 0;
+        } else {
+          $page1 = ($page * $items_per_page) - $items_per_page;
+        }
+      }
+
+      //total pages
+      $total_pages = ceil($total_books / $items_per_page);
+
+
+    if (isset($_POST['btn_cat_filter'])) {
+
+        $selected_category = $_POST['cat_filter'];
+
+        if (empty($selected_category)) {
+              //set limit per page
+                $get_all_books = $conn->query("SELECT * FROM tbl_books ORDER BY book_id DESC LIMIT $page1, $items_per_page") or die("Failed to get all books" . $conn->error . __LINE__);
+        }
+    
+        $get_all_books = $conn->query("SELECT * FROM tbl_books WHERE category = '$selected_category' ORDER BY book_id DESC LIMIT $page1, $items_per_page") or die("Failed to get all books" . $conn->error . __LINE__);
+
+    } else {
+
+    //set limit per page
+      $get_all_books = $conn->query("SELECT * FROM tbl_books ORDER BY book_id DESC LIMIT $page1, $items_per_page") or die("Failed to get all books" . $conn->error . __LINE__);
+
+    }
+    
+      while ($row = $get_all_books->fetch_assoc()):
+
     ?>    
 
      <div class="col-lg-2 col-md-4 col-sm-6 card-handle align-content-stretch">
@@ -64,16 +138,69 @@
     </div>
     <?php endwhile ?>
     <!-- column -->
+    
 
    
 
 </div>
 <!-- Row -->
 
+<div class="row">
+<div class="col-12">
+    <nav aria-label="...">
+          <ul class="pagination">
+            <?php if ($page > 1) : ?>
+              <!-- <li class="page-item">    
+                <a class="page-link  news-cta" href="panel.php?all_references=true&post_page=<?php //echo $page - 1; ?>">Prev</a>
+              </li> -->
+              <a style="padding-left: 30px; padding-right: 30px" href="panel.php?all_references=true&post_page=<?php echo $page - 1; ?>" class="btn btn-secondary mx-2"><i class="fas fa-angle-left"></i> Prev</a>
+            <?php else : ?>
+              <li class="page-item disabled">
+                <a style="padding-left: 30px; padding-right: 30px;" class="page-link  news-cta " href="">Prev</a>
+              </li>
+            <?php endif; ?>
+
+
+
+            <?php if ($page < $total_pages) : ?>
+              <li class="page-item">
+
+                <!-- <a class="page-link news-cta" href="panel.php?all_references=true&post_page=<?php //echo $page + 1; ?>">Next</a>
+              </li> -->
+              <a style="padding-left: 30px; padding-right: 30px;" href="panel.php?all_references=true&post_page=<?php echo $page + 1; ?>" class="btn btn-secondary">Next <i class="fas fa-angle-right"></i></a>
+            <?php else : ?>
+              <li class="page-item disabled">
+                <a style="padding-left: 30px; padding-right: 30px;" class="page-link news-cta " href="">   Next</a>
+              </li>
+            <?php endif; ?>
+
+
+            <li class="page-item">
+              <a style="padding-left: 30px; padding-right: 30px;" class="btn btn-info mx-2" href="panel.php?all_references=true">All</a>
+            </li>
+
+          </ul>
+        </nav>
+    </div>
+</div>
 
 <script>
 
+//=====================FILTER BY CATEGORY with associated PHP Script under PHP Dir=====================//
+const btn_cat_filter = document.getElementById("btn_cat_filter");
 
+
+
+const cat_filter = document.getElementById("cat_filter");
+
+cat_filter.addEventListener("change", function() {
+    btn_cat_filter.click();
+});
+//=====================FILTER BY CATEGORY=====================//
+
+
+
+//=====================QUICK SEARCH FUNCTIONALITY=====================//
 // Get the search input and card parent elements
 const searchInput = document.querySelector('.search-input');
 const cardParent = document.querySelector('.card-parent');
@@ -103,12 +230,5 @@ searchInput.addEventListener('input', function() {
     }
   });
 });
-
-
-
-    
-    
-
-    
 
 </script>
