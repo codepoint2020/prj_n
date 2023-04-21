@@ -2,6 +2,9 @@
 users can just choose drop down button if each address line is already available in the database if not have them manually type, this also means
 that i need to create a code to enable the system to identify if what they are typing is in the database.
 
+
+if is_disabled prevent the user to login and display the account status to the administrator
+
 test accounts
 
 Administrator
@@ -54,6 +57,10 @@ KA#1o*06#
 
 gaort_236894
 Lz83!_9!
+
+
+jagon_231191
+8UE3!2j#!
 
 
 

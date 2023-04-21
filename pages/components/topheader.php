@@ -1,5 +1,7 @@
 <header class="topbar" data-navbarbg="skin6">
+
             <nav class="navbar top-navbar navbar-expand-lg">
+          
                 <div class="navbar-header" data-logobg="skin6">
                     <!-- This is for the sidebar toggle which is visible on mobile only -->
                     <a class="nav-toggler waves-effect waves-light d-block d-lg-none" href="javascript:void(0)"><i
@@ -10,7 +12,7 @@
                     <div class="navbar-brand">
                         <!-- Logo icon -->
                         <a href="index.html">
-                            <img src="../assets/images/lib_logo.png" alt="" class="img-fluid" id="lib_logo">
+                            <img src="../assets/images/elib_logo.png" alt="" class="img-fluid mt-2" id="lib_logo">
                         </a>
                     </div>
                     <!-- ============================================================== -->
@@ -40,6 +42,7 @@
                                 <span><i data-feather="bell" class="svg-icon"></i></span>
                                 <span class="badge text-bg-primary notify-no rounded-circle">5</span>
                             </a> -->
+                            <h3 class="text-center main-title">Welcome to NSSTC e-Library!</h3>
                             <div class="dropdown-menu dropdown-menu-left mailbox animated bounceInDown">
                                 <ul class="list-style-none">
                                     <li>
@@ -128,20 +131,24 @@
                     <!-- ============================================================== -->
                     <!-- Right side toggle and nav items -->
                     <!-- ============================================================== -->
+                    
                     <ul class="navbar-nav float-end">
+                    
                         <!-- ============================================================== -->
                         <!-- Search -->
                         <!-- ============================================================== -->
                         <li class="nav-item d-none d-md-block">
-                            <a class="nav-link" href="javascript:void(0)">
+                        
+                            <!-- <a class="nav-link" href="javascript:void(0)">
                                 <form>
                                     <div class="customize-input">
+                                        <h2>Welcome to NSSTC e-Library!</h2>
                                         <input class="form-control custom-shadow custom-radius border-0 bg-white"
                                             type="search" placeholder="Search" aria-label="Search">
                                         <i class="form-control-icon" data-feather="search"></i>
                                     </div>
                                 </form>
-                            </a>
+                            </a> -->
                         </li>
                         <!-- ============================================================== -->
                         <!-- User profile and search -->
@@ -158,24 +165,24 @@
                                         class="svg-icon"></i></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end dropdown-menu-right user-dd animated flipInY">
-                                <a class="dropdown-item" href="javascript:void(0)"><i data-feather="user"
+                                <!-- <a class="dropdown-item" href="javascript:void(0)"><i data-feather="user"
                                         class="svg-icon me-2 ms-1"></i>
-                                    My Profile</a>
+                                    My Profile</a> -->
                                
                                 <!-- <a class="dropdown-item" href="javascript:void(0)"><i data-feather="mail"
                                         class="svg-icon me-2 ms-1"></i>
                                     Inbox</a> -->
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="javascript:void(0)"><i data-feather="settings"
+                                <!-- <div class="dropdown-divider"></div> -->
+                                <a class="dropdown-item" href="panel.php?underconstruction=true"><i data-feather="settings"
                                         class="svg-icon me-2 ms-1"></i>
                                     Account Setting</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="authentication.php?logout=true"><i data-feather="power"
                                         class="svg-icon me-2 ms-1"></i> Logout
                                 </a>
-                                <div class="dropdown-divider"></div>
+                                <!-- <div class="dropdown-divider"></div>
                                 <div class="pl-4 p-3"><a href="javascript:void(0)" class="btn btn-sm btn-info">View
-                                        Profile</a></div>
+                                        Profile</a></div> -->
                             </div>
                         </li>
                         <!-- ============================================================== -->
@@ -189,6 +196,6 @@
 
         <style>
             #lib_logo {
-                max-height: 60px !important;
+                max-height: 80px !important;
             }
         </style>

@@ -147,7 +147,7 @@
             
             <div class="mt-4 activity">
                 <?php for ($i = 0; $i < 3; $i++): ?>
-                <div class="d-flex align-items-start border-left-line pb-3">
+                <!-- <div class="d-flex align-items-start border-left-line pb-3">
                     <div>
                         <a>
                             <img class="rounded-circle" width="40" src="../assets/images/users/user_def_img.png" alt="user photo"></img>
@@ -159,8 +159,17 @@
                         </p>
                         <span class="font-weight-light font-14 text-muted">10 Minutes Ago</span>
                     </div>
-                </div>
+                </div> -->
                 <?php endfor; ?>
+                <div class="card">
+                    <img class="card-img-top img-fluid" src="../assets/images/under_construction.png"
+                        alt="Card image cap">
+                    <div class="card-body">
+                        <h4 class="card-title">Work is underway</h4>
+                        <p class="card-text">The development of this page is still in progress, try again later.</p>
+                        <p class="card-text"><small class="text-muted">Maintainance, development</small></p>
+                    </div>
+                </div>
 
                 <div class="ms-3 mt-2">             
                     <a href="#"
@@ -172,7 +181,7 @@
     </div>
 </div>
 
-<div class="col-sm-6 col-lg-3">
+<!-- <div class="col-sm-6 col-lg-3">
     <div class="card">
         <div class="card-body">
             
@@ -204,7 +213,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 
 

@@ -96,6 +96,30 @@
                 <?php include 'components/categories.php'?>
             <?php endif; ?>
 
+
+            <!-- ============================================================== -->
+            <!-- UNDER CONSTRUCTION START -->
+            <!-- ============================================================== -->
+
+            <?php 
+
+                if (isset($_GET['underconstruction'])) {
+                    include 'components/under_construction.php';
+                }
+            ?>
+
+            <?php 
+
+            if (isset($_GET['underconstruction'])) {
+                include 'components/under_construction.php';
+            }
+            ?>
+             <!-- ============================================================== -->
+            <!-- UNDER CONSTRUCTION END -->
+            <!-- ============================================================== -->
+
+
+
           
             
             
@@ -121,7 +145,11 @@
             <!-- ============================================================== -->
             <?php if (isset($_GET['load_users']) && $_SESSION['user_type'] == 'administrator'): ?>
             <div class="col-12">
-                <?php  add_user(); delete_user(); delete_user_confirm_box(); display_notification(); ?>
+                <?php  
+                add_user(); delete_user(); delete_user_confirm_box(); display_notification(); 
+                deactivate_user_confirm_box(); deactivate_user();
+                activate_user_confirm_box(); activate_user();
+                ?>
                 <?php include 'components/tbl_users.php'; ?>
                 
             </div>

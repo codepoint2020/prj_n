@@ -1,4 +1,4 @@
-<aside class="left-sidebar" data-sidebarbg="skin6">
+<aside class="left-sidebar shadow-2" data-sidebarbg="skin6">
             <!-- Sidebar scroll-->
             <div class="scroll-sidebar" data-sidebarbg="skin6">
                 <!-- Sidebar navigation-->
@@ -27,7 +27,7 @@
                                             class="hide-menu"> Recently Uploaded
                                         </span></a>
                                 </li> -->
-                                <li class="sidebar-item"><a href="#" class="sidebar-link"><span
+                                <li class="sidebar-item"><a href="panel.php?underconstruction=true" class="sidebar-link"><span
                                             class="hide-menu"> Categories
                                         </span></a>
                                 </li>
@@ -42,11 +42,11 @@
                                 aria-expanded="false"><i data-feather="grid" class="feather-icon"></i><span
                                     class="hide-menu">Profile </span></a>
                             <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                                <li class="sidebar-item"><a href="table-basic.html" class="sidebar-link"><span
+                                <li class="sidebar-item"><a href="panel.php?underconstruction=true" class="sidebar-link"><span
                                             class="hide-menu"> Update Profile
                                         </span></a>
                                 </li>
-                                <li class="sidebar-item"><a href="table-dark-basic.html" class="sidebar-link"><span
+                                <li class="sidebar-item"><a href="panel.php?underconstruction=true" class="sidebar-link"><span
                                             class="hide-menu"> Account
                                         </span></a>
                                 </li>
@@ -108,11 +108,11 @@
                                 aria-expanded="false"><i data-feather="box" class="feather-icon"></i><span
                                     class="hide-menu">Saved References</span></a>
                             <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                                <li class="sidebar-item"><a href="ui-buttons.html" class="sidebar-link"><span
+                                <li class="sidebar-item"><a href="panel.php?underconstruction=true" class="sidebar-link"><span
                                             class="hide-menu"> Frequently Used
                                         </span></a>
                                 </li>
-                                <li class="sidebar-item"><a href="ui-modals.html" class="sidebar-link"><span
+                                <li class="sidebar-item"><a href="panel.php?underconstruction=true" class="sidebar-link"><span
                                             class="hide-menu"> By Categories </span></a>
                                 </li>
                                

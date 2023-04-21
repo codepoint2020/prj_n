@@ -1,21 +1,21 @@
 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Users' Table</h4>
-                        <div class="row ">
-                            <div class="col-md-2">
-                            <select class="custom-select custom-select-set form-control" name="cars" id="cars">
-                                <option value="volvo">All</option>
-                                <option value="saab">Students</option>
-                                <option value="mercedes">NSSTC Personnal</option>
-                                <option value="audi">External Users</option>
-                            </select>
-                            
-                            </div>
-                            <div class="col-md-2">
+                        <div class="row">
+                            <div class="col-md-2 mb-4">
                                 <button type="button" class="btn btn-info" data-bs-toggle="modal"
                                 data-bs-target="#bs-example-modal-lg">Add User</button>
-                            
-                        </div>
+                                
+                            </div>
+                            <div class="col-md-10">
+                            <span class="mx-4">
+                                    <!-- Note: Operations Includes: 
+                                    Diactivate <i class="fas fa-ban"></i>,
+                                    Edit <i class="fas fa-edit"></i>,
+                                    Delete <i class="fas fa-window-close"></i>, and
+                                    View <i class="fas fa-eye"></i> -->
+                                </span>
+                            </div>
                         <h6 class="card-subtitle"></h6>
                         <div class="table-responsive">
                             <table id="default_order" class="table border table-striped table-bordered text-nowrap"
@@ -27,6 +27,7 @@
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Status</th>
+                                   
                                         <th>Operations</th>
                                     </tr>
                                 </thead>
@@ -56,20 +57,38 @@
                                         if($student_data['is_active'] == "no") {
                                             echo "Deactivated";
                                         } elseif ($student_data['is_disabled'] == "yes") {
-                                            echo "Disabled";
+                                            echo "Account disabled";
                                         } else {
                                             echo "Active until " . date('F j, Y', strtotime($student_data["active_until"]));
                                         }
                                     ?>
+                                     
                                     </td>
                                     <td>
-                                        <a href="panel.php?edit=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-warning">Edit</a>
+                                        <?php if ($student_data['is_disabled'] == "no"): ?>
 
-                                        <a href="panel.php?load_users=true&del=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-danger">Del</a>
+                                            <a href="panel.php?load_users=true&deactivate=<?php echo $student_data['user_id']?>" class="btn btn-info btn-sm jm-deactivate" data-bs-toggle="tooltip" title="Deactivate this account of: <?php echo ucwords($student_data['first_name'] . " " . $student_data['last_name']) ?>">
+                                                <i class="fas fa-ban"></i>
+                                            </a>
+
+                                        <?php else: ?>
+                                            <a href="panel.php?load_users=true&activate=<?php echo $student_data['user_id']?>" class="btn btn-info btn-sm jm-activate" data-bs-toggle="tooltip" title="Activate the account for this user: <?php echo ucwords($student_data['first_name'] . " " . $student_data['last_name']) ?>">
+                                            <i class="fas fa-check-square"></i>
+                                            </a>
+
+                                        <?php endif; ?>
+
+                                        <a href="panel.php?edit=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Edit user's information">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+
+                                        <a href="panel.php?load_users=true&del=<?php echo $student_data['user_id']; ?>&underconstruction=true" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="PERMANENTLY Delete this account of: <?php echo ucwords($student_data['first_name'] . " " . $student_data['last_name']) ?>">
+                                        <i class="fas fa-window-close"></i>
+                                    </a>
 
                                   
 
-                                        <a href="panel.php?view=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-primary">View</a>
+                                        <a href="panel.php?view=<?php echo $student_data['user_id']; ?>&underconstruction=true" class="btn btn-sm btn-success" data-bs-toggle="tooltip" title="View details for this user"><i class="fas fa-eye"></i></a>
                                     </td>
                                     </tr>
                                     <?php endwhile; ?>
@@ -79,3 +98,5 @@
                         </div>
                     </div>
                 </div>
+
+

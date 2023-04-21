@@ -58,7 +58,7 @@ signin_user();
                 <div class="col-lg-5 col-md-7 bg-white">
                     <div class="p-3">
                         <div class="text-center">
-                            <img src="../assets/images/big/icon2.png" alt="wrapkit">
+                            <img src="../assets/images/elib_logo.png" alt="wrapkit" height="80">
                         </div>
                         <h2 class="mt-3 text-center">Sign In</h2>
                         <p class="text-center">Enter your account information

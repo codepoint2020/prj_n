@@ -8,9 +8,8 @@
             <a class="nav-link" href="javascript:void(0)">
                 <form>
                     <div class="customize-input">
-                        <input class="form-control custom-shadow custom-radius border-0 bg-white search-input"
+                        <input class="form-control custom-shadow custom-radius border-0 bg-white search-input shadow-2"
                             type="search" placeholder="Search" aria-label="Search">
-                    
                     </div>
                 </form>
             </a>
@@ -20,6 +19,7 @@
         <form action="panel.php?all_references=true" method="POST">
         <select class="form-select mr-sm-2 mb-2" id="cat_filter" name="cat_filter">
             <option  value="">Choose category...</option>
+            <option  value="All">All</option>
             <?php
                 $get_categories = $conn->query("SELECT name FROM tbl_categories ORDER BY name ASC");
                 while ($cat_name = $get_categories->fetch_assoc()):
@@ -51,19 +51,34 @@
     if (isset($_POST['btn_cat_filter'])) {
 
         $selected_category = $_POST['cat_filter'];
-
-        set_alert_success($selected_category);
+      
 
         if (empty($selected_category)) {
             //total books in tbl_books
             $get_total_books = $conn->query("SELECT * FROM tbl_books") or die("Failed to get total books query" . $conn->error . __LINE__);
-            $total_books = $get_total_books->num_rows;
-          
+            $total_books = $get_total_books->num_rows; 
+        } elseif (!empty($selected_category) && $selected_category === "All") {
+            redirect("panel.php?all_references=true&selected_all=true");
+        } else {
+           //total books in tbl_books
+         $get_total_books = $conn->query("SELECT * FROM tbl_books WHERE category = '$selected_category' ") or die("Failed to get total books query" . $conn->error . __LINE__);
+         $total_books = $get_total_books->num_rows;
+         
+         if ($total_books === 0) {
+           echo '<div class="alert alert-secondary">' . 'No results found for this category: '.ucwords($selected_category). '</div>';
+         } else {
+           echo '<div class="alert alert-info"></strong>' . $total_books . '</strong> record(s) found for this category: ' . ucwords($selected_category). '</div>';
+         } 
+
         }
+
+       
+        
+
+       
     
-        //total books in tbl_books
-        $get_total_books = $conn->query("SELECT * FROM tbl_books WHERE category = '$selected_category' ") or die("Failed to get total books query" . $conn->error . __LINE__);
-        $total_books = $get_total_books->num_rows;
+       
+      
       
 
     } else {

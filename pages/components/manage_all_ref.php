@@ -4,6 +4,9 @@
     <div class="card shadow-1">
         <div class="card-body">
             <h4 class="card-title">All References</h4>
+                            <div class="col-md-3 mb-4">
+                                <a href="panel.php?manage_references=true" class="btn btn-info">Add New Reference</a>
+                            </div>
             <div class="table-responsive">
                 <table id="default_order" class="table border table-striped table-bordered text-nowrap"
                                 style="width:100%">

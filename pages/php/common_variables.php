@@ -1,6 +1,6 @@
 <?php
 
-$window_title = "e-lib";
+$window_title = "NSSTC e-Library System";
 // $default_expiration_date = 6;
 
 

@@ -295,6 +295,8 @@ function signin_user()
 
         $grab_pass = $conn->query("SELECT * from tbl_users WHERE username = '$uname'") or die(jm_error('Fetching users failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
         $row = $grab_pass->fetch_assoc();
+        $is_active = $row["is_active"];
+        $is_disabled = $row["is_disabled"];
 
      
         $correct_password = $row['password_e'];
@@ -305,19 +307,28 @@ function signin_user()
             $_SESSION['user_type'] = $row['user_type'];
             $auth_user = strtolower($row['first_name']) . " " . strtolower($row['last_name']);
             $auth_user = ucwords($auth_user);
-            $_SESSION['is_in'] = 'true';
-            $_SESSION['system_user'] = $auth_user;
-            $_SESSION['system_user_fname'] = strtolower($row['first_name']);
 
-            $_SESSION['user_type'] = strtolower($_SESSION['user_type']);
+            if ($is_active == "yes" && $is_disabled == "no") {
 
-            if ($_SESSION['user_type'] == "administrator") {
-                $_SESSION['is_admin'] = "yes";
-                redirect('panel.php?adm_home=true');
+                $_SESSION['is_in'] = 'true';
+
+                $_SESSION['system_user'] = $auth_user;
+                $_SESSION['system_user_fname'] = strtolower($row['first_name']);
+    
+                $_SESSION['user_type'] = strtolower($_SESSION['user_type']);
+    
+                if ($_SESSION['user_type'] == "administrator") {
+                    $_SESSION['is_admin'] = "yes";
+                    redirect('panel.php?adm_home=true');
+                } else {
+                    $_SESSION['is_admin'] = "no";
+                    redirect('panel.php?home=true');
+                }
+
             } else {
-                $_SESSION['is_admin'] = "no";
-                redirect('panel.php?home=true');
+                redirect("login_failed.php?credentials_failed=true");
             }
+           
             
             
         } else {
@@ -509,6 +520,7 @@ function delete_book() {
             $row = $query_book->fetch_assoc();
             $target_book = ucwords("Reference Title: ".$row['title']);
             $target_file = $row["file_name"];
+            $target_cover_image = $row["cover_img"];
             $_SESSION['prevent_reload_data'] = "set";
 
             $file_dir = "../assets/references/pdf/";
@@ -518,6 +530,7 @@ function delete_book() {
 
             if ($delete_book_query) {
                 unlink($file_dir . $target_file);
+                unlink($file_dir . $target_cover_image);
                 redirect("panel.php?manage_all_ref=true&reference_deleted=true&book_title=".$target_book);
             }
         } 
@@ -640,4 +653,128 @@ function get_num_books() {
     return $num_of_books;
 }
 
+
+
+//DEACTIVATE A USER PROMPT
+
+function deactivate_user_confirm_box()
+{
+
+    global $conn;
+
+    if (isset($_GET['deactivate'])) {
+        $user_id = html_ent($_GET['deactivate']);
+
+        $query_user = $conn->query("SELECT * FROM tbl_users WHERE user_id = $user_id; ") or die("FAILED to query target user" . $conn->error . __LINE__);
+        $row = $query_user->fetch_assoc();
+        $user = ucwords($row['first_name'] . " " .$row["last_name"]);
+        $confirm_box = <<<DELIMETER
+        <div class="alert alert-warning" role="alert">
+    <h4 class="alert-heading">Warning: </h4>
+    <h4>You are about to DEACTIVATE this User:</h4>
+    <h3>{$user}</h3>
+    <hr>
+   
+    <a href="panel.php?load_users=true" class="btn btn-sm btn-secondary">Cancel</a>
+    <a href="panel.php?load_users=true&confirm_deactivation={$user_id}" class="btn btn-sm btn-danger">Proceed</a>
+</div>
+DELIMETER;
+        echo $confirm_box;
+    }
+}
+
+//EXECUTE CONFIRMED DEACTIVATION OF USER'S ACCOUNT
+function deactivate_user() {
+
+    global $conn;
+    if (isset($_GET['confirm_deactivation'])) {
+        $user_id = html_ent($_GET['confirm_deactivation']);
+
+        $query_user = $conn->query("SELECT first_name, last_name FROM tbl_users WHERE user_id = $user_id ");
+        $target_record = $query_user->fetch_assoc();
+        $target_user = $target_record["first_name"] . " " . $target_record["last_name"];
+
+        $_SESSION['prevent_reload_data'] = "set";
+
+        $update_account_status = $conn->query("UPDATE tbl_users SET is_disabled = 'yes' WHERE user_id = $user_id; ")or die(jm_error('Deactivation failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+
+        if ($update_account_status) {
+            redirect("panel.php?load_users=true&deactivated_user=".$target_user);
+        }
+    }
+
+}
+
+//NOTIFICATION IF A USER HAS BEEN DEACTIVATED
+if (isset($_GET['deactivated_user']) && isset($_SESSION['prevent_reload_data'])) {
+    $deactivated_user = html_ent($_GET['deactivated_user']);
+    set_alert_success($deactivated_user . ' ' . 'has been deactivated');
+    unset($_SESSION['prevent_reload_data']);
+}
+
+
+
+//DEACTIVATE A USER PROMPT
+
+function activate_user_confirm_box()
+{
+
+    global $conn;
+
+    if (isset($_GET['activate'])) {
+        $user_id = html_ent($_GET['activate']);
+
+        $query_user = $conn->query("SELECT * FROM tbl_users WHERE user_id = $user_id; ") or die("FAILED to query target user" . $conn->error . __LINE__);
+        $row = $query_user->fetch_assoc();
+        $user = ucwords($row['first_name'] . " " .$row["last_name"]);
+        $confirm_box = <<<DELIMETER
+        <div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">Note: </h4>
+    <h4>You are attempting to ACTIVATE this user:</h4>
+    <h3>{$user}</h3>
+    <hr>
+   
+    <a href="panel.php?load_users=true" class="btn btn-sm btn-secondary">Cancel</a>
+    <a href="panel.php?load_users=true&confirm_activation={$user_id}" class="btn btn-sm btn-primary">Proceed</a>
+</div>
+DELIMETER;
+        echo $confirm_box;
+    }
+}
+
+//EXECUTE CONFIRMED DEACTIVATION OF USER'S ACCOUNT
+function activate_user() {
+
+    global $conn;
+    if (isset($_GET['confirm_activation'])) {
+        $user_id = html_ent($_GET['confirm_activation']);
+
+        $query_user = $conn->query("SELECT first_name, last_name FROM tbl_users WHERE user_id = $user_id ");
+        $target_record = $query_user->fetch_assoc();
+        $target_user = $target_record["first_name"] . " " . $target_record["last_name"];
+
+        $_SESSION['prevent_reload_data'] = "set";
+
+        $update_account_status = $conn->query("UPDATE tbl_users SET is_disabled = 'no' WHERE user_id = $user_id; ")or die(jm_error('Deactivation failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+
+        if ($update_account_status) {
+            redirect("panel.php?load_users=true&activated_user=".$target_user);
+        }
+    }
+
+}
+
+//NOTIFICATION IF A USER'S ACCOUNT IS ALREADY ACTIVATED
+if (isset($_GET['activated_user']) && isset($_SESSION['prevent_reload_data'])) {
+    $activated_user = html_ent($_GET['activated_user']);
+    set_alert_success($activated_user . ' ' . ' account has been reactivated');
+    unset($_SESSION['prevent_reload_data']);
+}
+
+
+
+
+
 ?>
+
+

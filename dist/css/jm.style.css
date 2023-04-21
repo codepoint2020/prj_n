@@ -30,3 +30,32 @@
     height: 200px !important;
     object-fit: cover !important;
   }
+
+  .main-title {
+    color: rgb(0, 4, 123) !important;
+    text-shadow: 2px 2px 4px #5d5d5d71;
+
+  }
+
+  .jm-deactivate {
+    background-color: rgb(92, 91, 90, 0.4) !important;
+    color:rgb(0, 0, 0);
+    border: none;
+  }
+
+  .jm-deactivate:hover {
+    color: red;
+     text-shadow: 2px 2px 4px #5d5d5d71;
+  }
+
+  .jm-activate {
+    background-color: rgb(92, 91, 90, 0.4) !important;
+    color:rgb(0, 0, 0);
+    border: none;
+  }
+
+  .jm-activate:hover {
+    color: rgb(255, 255, 255);
+    text-shadow: 2px 2px 4px #5d5d5d71;
+    background-color: rgba(20, 255, 181) !important;
+  }
