@@ -8,6 +8,7 @@ include "php/common_variables.php";
 include "php/functions.php";
 include "php/objects.php";
 
+
 signin_user();
 
 ?>
@@ -23,9 +24,10 @@ signin_user();
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon.png">
-    <title><?php echo $window_title; ?></title>
+    <!-- Title bar icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/nsstc_logo.png">
+ 
+    <title><?php echo $_SESSION['window_title']; ?></title>
     <!-- Custom CSS -->
     <link href="../dist/css/style.min.css" rel="stylesheet">
     <link href="../dist/css/jm.style.css" rel="stylesheet">

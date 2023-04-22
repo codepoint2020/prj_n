@@ -291,51 +291,64 @@ function signin_user()
     if (isset($_POST['btn_signin'])) {
         $uname = escape_string($_POST['uname']);
         $user_password = escape_string($_POST['user_password']);
- 
 
         $grab_pass = $conn->query("SELECT * from tbl_users WHERE username = '$uname'") or die(jm_error('Fetching users failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+
         $row = $grab_pass->fetch_assoc();
-        $is_active = $row["is_active"];
-        $is_disabled = $row["is_disabled"];
 
-     
-        $correct_password = $row['password_e'];
-        if (password_verify($user_password, $correct_password)) {
-            $_SESSION['user_id'] = $row['user_id'];
-            $_SESSION['profile_pic'] = $row['profile_pic'];
-            $_SESSION['user_email'] = $row['email'];
-            $_SESSION['user_type'] = $row['user_type'];
-            $auth_user = strtolower($row['first_name']) . " " . strtolower($row['last_name']);
-            $auth_user = ucwords($auth_user);
+        $current_date = date('Y-m-d');
+        $expiration_date = $row["active_until"];
 
-            if ($is_active == "yes" && $is_disabled == "no") {
-
-                $_SESSION['is_in'] = 'true';
-
-                $_SESSION['system_user'] = $auth_user;
-                $_SESSION['system_user_fname'] = strtolower($row['first_name']);
-    
-                $_SESSION['user_type'] = strtolower($_SESSION['user_type']);
-    
-                if ($_SESSION['user_type'] == "administrator") {
-                    $_SESSION['is_admin'] = "yes";
-                    redirect('panel.php?adm_home=true');
-                } else {
-                    $_SESSION['is_admin'] = "no";
-                    redirect('panel.php?home=true');
-                }
-
-            } else {
-                redirect("login_failed.php?credentials_failed=true");
-            }
-           
-            
-            
+        if ($current_date >= $expiration_date) {
+            $conn->query("UPDATE tbl_users SET is_active = 'no', is_disabled = 'yes' WHERE username = '$uname';");
+            redirect("login_failed.php?credentials_failed=true");
         } else {
-            $_SESSION['is_in'] = 'false';
-            auth_set_alert_danger('Login failed: Invalid username or password');
-            $_SESSION['entered_name'] = $uname;
+
+            $is_active = $row["is_active"];
+            $is_disabled = $row["is_disabled"];
+
+            $correct_password = $row['password_e'];
+            
+            if (password_verify($user_password, $correct_password)) {
+                $_SESSION['user_id'] = $row['user_id'];
+                $_SESSION['profile_pic'] = $row['profile_pic'];
+                $_SESSION['user_email'] = $row['email'];
+                $_SESSION['user_type'] = $row['user_type'];
+                $auth_user = strtolower($row['first_name']) . " " . strtolower($row['last_name']);
+                $auth_user = ucwords($auth_user);
+
+                if ($is_active == "yes" && $is_disabled == "no") {
+
+                    $_SESSION['is_in'] = 'true';
+
+                    $_SESSION['system_user'] = $auth_user;
+                    $_SESSION['system_user_fname'] = strtolower($row['first_name']);
+        
+                    $_SESSION['user_type'] = strtolower($_SESSION['user_type']);
+        
+                    if ($_SESSION['user_type'] == "administrator") {
+                        $_SESSION['is_admin'] = "yes";
+                        redirect('panel.php?adm_home=true');
+                    } else {
+                        $_SESSION['is_admin'] = "no";
+                        redirect('panel.php?home=true');
+                    }
+
+                } else {
+                    redirect("login_failed.php?credentials_failed=true");
+                }
+            
+                
+                
+            } else {
+                $_SESSION['is_in'] = 'false';
+                auth_set_alert_danger('Login failed: Invalid username or password');
+                $_SESSION['entered_name'] = $uname;
+            }
+
         }
+
+        
         
     }
 }
@@ -369,8 +382,24 @@ function add_book() {
 
         $register_date = current_date();
 
+      
+
+        $file_extension = pathinfo($formFile, PATHINFO_EXTENSION);
+
+        if ($file_extension == "pdf") {
+            $dir = "../assets/references/pdf/";
+        } elseif ($file_extension == "mp4"){
+            $dir = "../assets/references/videos/";
+        } elseif ($file_extension == "pptx") {
+            $dir = "./pptx_player/file/";
+        } elseif ($file_extension == "docx") {
+            $dir = "../assets/references/docx/";
+        } else {
+            NULL;
+        }
+
     
-        $dir = "../assets/references/pdf/";
+        // $dir = "../assets/references/pdf/";
 
         $get_max_book_id = $conn->query("SELECT MAX(book_id) AS max_id FROM tbl_books");
         $row = $get_max_book_id->fetch_assoc();
@@ -696,7 +725,7 @@ function deactivate_user() {
 
         $_SESSION['prevent_reload_data'] = "set";
 
-        $update_account_status = $conn->query("UPDATE tbl_users SET is_disabled = 'yes' WHERE user_id = $user_id; ")or die(jm_error('Deactivation failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+        $update_account_status = $conn->query("UPDATE tbl_users SET is_disabled = 'yes', is_active = 'no' WHERE user_id = $user_id; ")or die(jm_error('Deactivation failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
 
         if ($update_account_status) {
             redirect("panel.php?load_users=true&deactivated_user=".$target_user);
@@ -753,13 +782,31 @@ function activate_user() {
         $target_record = $query_user->fetch_assoc();
         $target_user = $target_record["first_name"] . " " . $target_record["last_name"];
 
+        $current_date = date('Y-m-d');
+        $expiration_date = $target_record["active_until"];
+        $set_exp_date = $_SESSION['def_exp_date'];
+
+        $default_exp_date = set_default_exp_date($set_exp_date);
+
         $_SESSION['prevent_reload_data'] = "set";
 
-        $update_account_status = $conn->query("UPDATE tbl_users SET is_disabled = 'no' WHERE user_id = $user_id; ")or die(jm_error('Deactivation failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+        if ($current_date >= $expiration_date) {
+            $update_account_status = $conn->query("UPDATE tbl_users SET is_disabled = 'no', active_until = '$default_exp_date', is_active = 'yes' WHERE user_id = $user_id; ")or die(jm_error('Deactivation failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+            
+            if ($update_account_status) {
+                redirect("panel.php?load_users=true&activated_user=".$target_user);
+            }
 
-        if ($update_account_status) {
-            redirect("panel.php?load_users=true&activated_user=".$target_user);
+        } else {
+            $update_account_status = $conn->query("UPDATE tbl_users SET is_disabled = 'no' WHERE user_id = $user_id; ")or die(jm_error('Deactivation failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+            
+            if ($update_account_status) {
+                redirect("panel.php?load_users=true&activated_user=".$target_user);
+            }
+
         }
+        
+
     }
 
 }
@@ -770,8 +817,6 @@ if (isset($_GET['activated_user']) && isset($_SESSION['prevent_reload_data'])) {
     set_alert_success($activated_user . ' ' . ' account has been reactivated');
     unset($_SESSION['prevent_reload_data']);
 }
-
-
 
 
 

@@ -29,9 +29,10 @@ $current_date_in_unix_format_plus_1_month = strtotime("+ 1 months");
 
 
 
-// echo "CURRENT DATE";
-// echo "<br>";
-// echo $current_date;
+echo "CURRENT DATE: " .$current_date."<br>";
+echo "CURRENT DATE IN UNIX FORMAT: " .$current_date_in_unix_format."<br><hr>";
+
+// echo ;
 // echo "<br>";
 // echo "CURRENT DATE IN UNIX FORMAT";
 // echo "<br>";
@@ -45,19 +46,19 @@ $current_date_in_unix_format_plus_1_month = strtotime("+ 1 months");
 
 // echo "<br>";
 
-echo "Current date: " . $current_date = date('Y-m-d');
+// echo "Current date: " . $current_date = date('Y-m-d');
 
-echo "<br>";
+// echo "<br>";
 
-function add_months_to_current_date($months) {
+// function add_months_to_current_date($months) {
     
-    $exp_date = date('Y-m-d', strtotime("+$months months"));
-    return $exp_date;
-}
+//     $exp_date = date('Y-m-d', strtotime("+$months months"));
+//     return $exp_date;
+// }
 
 // Example usage
-$new_date = add_months_to_current_date(1);
-echo "####New date: $new_date<br>";
+// $new_date = add_months_to_current_date(1);
+// echo "####New date: $new_date<br>";
 
 
 
@@ -65,13 +66,13 @@ echo "####New date: $new_date<br>";
 
 $current_date_for_calculation = date('Y-m-d');
 
-echo $current_date_for_calculation;
+echo "Current date for calculation: " .$current_date_for_calculation;
 
 $expiration_date = date('Y-m-d',$current_date_in_unix_format_plus_1_month);
 
 echo "<br>";
 
-echo $expiration_date;
+echo "Expiration date: ". $expiration_date . "<br>";
 
 echo "<br>";
 
@@ -93,24 +94,24 @@ echo "<br>";
 echo "and it will expire on " . date('Y-m-d G:i:s',strtotime($expiration_date));
 
 
-$month = trim(substr($birthdate, 0, 2)); 
-$day = trim(substr($birthdate, 3, 2));
-$year = trim(substr($birthdate, 6, 4)); 
+// $month = trim(substr($birthdate, 0, 2)); 
+// $day = trim(substr($birthdate, 3, 2));
+// $year = trim(substr($birthdate, 6, 4)); 
 
-$fixBirthdate = $year."-".$month."-".$day; 
+// $fixBirthdate = $year."-".$month."-".$day; 
 
-$diff = date_diff(date_create($fixBirthdate), date_create($date_set_lis));
+// $diff = date_diff(date_create($fixBirthdate), date_create($date_set_lis));
 
-$updated_age = $diff->format('%y');
+// $updated_age = $diff->format('%y');
 
 
 
-$date1 = date_create('2022-01-01');
-$date2 = date_create('2023-04-01');
+// $date1 = date_create('2022-01-01');
+// $date2 = date_create('2023-04-01');
 
-$diff = date_diff($date1, $date2);
+// $diff = date_diff($date1, $date2);
 
-echo "The difference between $date1 and $date2 is: " . $diff->format('%y year(s), %m month(s), %d day(s)');
+// echo "The difference between $date1 and $date2 is: " . $diff->format('%y year(s), %m month(s), %d day(s)');
 
 
 

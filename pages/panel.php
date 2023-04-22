@@ -97,6 +97,12 @@
             <?php endif; ?>
 
 
+        
+
+
+
+
+
             <!-- ============================================================== -->
             <!-- UNDER CONSTRUCTION START -->
             <!-- ============================================================== -->
@@ -135,6 +141,49 @@
                 <?php include 'components/cards.php'?>
             </div>
             <?php endif; ?>
+
+
+            <!-- =========================LOAD VIDEO PLAYER========================== -->
+            <?php if (isset($_GET['load_video'])): ?>
+            <div class="col-12">
+                <div class="card-body">
+                <?php include 'components/video_player_component.php'?>
+                </div>
+               
+            </div>
+            <?php endif; ?>
+
+            <!-- =======================LOAD PDF VIEWER=============================== -->
+            <?php if (isset($_GET['load_pdf'])): ?>
+            <div class="col-12">
+            
+                <?php include 'components/pdf_reader_component.php'?>
+               
+            </div>
+            <?php endif; ?>
+
+             <!-- =======================LOAD PPTX VIEWER=============================== -->
+             <?php if (isset($_GET['load_pptx']) && isset($_GET['file'])): ?>
+            <div class="col-12">
+            
+                <?php 
+
+                $pptx = $_GET['file'];
+                $title = $_GET['title'];
+                
+                //include 'pptx_viewer/powerpoint_viewer.php'
+
+                redirect("pptx_player/pptx_viewer.php?powerpoint=".$pptx."&title=".$title);
+                
+                
+                ?>
+               
+            </div>
+            <?php endif; ?>
+
+
+
+            
             
             <!-- ============================================================== -->
             <!-- USERS' END START -->

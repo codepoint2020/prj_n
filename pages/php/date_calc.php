@@ -1,5 +1,9 @@
 <?php
 
+
+$_SESSION['def_exp_date'] = 3;
+
+
 // Set register date
 function current_date() {
     $current_date = date('Y-m-d');

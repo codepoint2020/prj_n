@@ -1,6 +1,7 @@
 <!-- Row MARKED-->
 
 
+
 <div class="row mb-4">
  
     <div class="col-md-3">
@@ -45,7 +46,7 @@
 
     //items per page
     // $_SESSION['items_per_page'] =
-    $items_per_page = 10;
+    $items_per_page = 12;
 
 
     if (isset($_POST['btn_cat_filter'])) {
@@ -72,21 +73,12 @@
 
         }
 
-       
-        
-
-       
-    
-       
-      
-      
 
     } else {
 
         //total books in tbl_books
         $get_total_books = $conn->query("SELECT * FROM tbl_books") or die("Failed to get total books query" . $conn->error . __LINE__);
         $total_books = $get_total_books->num_rows;
-      
 
     }
     
@@ -109,7 +101,6 @@
       //total pages
       $total_pages = ceil($total_books / $items_per_page);
 
-
     if (isset($_POST['btn_cat_filter'])) {
 
         $selected_category = $_POST['cat_filter'];
@@ -126,31 +117,75 @@
     //set limit per page
       $get_all_books = $conn->query("SELECT * FROM tbl_books ORDER BY book_id DESC LIMIT $page1, $items_per_page") or die("Failed to get all books" . $conn->error . __LINE__);
 
+      
+
     }
     
       while ($row = $get_all_books->fetch_assoc()):
+        $file_format = pathinfo($row['file_name'], PATHINFO_EXTENSION);
 
     ?>    
 
      <div class="col-lg-2 col-md-4 col-sm-6 card-handle align-content-stretch">
-        <a target = "_blank" href="read.php?id=<?php echo $row['book_id']?>&file=<?php echo $row['file_name']; ?>">
+        <a <?php 
+        
+        if ($file_format == "pptx") {
+          echo 'target="_blank"';
+        }
+        
+        ?>href="<?php 
+        
+    
+                    $file_format = pathinfo($row['file_name'], PATHINFO_EXTENSION);
+                    if ($file_format == "pdf") {
+                      echo 'panel.php?load_pdf=true&';
+                    } elseif ($file_format == "mp4") {
+                      echo 'panel.php?load_video=true&';
+                    } elseif ($file_format == "pptx") {
+                      echo 'panel.php?load_pptx=true&';
+                    } elseif ($file_format == "docx") {
+                      echo '#';
+                    } else {
+                      NULL;
+                    }
+                  
+        
+        
+        ?>id=<?php echo $row['book_id']?>&file=<?php echo $row['file_name']; ?>&title=<?php echo $row['title']; ?>">
             <div class="card grow shadow-2">
                 <?php if (empty($row['cover_img'])): ?>
                 <img class="card-img-top img-fluid" src="../assets/images/default_cover.png"
                     alt="Card image cap">
                 <?php else: ?>
-                    <img class="card-img-top img-fluid" src="../assets/references/pdf/<?php echo $row['cover_img'];?>"
+
+                  <!-- REMEMBER TO PREVENT UPLOAD OF OTHER FILE TYPES -->
+                    <img class="card-img-top img-fluid" src="<?php
+                     $file_format = pathinfo($row['file_name'], PATHINFO_EXTENSION);
+                        if ($file_format == "pdf") {
+                            echo "../assets/references/pdf";
+                        }elseif($file_format == "mp4"){
+                          echo "../assets/references/videos";
+                        }elseif($file_format == "pptx"){
+                          echo "./pptx_player/file/";
+                        }else{
+                          NULL;
+                        }
+                      
+                      ?>/<?php echo $row['cover_img'];?>"
                     alt="Card image cap">
+                
                     <?php endif; ?>
                 <div class="card-body">
                     <h4 class="card-title"><?php echo ucwords(strtolower($row['title'])); ?></h4>
                     <small class="card-category">Category: <a href="#"><?php echo $row['category']; ?></a></small>
                     <p class="card-text"><?php echo short_desc($row['details']); ?></p>
-                    <a target = "_blank" href="read.php?id=<?php echo $row['book_id']?>&file=<?php echo $row['file_name']; ?>">Read more</a>
+                    
+                   
                 </div>
             </div>
         </a>
     </div>
+    
     <?php endwhile ?>
     <!-- column -->
     
@@ -247,3 +282,4 @@ searchInput.addEventListener('input', function() {
 });
 
 </script>
+

@@ -1,7 +1,10 @@
 <?php
 
-$window_title = "NSSTC e-Library System";
-// $default_expiration_date = 6;
+$_SESSION['window_title'] = "NSSTC e-Library System";
+
+
+
+$_SESSION["default_expiration_date"] = 3;
 
 
 

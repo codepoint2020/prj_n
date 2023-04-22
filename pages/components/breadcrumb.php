@@ -40,6 +40,14 @@
                 if (isset($_GET['manage_all_ref']) && $_GET['manage_all_ref'] =='true') {
                     echo  $panel_title = "References Table";
                 }
+
+                if (isset($_GET['load_pdf']) && isset($_GET['title'])) {
+                    echo  $panel_title = html_ent(ucwords($_GET['title']));
+                }
+
+                if (isset($_GET['load_video']) && isset($_GET['title'])) {
+                    echo  $panel_title = html_ent(ucwords($_GET['title']));
+                  }
                     
           
                 ?>
@@ -48,7 +56,14 @@
             <div class="d-flex align-items-center">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb m-0 p-0">
-                        <li class="breadcrumb-item"><a href="index.html" class="text-muted">Home</a></li>
+                        <li class="breadcrumb-item"><a href="<?php 
+                        if ($_SESSION['is_admin'] === 'yes') {
+                            echo "panel.php?adm_home=true";
+                        } else {
+                            echo "panel.php?home=true";
+                        }
+                        
+                        ?>" class="text-muted">Home</a></li>
                         <li class="breadcrumb-item text-muted active" aria-current="page"><?php  echo $panel_title; ?></li>
                     </ol>
                 </nav>
