@@ -124,8 +124,16 @@
             <!-- UNDER CONSTRUCTION END -->
             <!-- ============================================================== -->
 
+            
 
-
+             <!-- =========================Load Category Tiles========================== -->
+             <?php if (isset($_GET['category_tiles'])): ?>
+            <div class="col-12">
+                <div class="card-body">
+                <?php include 'components/category_tiles.php'?>
+                </div>
+            </div>
+            <?php endif; ?>
           
             
             

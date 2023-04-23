@@ -27,7 +27,7 @@
                                             class="hide-menu"> Recently Uploaded
                                         </span></a>
                                 </li> -->
-                                <li class="sidebar-item"><a href="panel.php?underconstruction=true" class="sidebar-link"><span
+                                <li class="sidebar-item"><a href="panel.php?category_tiles=true" class="sidebar-link"><span
                                             class="hide-menu"> Categories
                                         </span></a>
                                 </li>
