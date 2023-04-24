@@ -1,6 +1,7 @@
-<header class="topbar" data-navbarbg="skin6">
 
-            <nav class="navbar top-navbar navbar-expand-lg">
+<header class="topbar shadow-1 pb-2 bg-nsstc1" data-navbarbg="skin6">
+
+            <nav class="navbar top-navbar navbar-expand-lg bg-nsstc1" >
           
                 <div class="navbar-header" data-logobg="skin6">
                     <!-- This is for the sidebar toggle which is visible on mobile only -->
@@ -9,10 +10,10 @@
                     <!-- ============================================================== -->
                     <!-- Logo -->
                     <!-- ============================================================== -->
-                    <div class="navbar-brand">
+                    <div class="navbar-brand bg-nsstc1">
                         <!-- Logo icon -->
-                        <a href="index.html">
-                            <img src="../assets/images/elib_logo.png" alt="" class="img-fluid mt-2" id="lib_logo">
+                        <a href="#">
+                            <img src="../assets/images/elib_logo.png" alt="" class="img-fluid bg-nsstc1" id="lib_logo">
                         </a>
                     </div>
                     <!-- ============================================================== -->
@@ -29,7 +30,7 @@
                 <!-- ============================================================== -->
                 <!-- End Logo -->
                 <!-- ============================================================== -->
-                <div class="navbar-collapse collapse" id="navbarSupportedContent">
+                <div class="navbar-collapse collapse" id="navbarSupportedContent" style="border-bottom: none;">
                     <!-- ============================================================== -->
                     <!-- toggle and nav items -->
                     <!-- ============================================================== -->
@@ -42,7 +43,7 @@
                                 <span><i data-feather="bell" class="svg-icon"></i></span>
                                 <span class="badge text-bg-primary notify-no rounded-circle">5</span>
                             </a> -->
-                            <h3 class="text-center main-title">Welcome to NSSTC e-Library!</h3>
+                            <h3 class="text-center main-title jm-text-white">Welcome to NSSTC e-Library!</h3>
                             <div class="dropdown-menu dropdown-menu-left mailbox animated bounceInDown">
                                 <ul class="list-style-none">
                                     <li>
@@ -159,10 +160,10 @@
                                 <img src="../assets/images/users/<?php echo isset($_SESSION['profile_pic']) ? $_SESSION['profile_pic'] : "user_def_img.png"; ?>" alt="user" class="rounded-circle" width="40" />
 
                                     
-                                <span class="ms-2 d-none d-lg-inline-block"><span>Hello,</span> <span
-                                        class="text-dark"><?php echo (isset($_SESSION['system_user'])) ? $_SESSION['system_user'] : ""; ?>
+                                <span class="ms-2 d-none d-lg-inline-block"><span class="text-white">Hello,</span> <span
+                                        class="text-white"><?php echo (isset($_SESSION['system_user'])) ? $_SESSION['system_user'] : ""; ?>
                                        </span> <i data-feather="chevron-down"
-                                        class="svg-icon"></i></span>
+                                        class="svg-icon jm-text-white"></i></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end dropdown-menu-right user-dd animated flipInY">
                                 <!-- <a class="dropdown-item" href="javascript:void(0)"><i data-feather="user"

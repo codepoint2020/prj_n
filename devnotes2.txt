@@ -5,6 +5,13 @@ that i need to create a code to enable the system to identify if what they are t
 
 if is_disabled prevent the user to login and display the account status to the administrator
 
+4-24-23 - Since some files such as videos and images are heavy they were added to .gitignore, modify the system
+in order to display an alternate image, if working on a different device that don't have those files.
+
+*prevent uploads for .exe, .cmd etc., implement whitelist
+
+
+
 test accounts
 
 Administrator

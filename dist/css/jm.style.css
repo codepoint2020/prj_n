@@ -66,3 +66,32 @@
     padding: 12px !important;
     border-radius: 5px !important;
   }
+
+  /* top header background color */
+  .bg-nsstc1 {
+    background-color: rgb(51, 51, 53) !important;
+}
+
+.hello {
+  color: rgb(63, 58, 58);
+}
+
+.hello:hover {
+  color: black;
+}
+
+.jm-text-white {
+  color: #fff !important;
+}
+
+.jm-text-white:hover {
+  color: #31dbf5 !important;
+}
+
+.jm-text-dark {
+  color: #282626 !important;
+}
+
+.jm-bg-dark {
+  color: rgb(58, 53, 53) !important;
+}

@@ -124,6 +124,15 @@
       while ($row = $get_all_books->fetch_assoc()):
         $file_format = pathinfo($row['file_name'], PATHINFO_EXTENSION);
 
+        $cover_img_default = "../assets/images/default_cover2.png";
+        $cover_img = $row['cover_img'];
+  
+        
+        $cover_img_pdf = "../assets/references/videos/" . $cover_img;
+        $cover_img_pptx = "./pptx_player/file/" . $cover_img;
+        $cover_img_vids = "../assets/references/videos/" . $cover_img;
+     
+
     ?>    
 
      <div class="col-lg-2 col-md-4 col-sm-6 card-handle align-content-stretch">
@@ -137,12 +146,39 @@
         
     
                     $file_format = pathinfo($row['file_name'], PATHINFO_EXTENSION);
+
                     if ($file_format == "pdf") {
+
+                      if (file_exists($cover_img_pdf)) {
+                         $cover_img = $cover_img_pdf;
+                      } else {
+                         $cover_img = $cover_img_default;
+                      }
+
+             
+
                       echo 'panel.php?load_pdf=true&';
+                      
                     } elseif ($file_format == "mp4") {
+                      if (file_exists($cover_img_vids)) {
+                         $cover_img = $cover_img_vids;
+                      } else {
+                         $cover_img = $cover_img_default;
+                      }
+
+
                       echo 'panel.php?load_video=true&';
+                      
                     } elseif ($file_format == "pptx") {
+
+                     if (file_exists($cover_img_pptx)) {
+                        $cover_img = $cover_img_pptx;
+                     } else {
+                        $cover_img = $cover_img_default;
+                     }
+
                       echo 'panel.php?load_pptx=true&';
+
                     } elseif ($file_format == "docx") {
                       echo '#';
                     } else {
@@ -154,24 +190,12 @@
         ?>id=<?php echo $row['book_id']?>&file=<?php echo $row['file_name']; ?>&title=<?php echo $row['title']; ?>">
             <div class="card grow shadow-2">
                 <?php if (empty($row['cover_img'])): ?>
-                <img class="card-img-top img-fluid" src="../assets/images/default_cover2.png"
+                <img class="card-img-top img-fluid" src="<?php echo $cover_img_default; ?>"
                     alt="Card image cap">
                 <?php else: ?>
 
                   <!-- REMEMBER TO PREVENT UPLOAD OF OTHER FILE TYPES -->
-                    <img class="card-img-top img-fluid" src="<?php
-                     $file_format = pathinfo($row['file_name'], PATHINFO_EXTENSION);
-                        if ($file_format == "pdf") {
-                            echo "../assets/references/pdf";
-                        }elseif($file_format == "mp4"){
-                          echo "../assets/references/videos";
-                        }elseif($file_format == "pptx"){
-                          echo "./pptx_player/file/";
-                        }else{
-                          NULL;
-                        }
-                      
-                      ?>/<?php echo $row['cover_img'];?>"
+                    <img class="card-img-top img-fluid" src="<?php echo $cover_img; ?>"
                     alt="Card image cap">
                 
                     <?php endif; ?>

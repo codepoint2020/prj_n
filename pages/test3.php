@@ -54,6 +54,22 @@ echo "<br>";
 echo "and it will expire on " . date('Y-m-d G:i:s',strtotime($expiration_date));
 
 
+<img class="card-img-top img-fluid" src="<?php
+                     $file_format = pathinfo($row['file_name'], PATHINFO_EXTENSION);
+                        if ($file_format == "pdf") {
+                            echo "../assets/references/pdf";
+                        }elseif($file_format == "mp4"){
+                          echo "../assets/references/videos";
+                        }elseif($file_format == "pptx"){
+                          echo "./pptx_player/file/";
+                        }else{
+                          NULL;
+                        }
+                      
+                      ?>/<?php echo $row['cover_img'];?>"
+                    alt="Card image cap">
+
+
 
 
 
