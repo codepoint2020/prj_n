@@ -314,6 +314,26 @@ function signin_user()
                 $_SESSION['profile_pic'] = $row['profile_pic'];
                 $_SESSION['user_email'] = $row['email'];
                 $_SESSION['user_type'] = $row['user_type'];
+                $_SESSION['sex'] = $row['sex'];
+                $_SESSION['dob'] = $row['dob'];
+
+                $_SESSION['first_name'] = $row['first_name'];
+                $_SESSION['last_name'] = $row['last_name'];
+                $_SESSION['contact_no'] = $row['contact_no'];
+                $_SESSION['contact_no2'] = $row['contact_no2'];
+                $_SESSION['house_no'] = $row['house_no'];
+                $_SESSION['street'] = $row['street'];
+                $_SESSION['brgy'] = $row['brgy'];
+                $_SESSION['city'] = $row['city'];
+                $_SESSION['province'] = $row['province'];
+                $_SESSION['zipcode'] = $row['zipcode'];
+                $_SESSION['country'] = $row['country'];
+
+
+
+
+
+
                 $auth_user = strtolower($row['first_name']) . " " . strtolower($row['last_name']);
                 $auth_user = ucwords($auth_user);
 
@@ -323,9 +343,43 @@ function signin_user()
 
                     $_SESSION['system_user'] = $auth_user;
                     $_SESSION['system_user_fname'] = strtolower($row['first_name']);
+                    $_SESSION['user_email'] = strtolower($row['email']);
         
                     $_SESSION['user_type'] = strtolower($_SESSION['user_type']);
-        
+
+                    if (empty(['house_no'])) {
+                        $house_no = "";
+                    }
+
+                    if (empty(['street'])) {
+                        $street= "";
+                        $separator= "";
+                    }
+
+                    if (empty(['brgy'])) {
+                        $brgy= "";
+                        $separator= "";
+                    }
+
+                    if (empty(['city'])) {
+                        $city= "";
+                        $separator= "";
+                    }
+
+                    if (empty(['zipcode'])) {
+                        $zipcode= "";
+                        $separator= "";
+                    }
+
+                    if (empty(['country'])) {
+                        $country= "";
+                        $separator= "";
+                    }
+
+
+                    $_SESSION['address'] = $house_no . $separator . $street . $separator . $brgy . $separator . $city . $separator . $zipcode . $separator . $country . $separator;
+                    
+                
                     if ($_SESSION['user_type'] == "administrator") {
                         $_SESSION['is_admin'] = "yes";
                         redirect('panel.php?adm_home=true');
@@ -412,14 +466,6 @@ function add_book() {
         } else {
             $formFile = "";
             $cover_image = "";    }
-
-        if (!empty($formFile)) {
-            $cover_image = "id_" . $next_id. "_" . filenameAppend() .$cover_image;
-            
-        } else {
-     
-            $cover_image = "";
-        }
 
 
      

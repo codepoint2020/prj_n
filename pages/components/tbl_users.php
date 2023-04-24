@@ -91,7 +91,7 @@
                                         <i class="fas fa-edit"></i>
                                     </a>
 
-                                        <a href="panel.php?load_users=true&del=<?php echo $student_data['user_id']; ?>&underconstruction=true" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="PERMANENTLY Delete this account of: <?php echo ucwords($student_data['first_name'] . " " . $student_data['last_name']) ?>">
+                                        <a href="panel.php?load_users=true&del=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="PERMANENTLY Delete this account of: <?php echo ucwords($student_data['first_name'] . " " . $student_data['last_name']) ?>">
                                         <i class="fas fa-window-close"></i>
                                     </a>
 

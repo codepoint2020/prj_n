@@ -59,3 +59,10 @@
     text-shadow: 2px 2px 4px #5d5d5d71;
     background-color: rgba(20, 255, 181) !important;
   }
+
+  /* this background is affects the main page content wrapper */
+  .jm-bg {
+    background-color: rgba(69, 241, 173, 0.9) !important;
+    padding: 12px !important;
+    border-radius: 5px !important;
+  }

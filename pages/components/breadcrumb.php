@@ -47,7 +47,11 @@
 
                 if (isset($_GET['load_video']) && isset($_GET['title'])) {
                     echo  $panel_title = html_ent(ucwords($_GET['title']));
-                  }
+                }
+
+                if (isset($_GET['profile']) && isset($_GET['system_user'])) {
+                    echo  $panel_title = "Profile";
+                }
                     
           
                 ?>

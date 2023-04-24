@@ -45,7 +45,7 @@
     <!-- ============================================================== -->
     <!-- Container fluid  -->
     <!-- ============================================================== -->
-    <div class="container-fluid">
+    <div class="container-fluid ">
         <!-- ============================================================== -->
         <!-- Start Page Content -->
         <!-- ============================================================== -->
@@ -147,6 +147,27 @@
             <?php if (isset($_GET['all_references'])): ?>
             <div class="col-12">
                 <?php include 'components/cards.php'?>
+            </div>
+            <?php endif; ?>
+
+            <!-- =========================LOAD PROFILE========================== -->
+            <?php if (isset($_GET['profile'])): ?>
+            <div class="col-12">
+                
+                <?php include 'components/profile.php'?>
+              
+               
+            </div>
+            <?php endif; ?>
+
+
+             <!-- =========================LOAD edit profile========================== -->
+             <?php if (isset($_GET['update_profile'])): ?>
+            <div class="col-12">
+                
+                <?php include 'components/update_profile.php'?>
+              
+               
             </div>
             <?php endif; ?>
 

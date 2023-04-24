@@ -154,7 +154,7 @@
         ?>id=<?php echo $row['book_id']?>&file=<?php echo $row['file_name']; ?>&title=<?php echo $row['title']; ?>">
             <div class="card grow shadow-2">
                 <?php if (empty($row['cover_img'])): ?>
-                <img class="card-img-top img-fluid" src="../assets/images/default_cover.png"
+                <img class="card-img-top img-fluid" src="../assets/images/default_cover2.png"
                     alt="Card image cap">
                 <?php else: ?>
 
