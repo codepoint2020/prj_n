@@ -97,7 +97,8 @@
 
                                   
 
-                                        <a href="panel.php?view=<?php echo $student_data['user_id']; ?>&underconstruction=true" class="btn btn-sm btn-success" data-bs-toggle="tooltip" title="View details for this user"><i class="fas fa-eye"></i></a>
+                                    <a href="panel.php?view=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-success" data-bs-toggle="tooltip" title="View details for this user"><i class="fas fa-eye"></i></a>
+                                    
                                     </td>
                                     </tr>
                                     <?php endwhile; ?>
