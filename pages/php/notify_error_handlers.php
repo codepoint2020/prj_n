@@ -64,6 +64,16 @@ function auth_set_alert_danger($message_alert)
     }
 }
 
+function set_alert($message_alert)
+{
+    if (!empty($message_alert)) {
+        $_SESSION['message_alert'] = "<code>".$message_alert."</code>";
+      
+    } else {
+        $message_alert = "";
+    }
+}
+
 
 
 function set_alert_danger($message_alert)
@@ -129,5 +139,15 @@ function jm_error($error_description) {
     return "<div class='alert alert-info alert-dismissible fade show'>"."<strong>".$error_description."</strong>".
     '<button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>'."</div>";
 }
+
+
+function display_notification2()
+{
+    if (isset($_SESSION['message_alert'])) {
+        echo $_SESSION['message_alert'];
+        unset($_SESSION['message_alert']);
+    }
+}
+
 
 ?>

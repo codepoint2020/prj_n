@@ -95,3 +95,24 @@
 .jm-bg-dark {
   color: rgb(58, 53, 53) !important;
 }
+
+.jm-btn-gradient {
+  width: 100% !important; 
+  background: linear-gradient(to right,#8971ea,#7f72ea,#7574ea,#6a75e9,#5f76e8) !important;
+  border: none !important;
+}
+
+.jm-btn-gradient:hover {
+  background: linear-gradient(to right,#7e68d7,#7568d6,#6968d1,#606ad4,#5063c4) !important;
+
+}
+
+.change_password_textbox:focus {
+  border-color: #282626 !important;
+} 
+
+#jmEye {
+  padding: 10px !important;
+  background-color: rgb(187, 187, 187);
+  cursor: pointer;
+}

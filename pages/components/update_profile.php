@@ -50,14 +50,82 @@
 
 <div class="container rounded bg-white mt-5 mb-5">
         <div class="row">
+
+    <!-- /.reset password modal-start -->
+    <form action="panel.php?update_profile=true" method="POST">
+        <div class="modal fade" id="centermodal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header ">
+                        <h4 class="modal-title " id="myCenterModalLabel">Password Change Box</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-hidden="true"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                   
+                        <div class="input-group">
+                            <input  type="password" class="form-control change_password_textbox" placeholder="Enter old password" value=""
+                                 id="oldPassword" name="old_password">
+                        </div>
+                    
+                        <div class="input-group mt-2">
+                            <input  type="password" class="form-control change_password_textbox" placeholder="Enter a new password"
+                                id="newPassword" name="new_password">
+                                <!-- <i class="fas fa-eye" id="jmEye"></i> -->
+
+                                <div class="input-group-prepend">
+                                    <div id="passwordEye2">
+                                    <div class="input-group-text h-100" id="passwordEye"><i class="fas fa-eye-slash"></i></div>
+                                    </div>
+                                </div>
+
+                                
+                               
+                        </div>
+
+                        <div class="input-group mt-2">
+                            <input  type="password" class="form-control change_password_textbox" placeholder="Retype your new password"
+                                 id="retypeNewPassword" name="retype_new_password">
+                                 
+                        </div>
+
+                        
+
+
+
+
+                        <div class="mt-5 text-center mb-2">
+                            <button class="btn btn-info"  id="btnChangePassword" type="button" style="width: 100%">Confirm</button>
+                        </div>
+
+                        
+
+                        <button name="btn_change_password" id="btnSubmitNewPassword"></button>
+                                
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        </form>
+
+
             <div class="col-md-3 border-right">
-                <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="../assets/images/users/<?php echo $_SESSION['profile_pic']; ?>"><span class="font-weight-bold mb-4"><?php echo $_SESSION['system_user']; ?></span>
+                <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5 mb-4" width="150px" src="../assets/images/users/<?php echo $_SESSION['profile_pic']; ?>"><span class="font-weight-bold mb-4"><?php echo $_SESSION['system_user']; ?></span>
          
                 <div class="col-md-12 changePhotoWrapper">
                 <!-- <button class="btn btn-primary" id="btnChangePic">Change Photo</button> -->
-                <label for="photoChange" class="btn btn-primary changePhotoWrapper">change Picture</label>
-                    <input type="File" id="photoChange" style="display: none">
+                <label for="photoChange" class="btn btn-dark changePhotoWrapper jm-btn-gradient"  style="width: 100%">Change Picture</label>
+                    <input type="File" id="photoChange" style="display: none" >
+                <button type="button" class="btn btn-dark mt-3 jm-btn-gradient" data-bs-toggle="modal"
+                                        data-bs-target="#centermodal" id="displayModal">Change Password</button>
                 </div>
+
+           
+
+             
+
+
+
             </div>
             </div>
             <div class="col-md-5 border-right">
@@ -67,7 +135,7 @@
                     </div>
 
 
-                    <form action="">
+                    <!-- <form action=""> -->
                     <div class="row mt-2">
                         <div class="col-md-6"><label class="labels">Name</label><input type="text" class="form-control" placeholder="first name" value="<?php echo $_SESSION['first_name']; ?>"></div>
                         <div class="col-md-6"><label class="labels">Surname</label><input type="text" class="form-control" value="<?php echo $_SESSION['first_name']; ?>" placeholder="surname"></div>
@@ -123,24 +191,7 @@
                                 <div class="col-md-12"><label class="labels">Twitter</label><input type="text" class="form-control" placeholder="enter your twitter url" value="<?php echo isset($_SESSION['twitter']) && !empty($_SESSION['twitter']) ? $_SESSION['twitter'] : 'No record found';?>">
                                 </div>
 
-                               <div class="card shadow-2 mt-4">
-                                    <div class="card-body">
-                                        <h4 class="card-title mt-4">Update Password:</h4>
-
-                                        <div class="input-group">
-                                            <input  type="text" class="form-control" placeholder="Enter old password" value=""
-                                                aria-label="Input group example" aria-describedby="passwordEye" name="old_password">
-                                        </div>
-                                    
-                                        <div class="input-group mt-2">
-                                            <input  type="text" class="form-control" placeholder="Enter a new password"
-                                                aria-label="Input group example" aria-describedby="passwordEye" name="new_password">
-                                        </div>
-                                        <div class="mt-5 text-center mb-2">
-                                            <button class="btn btn-success btn-block" name="btn_update_profile">Save Profile</button>
-                                        </div>
-                                    </div>
-                                </div>
+                              
 
 
 
@@ -153,8 +204,102 @@
             </div>
 
             
-            </form>
+            <!-- </form> -->
         </div>
     </div>
     </div>
     </div>
+
+
+<script>
+
+let btnChangePassword = document.getElementById("btnChangePassword");
+let newPassword = document.getElementById("newPassword");
+let oldPassword = document.getElementById("oldPassword");
+let retypeNewPassword = document.getElementById("retypeNewPassword");
+let btnSubmitNewPassword = document.getElementById("btnSubmitNewPassword");
+let passwordEye2 = document.getElementById("passwordEye2");
+
+
+// //temporary
+// let displayModal = document.getElementById("displayModal");
+
+// window.onload = function () {
+//     displayModal.click();
+// }
+
+
+                        
+const gen_password = document.querySelector("#gen_password");
+
+passwordEye2.addEventListener("click", () => {
+    if (newPassword.type == "text") {
+        newPassword.type = "password";
+       
+        passwordEye2.innerHTML = '<div class="input-group-text h-100" id="passwordEye"><i class="fas fa-eye-slash"></i></div>';
+    } else {
+        newPassword.type = "text";
+      
+        passwordEye2.innerHTML = '<div class="input-group-text h-100" id="passwordEye"><i class="fas fa-eye"></i></div>';
+    }
+})
+
+
+btnChangePassword.addEventListener("click", () => {
+
+let errorArray = [];
+
+if(newPassword.value.trim() == "") {
+   errorArray.push({ 
+    targetInput: "newPassword",  
+    appendedClass: "is-invalid" 
+   });
+}
+
+if(oldPassword.value.trim() == "") {
+  errorArray.push({ 
+    targetInput: "oldPassword",  
+    appendedClass: "is-invalid" 
+   });
+}
+
+if(retypeNewPassword.value.trim() == "") {
+  errorArray.push({ 
+    targetInput: "oldPassword",  
+    appendedClass: "is-invalid" 
+   });
+}
+
+
+if (errorArray.length == 0) {
+    btnSubmitNewPassword.click();
+} else {
+
+    for (let i = 0; i < errorArray.length; i++) {
+            if (errorArray[i].targetInput == "newPassword") {
+                newPassword.classList.add(errorArray[i].appendedClass);
+                console.log("yes firstname is empty");
+            }
+
+            if (errorArray[i].targetInput == "oldPassword") {
+                oldPassword.classList.add(errorArray[i].appendedClass);
+            console.log("yes lastname is empty");
+            }
+
+            if (errorArray[i].targetInput == "oldPassword") {
+                retypeNewPassword.classList.add(errorArray[i].appendedClass);
+            console.log("retype password empty");
+            }
+
+        }
+}
+
+ 
+
+});
+
+</script>
+
+
+
+

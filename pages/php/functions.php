@@ -310,24 +310,7 @@ function signin_user()
             $correct_password = $row['password_e'];
             
             if (password_verify($user_password, $correct_password)) {
-                $_SESSION['user_id'] = $row['user_id'];
-                $_SESSION['profile_pic'] = $row['profile_pic'];
-                $_SESSION['user_email'] = $row['email'];
-                $_SESSION['user_type'] = $row['user_type'];
-                $_SESSION['sex'] = $row['sex'];
-                $_SESSION['dob'] = $row['dob'];
-
-                $_SESSION['first_name'] = $row['first_name'];
-                $_SESSION['last_name'] = $row['last_name'];
-                $_SESSION['contact_no'] = $row['contact_no'];
-                $_SESSION['contact_no2'] = $row['contact_no2'];
-                $_SESSION['house_no'] = $row['house_no'];
-                $_SESSION['street'] = $row['street'];
-                $_SESSION['brgy'] = $row['brgy'];
-                $_SESSION['city'] = $row['city'];
-                $_SESSION['province'] = $row['province'];
-                $_SESSION['zipcode'] = $row['zipcode'];
-                $_SESSION['country'] = $row['country'];
+                
 
 
 
@@ -338,6 +321,25 @@ function signin_user()
                 $auth_user = ucwords($auth_user);
 
                 if ($is_active == "yes" && $is_disabled == "no") {
+
+                    $_SESSION['user_id'] = $row['user_id'];
+                    $_SESSION['profile_pic'] = $row['profile_pic'];
+         
+                    $_SESSION['user_type'] = $row['user_type'];
+                    $_SESSION['sex'] = $row['sex'];
+                    $_SESSION['dob'] = $row['dob'];
+
+                    $_SESSION['first_name'] = $row['first_name'];
+                    $_SESSION['last_name'] = $row['last_name'];
+                    $_SESSION['contact_no'] = $row['contact_no'];
+                    $_SESSION['contact_no2'] = $row['contact_no2'];
+                    $_SESSION['house_no'] = $row['house_no'];
+                    $_SESSION['street'] = $row['street'];
+                    $_SESSION['brgy'] = $row['brgy'];
+                    $_SESSION['city'] = $row['city'];
+                    $_SESSION['province'] = $row['province'];
+                    $_SESSION['zipcode'] = $row['zipcode'];
+                    $_SESSION['country'] = $row['country'];
 
                     $_SESSION['is_in'] = 'true';
 
@@ -379,7 +381,7 @@ function signin_user()
 
                     $_SESSION['address'] = $house_no . $separator . $street . $separator . $brgy . $separator . $city . $separator . $zipcode . $separator . $country . $separator;
                     
-                
+                //WELCOME PAGE IS DIFFERENT FOR ADMINISTRATOR AND NON ADMINISTRATOR USERS
                     if ($_SESSION['user_type'] == "administrator") {
                         $_SESSION['is_admin'] = "yes";
                         redirect('panel.php?adm_home=true');
@@ -396,8 +398,9 @@ function signin_user()
                 
             } else {
                 $_SESSION['is_in'] = 'false';
-                auth_set_alert_danger('Login failed: Invalid username or password');
+                redirect("authentication.php?invalid_credentials=true");
                 $_SESSION['entered_name'] = $uname;
+                // $_SESSION['prevent_reload'] = 'set';
             }
 
         }
@@ -405,6 +408,14 @@ function signin_user()
         
         
     }
+}
+
+//ERROR IF LOGIN FAILED
+
+
+if (isset($_GET['invalid_credentials'])) {
+    set_alert("Invalid credentials, try again");
+    unset($_SESSION['prevent_reload']);
 }
 
 //LOGOUT FUNCTIONALITY
@@ -863,6 +874,96 @@ if (isset($_GET['activated_user']) && isset($_SESSION['prevent_reload_data'])) {
     set_alert_success($activated_user . ' ' . ' account has been reactivated');
     unset($_SESSION['prevent_reload_data']);
 }
+
+
+function changePassword() {
+
+    if (isset($_POST['btn_change_password'])) {
+
+        global $conn;
+    
+        $pw_change_errors = [];
+    
+        $current_user_id = $_SESSION['user_id'];
+    
+        $old_password = escape_string($_POST['old_password']);
+        $new_password = escape_string($_POST['new_password']);
+        $retype_new_password = escape_string(($_POST['retype_new_password']));
+    
+        if (empty($old_password)) {
+            array_push($pw_change_errors, "empty_old_password");
+        } 
+    
+        if (empty($new_password)) {
+            array_push($pw_change_errors, "empty_new_password");
+        } 
+    
+        if (empty($retype_new_password)) {
+            array_push($pw_change_errors, "empty_new_retype_new_password");
+        } 
+    
+    
+    
+        if (empty($pw_change_errors)) {
+    
+            $query_existing_password = $conn->query("SELECT password_e FROM tbl_users WHERE user_id = $current_user_id; ");
+            $existing_password = $query_existing_password->fetch_assoc();
+    
+            $correct_password = $existing_password['password_e'];
+    
+            if (password_verify($old_password, $correct_password)) {
+    
+                $new_password_e = password_hash($new_password, PASSWORD_BCRYPT);
+    
+                if ($new_password === $retype_new_password) {
+                    
+                    $query_update_password = $conn->query("UPDATE tbl_users SET password_e = '$new_password_e'");
+    
+                    if ($query_update_password) {
+                        redirect("panel.php?update_profile=true&password_change_ok=true");
+                        $_SESSION['prevent_reload_data'] = 'set';
+                    } else {
+                        redirect("panel.php?update_profile=true&password_change_ok=false");
+                        $_SESSION['prevent_reload_data'] = 'set';
+                    }
+    
+                } else {
+                    redirect("panel.php?update_profile=true&new_password_match=false");
+                    $_SESSION['prevent_reload_data'] = 'set';
+                }
+            } else {
+                redirect("panel.php?update_profile=true&old_password_failed=true");
+                $_SESSION['prevent_reload_data'] = 'set';
+            }
+        }
+    }
+    
+    
+    if (isset($_GET['password_change_ok']) && $_GET['password_change_ok'] == 'false' ) {
+        set_alert_danger('Password query failed during an attempt to change password from the database');
+        unset($_SESSION['prevent_reload_data']);
+    }
+    
+    if (isset($_GET['password_change_ok']) && $_SESSION['prevent_reload_data'] == 'set' && $_GET['password_change_ok'] == 'true' ) {
+       
+        set_alert_success('Password has been successfully changed!');
+        unset($_SESSION['prevent_reload_data']);
+    }
+
+    if (isset($_GET['new_password_match']) && isset($_SESSION['prevent_reload_data']) && $_GET['new_password_match'] == 'false') {
+        set_alert_danger('Password mismatch, try again!');
+        unset($_SESSION['prevent_reload_data']);
+    }
+
+    if (isset($_GET['old_password_failed']) && isset($_SESSION['prevent_reload_data']) && $_GET['old_password_failed'] == 'true') {
+        set_alert_danger('Old password failed, try again.');
+        unset($_SESSION['prevent_reload_data']);
+    }
+    
+
+}
+
+
 
 
 

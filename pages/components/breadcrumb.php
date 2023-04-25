@@ -49,8 +49,11 @@
                     echo  $panel_title = html_ent(ucwords($_GET['title']));
                 }
 
-                if (isset($_GET['profile']) && isset($_GET['system_user'])) {
+                if (isset($_GET['profile'])) {
                     echo  $panel_title = "Profile";
+                }
+                if (isset($_GET['update_profile'])) {
+                    echo  $panel_title = "Profile Settings";
                 }
                     
           

@@ -69,6 +69,8 @@ signin_user();
                             echo '<code>Invalid username or password</code>';
                             unset($_SESSION['is_in']);
                         }
+
+                        display_notification2();
                         ?>
                         </p>
                        

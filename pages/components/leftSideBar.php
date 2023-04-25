@@ -43,11 +43,11 @@
                                     class="hide-menu">Profile </span></a>
                             <ul aria-expanded="false" class="collapse  first-level base-level-line">
                                 <li class="sidebar-item"><a href="panel.php?update_profile=true" class="sidebar-link"><span
-                                            class="hide-menu"> Update Profile
+                                            class="hide-menu"> Account Settings
                                         </span></a>
                                 </li>
                                 <li class="sidebar-item"><a href="panel.php?profile=true" class="sidebar-link"><span
-                                            class="hide-menu"> Account
+                                            class="hide-menu"> Profile
                                         </span></a>
                                 </li>
                              

@@ -164,7 +164,7 @@
              <!-- =========================LOAD edit profile========================== -->
              <?php if (isset($_GET['update_profile'])): ?>
             <div class="col-12">
-                
+                <?php changePassword(); display_notification(); ?>
                 <?php include 'components/update_profile.php'?>
               
                
