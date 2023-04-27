@@ -57,6 +57,7 @@
             </div>
         </div>
 
+     
         <div class="col-md-6">
             <div class="card border-end ">
                 <div class="card-body bg-success  grow shadow-2 rounded-4">
@@ -112,6 +113,11 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-md-6">
+            <button class="btn btn-primary">Password Reset Tool</button>
+        </div>
+
        
     </div>
 </div>

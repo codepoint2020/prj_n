@@ -242,6 +242,18 @@
                 
             </div>
             <?php endif; ?>
+
+
+            <?php if (isset($_GET['view']) && $_SESSION['user_type'] == 'administrator'): ?>
+            <div class="col-12">
+                <?php  
+               
+                ?>
+                <?php include 'components/view_user.php'; ?>
+                
+            </div>
+            <?php endif; ?>
+
             <!-- ============================================================== -->
             <!-- USERS' TABLE END -->
             <!-- ============================================================== -->
