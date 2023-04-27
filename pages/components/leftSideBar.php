@@ -27,6 +27,10 @@
                                             class="hide-menu"> Recently Uploaded
                                         </span></a>
                                 </li> -->
+                                <li class="sidebar-item"><a href="panel.php?load_vid_gallery=true" class="sidebar-link"><span
+                                            class="hide-menu"> LibraryTube
+                                        </span></a>
+                                </li>
                                 <li class="sidebar-item"><a href="panel.php?category_tiles=true" class="sidebar-link"><span
                                             class="hide-menu"> Categories
                                         </span></a>

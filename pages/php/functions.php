@@ -447,20 +447,26 @@ function add_book() {
 
         $register_date = current_date();
 
+        $file_type = "";
+
       
 
         $file_extension = pathinfo($formFile, PATHINFO_EXTENSION);
 
         if ($file_extension == "pdf") {
             $dir = "../assets/references/pdf/";
+            $file_type = "pdf";
         } elseif ($file_extension == "mp4"){
             $dir = "../assets/references/videos/";
+            $file_type = "mp4";
         } elseif ($file_extension == "pptx") {
             $dir = "./pptx_player/file/";
+            $file_type = "pptx";
         } elseif ($file_extension == "docx") {
-            $dir = "../assets/references/docx/";
+            // $dir = "../assets/references/docx/";
+            $file_type = "not_allowed"; 
         } else {
-            NULL;
+            $file_type = "not_allowed"; //produce error to tell user that the file is defined by the system as potentially harmful or unsupported
         }
 
     
@@ -473,10 +479,12 @@ function add_book() {
 
         if (!empty($formFile)) {
             $formFile = "id_" . $next_id. "_" . filenameAppend() .$formFile;
+            $cover_image = "id_" . $next_id. "_" . filenameAppend() .$cover_image;
             
         } else {
             $formFile = "";
-            $cover_image = "";    }
+            $cover_image = "";    
+        }
 
 
      
@@ -506,11 +514,17 @@ function add_book() {
             array_push($errorArray, "empty_formFile_temp");
         }
 
+   
+        if ($file_type == "not_allowed") {
+            array_push($errorArray, "unsupported_file");
+        }
+
         
 
         if (empty($errorArray)) {
             $add_book_query = $conn->query("INSERT INTO tbl_books (
                 file_name,
+                file_type,
                 title, 
                 details, 
                 category,
@@ -521,6 +535,7 @@ function add_book() {
                 ) VALUES (
 
                     '$formFile',
+                    '$file_type',
                     '$title',
                     '$details',
                     '$category',
@@ -558,7 +573,7 @@ function add_book() {
 
 if (isset($_GET['manage_references']) && isset($_GET['file_added'])) {
     $added_file = ucwords(html_ent($_GET['file_added']));
-    set_alert_success($added_file . ' ' . 'has been successfully added');
+    set_alert_success($added_file . ' ' . 'has been successfully added. ' .'<a href="panel.php?all_references=true">Go to all categories to view the file.</a>');
     
 }
 

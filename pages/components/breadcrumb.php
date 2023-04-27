@@ -55,6 +55,12 @@
                 if (isset($_GET['update_profile'])) {
                     echo  $panel_title = "Profile Settings";
                 }
+
+                if (isset($_GET['load_vid_gallery'])) {
+                    echo  $panel_title = "video_galleries";
+                }
+
+                
                     
           
                 ?>

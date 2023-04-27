@@ -8,7 +8,17 @@ if(!isset($_SESSION['error_array'])) {
 unset($_SESSION['error_array']);
 
 
+
+if (isset($_GET['invalid_file_upload']) && isset($_SESSION["prevent_reload"]) && $_SESSION["prevent_reload"] == 'set') {
+    set_alert_danger("Please upload supported files only, <a style='text-decoration: underline;' href='panel.php?manage_references=true'>refresh</a> the page and try again.");
+    $_SESSION["prevent_reload"] == 'disabled';
+    unset($_SESSION["prevent_reload"]);
+}
+
+display_notification();
+
 ?>
+<div class="error_handler"></div>
 <div class="row">
     <div class="card">
         <div class="card-body">
@@ -49,6 +59,7 @@ unset($_SESSION['error_array']);
                             <?php 
                                 if (in_array("empty_category", $retreived_error_array)) {
                                     echo "is-invalid";
+                                   
                                 }
                             ?>
                             " id="selectCategory" name="category">
@@ -75,9 +86,15 @@ unset($_SESSION['error_array']);
                                 if (in_array("empty_formFile", $retreived_error_array)) {
                                     echo "is-invalid";
                                 }
+
+                                if (in_array("unsupported_file", $retreived_error_array)) {
+                                    echo "is-invalid";
+                                    redirect("panel.php?manage_references=true&invalid_file_upload=true");
+                                    $_SESSION["prevent_reload"] = 'set';
+                                }
                             ?>
                             
-                            " type="file" id="formFile" name="formFile">
+                            " type="file" id="formFile" name="formFile" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="File supported .mp4, .pdf, .pptx">
                         </div>
 
                     </div>
@@ -85,7 +102,15 @@ unset($_SESSION['error_array']);
 
                         <div class="mb-2">
                             <label class="form-label" for="upload_file">Cover Image</label>
-                            <input class="form-control" type="file" id="upload_file" name="cover_image" onchange="getImagePreviewBook(event)">
+                            <input class="form-control
+                            <?php 
+                            if (in_array("unsupported_file", $retreived_error_array)) {
+                                echo "is-invalid";
+                                redirect("panel.php?manage_references=true&invalid_file_upload=true");
+                                $_SESSION["prevent_reload"] = 'set';
+                            }
+                            ?>
+                            " type="file" id="upload_file" name="cover_image" onchange="getImagePreviewBook(event)">
                         </div>
 
                         <div class="row">
@@ -127,7 +152,36 @@ unset($_SESSION['error_array']);
 
 <script>
 
+    const formFile = document.getElementById('formFile');
+    let error_handler = document.querySelector('.error_handler');
+    const fileInput = document.getElementById('upload_file');
+
+    formFile.addEventListener('change', function() {
+        const allowedExtensions = ['mp4', 'pdf', 'pptx'];
+        const file = formFile.files[0];
+        const extension = file.name.split('.').pop().toLowerCase();
+        if (!allowedExtensions.includes(extension)) {
+        //   alert('The selected file is not supported by the system. Please upload a .mp4, .pdf, or .pptx file.');
+        error_handler.innerHTML = '<div style="z-index: 99" class="alert alert-danger alert-dismissible fade show" role="alert"><button type="button"></button>Error:[File not supported] Recommended files for references are as follows: .pdf, .pptx, and .mp4</div>';
+          
+          formFile.value = '';
+        }
+      });
+
+     
+      fileInput.addEventListener('change', function() {
+        const allowedExtensions = ['png', 'jpg', 'jpeg', 'bmp'];
+        const file = fileInput.files[0];
+        const extension = file.name.split('.').pop().toLowerCase();
+        if (!allowedExtensions.includes(extension)) {
+        //   alert('The selected file is not supported by the system. Please upload a .mp4, .pdf, or .pptx file.');
+        error_handler.innerHTML = '<div style="z-index: 99" class="alert alert-danger alert-dismissible fade show" role="alert"><button type="button"></button>Error:[File not supported] Recommended files for cover image are as follows: .jpg, .png, .jpeg and .bmp</div>';
+          fileInput.value = '';
+        }
+      });
+
     function getImagePreviewBook(event) {
+
         var image = URL.createObjectURL(event.target.files[0]);
         var coverImage = document.getElementById("coverImage");
         coverImage.setAttribute("src",image);

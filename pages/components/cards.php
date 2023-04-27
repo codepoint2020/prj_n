@@ -128,7 +128,7 @@
         $cover_img = $row['cover_img'];
   
         
-        $cover_img_pdf = "../assets/references/videos/" . $cover_img;
+        $cover_img_pdf = "../assets/references/pdf/" . $cover_img;
         $cover_img_pptx = "./pptx_player/file/" . $cover_img;
         $cover_img_vids = "../assets/references/videos/" . $cover_img;
      
