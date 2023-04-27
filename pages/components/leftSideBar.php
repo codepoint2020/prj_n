@@ -46,11 +46,11 @@
                                 aria-expanded="false"><i data-feather="grid" class="feather-icon"></i><span
                                     class="hide-menu">Profile </span></a>
                             <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                                <li class="sidebar-item"><a href="panel.php?update_profile=true" class="sidebar-link"><span
+                                <li class="sidebar-item"><a href="panel.php?update_profile=true&system_user=<?php echo  $_SESSION['user_id']; ?>" class="sidebar-link"><span
                                             class="hide-menu"> Account Settings
                                         </span></a>
                                 </li>
-                                <li class="sidebar-item"><a href="panel.php?profile=true" class="sidebar-link"><span
+                                <li class="sidebar-item"><a href="panel.php?profile=true&system_user=<?php echo $_SESSION['system_user']; ?>" class="sidebar-link"><span
                                             class="hide-menu"> Profile
                                         </span></a>
                                 </li>

@@ -53,6 +53,8 @@
         <!-- basic table -->
         
         <!-- order table -->
+
+<!-- FIND WAYS TO DISPLAY SOMETHING WHEN PURELY PANEL.PHP IS LOADED -->
         
         <div class="row">
             <?php if (isset($_SESSION['is_admin']) && $_SESSION['user_type'] == 'administrator' && isset($_GET['adm_home'])): ?>
@@ -69,6 +71,7 @@
                     </div>
                 </div> -->
             <?php endif; ?>
+         
 
             <?php if (isset($_GET['manage_references']) && $_SESSION['user_type'] == 'administrator'): ?>
                 <?php  add_book(); display_notification();  ?>
@@ -95,13 +98,6 @@
                 <?php add_category(); display_notification(); delete_category_confirm_box(); delete_category(); ?>
                 <?php include 'components/categories.php'?>
             <?php endif; ?>
-
-
-        
-
-
-
-
 
             <!-- ============================================================== -->
             <!-- UNDER CONSTRUCTION START -->

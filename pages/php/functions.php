@@ -959,10 +959,13 @@ function changePassword() {
         unset($_SESSION['prevent_reload_data']);
     }
     
-    if (isset($_GET['password_change_ok']) && $_SESSION['prevent_reload_data'] == 'set' && $_GET['password_change_ok'] == 'true' ) {
+    if (isset($_GET['password_change_ok']) && isset($_SESSION['prevent_reload_data']) && $_GET['password_change_ok'] == 'true' ) {
        
         set_alert_success('Password has been successfully changed!');
-        unset($_SESSION['prevent_reload_data']);
+      
+            unset($_SESSION['prevent_reload_data']);
+        
+        
     }
 
     if (isset($_GET['new_password_match']) && isset($_SESSION['prevent_reload_data']) && $_GET['new_password_match'] == 'false') {
@@ -976,6 +979,10 @@ function changePassword() {
     }
     
 
+}
+
+if (isset($_POST['btn_profile_update'])) {
+    
 }
 
 

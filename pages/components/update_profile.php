@@ -78,9 +78,7 @@
                                     <div class="input-group-text h-100" id="passwordEye"><i class="fas fa-eye-slash"></i></div>
                                     </div>
                                 </div>
-
-                                
-                               
+       
                         </div>
 
                         <div class="input-group mt-2">
@@ -88,10 +86,6 @@
                                  id="retypeNewPassword" name="retype_new_password">
                                  
                         </div>
-
-                        
-
-
 
 
                         <div class="mt-5 text-center mb-2">
@@ -108,23 +102,28 @@
         </div><!-- /.modal -->
         </form>
 
-
+       
             <div class="col-md-3 border-right">
-                <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5 mb-4" width="150px" src="../assets/images/users/<?php echo $_SESSION['profile_pic']; ?>"><span class="font-weight-bold mb-4"><?php echo $_SESSION['system_user']; ?></span>
+
+            <form action="panel.php?" method="post" enctype="multipart/form-data">
+
+                <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img id="currentProfilePic" class="rounded-circle mt-5 mb-4" width="150px" src="../assets/images/users/<?php echo $_SESSION['profile_pic']; ?>">
+
+                
+                <span class="font-weight-bold mb-4"><?php echo $_SESSION['system_user']; ?></span>
+                <small id="filenamePreview"></small>
+            
          
                 <div class="col-md-12 changePhotoWrapper">
                 <!-- <button class="btn btn-primary" id="btnChangePic">Change Photo</button> -->
-                <label for="photoChange" class="btn btn-dark changePhotoWrapper jm-btn-gradient"  style="width: 100%">Change Picture</label>
-                    <input type="File" id="photoChange" style="display: none" >
-                <button type="button" class="btn btn-dark mt-3 jm-btn-gradient" data-bs-toggle="modal"
-                                        data-bs-target="#centermodal" id="displayModal">Change Password</button>
+                <label for="photoChange" class="btn btn-dark changePhotoWrapper jm-btn-gradient"  style="width: 100%" data-bs-toggle="tooltip" title="Recommended format: .jpg, .jpeg, .png and in square layout">Change Picture</label>
+
+                <input type="File" id="photoChange" style="display: none" onchange="previewNewProfilePic(event)" class="btn btn-info btn-sm jm-activate" >
+
+  
+
+                <button type="button" class="btn btn-dark mt-3 jm-btn-gradient" data-bs-toggle="modal" data-bs-target="#centermodal" id="displayModal">Change Password</button>
                 </div>
-
-           
-
-             
-
-
 
             </div>
             </div>
@@ -134,11 +133,10 @@
                         <h4 class="text-right">Profile Settings</h4>
                     </div>
 
-
-                    <!-- <form action=""> -->
+                    
                     <div class="row mt-2">
-                        <div class="col-md-6"><label class="labels">Name</label><input type="text" class="form-control" placeholder="first name" value="<?php echo $_SESSION['first_name']; ?>"></div>
-                        <div class="col-md-6"><label class="labels">Surname</label><input type="text" class="form-control" value="<?php echo $_SESSION['first_name']; ?>" placeholder="surname"></div>
+                        <div class="col-md-6"><label class="labels">Name</label><input type="text" class="form-control" placeholder="first name" value="<?php echo ucwords($_SESSION['first_name']); ?>"></div>
+                        <div class="col-md-6"><label class="labels">Surname</label><input type="text" class="form-control" value="<?php echo ucwords($_SESSION['last_name']); ?>" placeholder="surname"></div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-md-12"><label class="labels">Contact #1</label><input type="text" class="form-control" placeholder="enter contact number" value="<?php echo $_SESSION['contact_no']; ?>"></div>
@@ -167,7 +165,7 @@
                    
                     <div class="">
                             <div class="">
-                                <h4 class="card-title">Custom Select</h4>
+                                <h4 class="card-title">Other information</h4>
                 
                                 <div class="form-group mb-4">
                                     <label class="mr-sm-2" for="inlineFormCustomSelect">Sex:</label>
@@ -191,10 +189,14 @@
                                 <div class="col-md-12"><label class="labels">Twitter</label><input type="text" class="form-control" placeholder="enter your twitter url" value="<?php echo isset($_SESSION['twitter']) && !empty($_SESSION['twitter']) ? $_SESSION['twitter'] : 'No record found';?>">
                                 </div>
 
+                                <div class="mb-3 mt-4" id="last_update">This profile was updated last: October 12, 2020</div>
+
+                                <div class="mb-3 mt-4">
+                                    <button class="btn btn-primary jm-btn-gradient" name="btn_profile_update">Save</button>
+                                </div>
+
+                            </form>
                               
-
-
-
                             </div>
 
                             
@@ -203,8 +205,6 @@
                 </div>
             </div>
 
-            
-            <!-- </form> -->
         </div>
     </div>
     </div>
@@ -294,11 +294,27 @@ if (errorArray.length == 0) {
         }
 }
 
- 
-
 });
 
+function previewNewProfilePic(event) {
+
+var image = URL.createObjectURL(event.target.files[0]);
+var currentProfilePic = document.getElementById("currentProfilePic");
+currentProfilePic.setAttribute("src",image);
+
+var photoChange = document.getElementById("photoChange");
+var filenamePreview = document.getElementById("filenamePreview");
+var filename = photoChange.files[0].name
+
+filenamePreview.textContent = filename;    
+
+
+
+}
+
 </script>
+
+
 
 
 
