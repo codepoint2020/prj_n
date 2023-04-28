@@ -13,7 +13,7 @@
                     <thead class="bg-primary text-white">
                         <tr>
                             <th>#</th>
-                            <th>[UID] Reference Title</th>
+                            <th >[UID] Reference Title</th>
                             <th>Category</th>
                             
                             
@@ -56,7 +56,6 @@
 </div>
 
 <script>
-
 
 
 </script>

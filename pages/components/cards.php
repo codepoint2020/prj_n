@@ -201,7 +201,8 @@
                     <?php endif; ?>
                 <div class="card-body">
                     <h4 class="card-title"><?php echo ucwords(strtolower($row['title'])); ?></h4>
-                    <small class="card-category">Category: <a href="#"><?php echo $row['category']; ?></a></small>
+                    <small class="card-category">Category: <a href="#"><?php echo $row['category']; ?></a></small><br>
+                    <small class="card-category">File type: <a href="#"><?php echo $row['file_type']; ?></a></small>
                     <p class="card-text"><?php echo short_desc($row['details']); ?></p>
                     
                    

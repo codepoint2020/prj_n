@@ -7,6 +7,9 @@
 if (isset($_GET['file'])) {
     $video_location = '../assets/references/videos/';
     $video_file = $video_location . $_GET['file'];
+    $id = html_ent($_GET['id']);
+    $file_query = $conn->query("SELECT * FROM tbl_books WHERE book_id = $id");
+    $row = $file_query->fetch_assoc();
   }
 ?>
 
@@ -49,6 +52,7 @@ if (isset($_GET['file'])) {
              <source src="<?php echo $video_file; ?>" type="video/mp4">
         </video>
         <!-- <img src="<?php //echo $video_location; ?>close.png" class="close-btn" onclick="stopVideo()"> -->
+        <h2 class="h3 mt-2">Description:  <?php echo $row['details'] ?></h2>
         
     </div>
     

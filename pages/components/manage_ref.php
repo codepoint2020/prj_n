@@ -19,9 +19,10 @@ display_notification();
 
 ?>
 <div class="error_handler"></div>
-<div class="row">
-    <div class="card">
-        <div class="card-body">
+<div class="row jm-width">
+    <div class="card ">
+        <div class="card-body ">
+     
             <h4 class="card-title">Add New Reference</h4>
             <form action="panel.php?manage_references=true" method="POST" enctype="multipart/form-data">
                 <div class="row">

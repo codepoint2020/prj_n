@@ -10,6 +10,24 @@ include 'notify_error_handlers.php';
 // <!-- ==================================================== -->
 
 
+//Log or Record Major admin activities such as posting editing and deleting data
+function jemor_log($input_activity, $input_affected, $input_item)
+{
+    global $conn;
+
+    //logs activity into the system
+    $user_id    = intval($_SESSION['user_id']);
+    $activity   = strtolower($input_activity);
+    $affected = strtolower($input_affected);
+    $item = strtolower($input_item);
+    $log_time   = time();
+
+    $conn->query("INSERT INTO activity_logs (user_id, activity, affected, item, datelog) VALUES ($user_id,'$activity','$affected','$item','$log_time'); ")
+
+        or die("Failed to insert activity logs" . $conn->error . __LINE__);
+}
+
+
 function redirect($location)
 {
     header("Location: $location ");
@@ -19,7 +37,7 @@ function redirect($location)
 //limit the number of text to based on character string on the description/details of references/books
 function short_desc($string)
 {
-    $max_length = 100;
+    $max_length = 70;
     $current_length = strlen($string);
 
     if ($current_length <= $max_length) {
@@ -44,6 +62,7 @@ function add_user()
        
         $first_name = escape_string_lower($_POST['first_name']);
         $last_name = escape_string_lower($_POST['last_name']);
+        $complete_name = $first_name . " " .$last_name;
         $ext = escape_string_lower($_POST['ext']);
         $user_type = escape_string_lower($_POST['user_type']);
         $username = escape_string_lower($_POST['username']);
@@ -200,6 +219,7 @@ function add_user()
                     echo jm_error('Something went wrong while inserting last id for $insert_address query').$conn->error."<h2>At line: ".__LINE__."</h2>";
                 }
 
+                jemor_log("added", $user_type, $complete_name);
                 header("Location: panel.php?load_users=true&added_user=".$_SESSION['last_user_added']);
 
             }
@@ -240,12 +260,14 @@ function delete_user() {
         if ($query_id->num_rows > 0) {
             $row = $query_id->fetch_assoc();
             $target_user = ucwords($row['first_name'] . " " .$row['last_name']);
+            $user_type = $row['user_type'];
             $_SESSION['prevent_reload_data'] = "set";
 
             $delete_query = $conn->query("DELETE FROM tbl_users WHERE user_id = $id; ") or 
             die(jm_error('Delete Query Failed').$conn->error."<h2>At line: ".__LINE__."</h2>");
 
             if ($delete_query) {
+                jemor_log("deleted", $user_type, $target_user);
                 redirect("panel.php?load_users=true&user_deleted=true&uname=".$target_user);
             }
         } 
@@ -434,6 +456,7 @@ function add_book() {
 
     if (isset($_POST['add_book'])) {
 
+        $user_id = $_SESSION['user_id'];
         $title = escape_string($_POST['title']);
         $details = escape_string($_POST['details']);
         $category = escape_string($_POST['category']);
@@ -546,6 +569,8 @@ function add_book() {
                     ); ");
         
             if ($add_book_query) {
+                jemor_log("Added", $category, $title);
+     
 
                 $_SESSION['last_book_added'] = $title;
 
@@ -556,6 +581,7 @@ function add_book() {
                 }
         
                 //if record has been recently changed prevent recently record to be added when user refreshes the page 1
+                
                 redirect('panel.php?manage_references=true&file_added='.$title);
               
                
@@ -620,7 +646,9 @@ function delete_book() {
         if ($query_book->num_rows > 0) {
             $row = $query_book->fetch_assoc();
             $target_book = ucwords("Reference Title: ".$row['title']);
+            $book_title = ucwords($row['title']);
             $target_file = $row["file_name"];
+            $category = $row['category'];
             $target_cover_image = $row["cover_img"];
             $_SESSION['prevent_reload_data'] = "set";
 
@@ -632,6 +660,7 @@ function delete_book() {
             if ($delete_book_query) {
                 unlink($file_dir . $target_file);
                 unlink($file_dir . $target_cover_image);
+                jemor_log("deleted", $category, $book_title);
                 redirect("panel.php?manage_all_ref=true&reference_deleted=true&book_title=".$target_book);
             }
         } 
@@ -791,15 +820,21 @@ function deactivate_user() {
     if (isset($_GET['confirm_deactivation'])) {
         $user_id = html_ent($_GET['confirm_deactivation']);
 
-        $query_user = $conn->query("SELECT first_name, last_name FROM tbl_users WHERE user_id = $user_id ");
+        $query_user = $conn->query("SELECT * FROM tbl_users WHERE user_id = $user_id ");
         $target_record = $query_user->fetch_assoc();
         $target_user = $target_record["first_name"] . " " . $target_record["last_name"];
+        $user_type = $target_record['user_type'];
 
         $_SESSION['prevent_reload_data'] = "set";
 
         $update_account_status = $conn->query("UPDATE tbl_users SET is_disabled = 'yes', is_active = 'no' WHERE user_id = $user_id; ")or die(jm_error('Deactivation failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
 
         if ($update_account_status) {
+
+            $query_user = $conn->query("SELECT first_name, last_name FROM tbl_users WHERE user_id = $user_id ");
+            $row = $query_user->fetch_assoc();
+         
+            jemor_log('deactivated', $user_type, $target_user);
             redirect("panel.php?load_users=true&deactivated_user=".$target_user);
         }
     }
@@ -850,9 +885,10 @@ function activate_user() {
     if (isset($_GET['confirm_activation'])) {
         $user_id = html_ent($_GET['confirm_activation']);
 
-        $query_user = $conn->query("SELECT first_name, last_name FROM tbl_users WHERE user_id = $user_id ");
+        $query_user = $conn->query("SELECT * FROM tbl_users WHERE user_id = $user_id ");
         $target_record = $query_user->fetch_assoc();
         $target_user = $target_record["first_name"] . " " . $target_record["last_name"];
+        $user_type = $target_record['user_type'];
 
         $current_date = date('Y-m-d');
         $expiration_date = $target_record["active_until"];
@@ -866,17 +902,26 @@ function activate_user() {
             $update_account_status = $conn->query("UPDATE tbl_users SET is_disabled = 'no', active_until = '$default_exp_date', is_active = 'yes' WHERE user_id = $user_id; ")or die(jm_error('Deactivation failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
             
             if ($update_account_status) {
+            
                 redirect("panel.php?load_users=true&activated_user=".$target_user);
             }
 
         } else {
-            $update_account_status = $conn->query("UPDATE tbl_users SET is_disabled = 'no' WHERE user_id = $user_id; ")or die(jm_error('Deactivation failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+            $update_account_status = $conn->query("UPDATE tbl_users SET is_disabled = 'no', is_active = 'yes' WHERE user_id = $user_id; ")or die(jm_error('Activation failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
             
             if ($update_account_status) {
+             
+            
+                
                 redirect("panel.php?load_users=true&activated_user=".$target_user);
             }
 
         }
+
+        jemor_log('activated', $user_type, $target_user);
+
+      
+
         
 
     }
@@ -981,9 +1026,70 @@ function changePassword() {
 
 }
 
-if (isset($_POST['btn_profile_update'])) {
+function update_profile() {
+
+    global $conn;
+
+    $errorArray = [];
     
+    if (isset($_POST['btn_profile_update'])) {
+
+        $user_id = html_ent($_GET['system_user']);
+
+        $profile_pic = $_FILES['profile_pic']['name'];
+        $profile_pic_tmp = $_FILES['profile_pic']['tmp_name'];
+
+        $first_name = escape_string($_POST['first_name']);
+        $last_name = escape_string($_POST['last_name']);
+        $contact_no = escape_string($_POST['contact_no']);
+        $contact_no2 = escape_string($_POST['contact_no2']);
+        $house_no = escape_string($_POST['house_no']);
+        $street = escape_string($_POST['street']);
+        $brgy = escape_string($_POST['brgy']);
+        $city = escape_string($_POST['city']);
+        $province = escape_string($_POST['province']);
+        $zipcode = escape_string($_POST['zipcode']);
+        $sex = escape_string($_POST['sex']);
+        $facebook = escape_string($_POST['facebook']);
+        $website = escape_string($_POST['website']);
+        $instagram = escape_string($_POST['instagram']);
+        $twitter = escape_string($_POST['twitter']);
+
+        $query_existing = $conn->query("SELECT * FROM tbl_users WHERE user_id = $user_id");
+        $existing_record = $query_existing->fetch_assoc();
+
+        if (empty($first_name)) {
+            array_push($errorArray, "empty_first_name");
+        }
+
+        if (empty($last_name)) {
+            array_push($errorArray, "empty_first_name");
+        }
+
+        if (empty($first_name)) {
+            array_push($errorArray, "empty_first_name");
+        }
+
+
+
+        //Detect changes implement if time allows
+  
+        //update query if there is no error
+        if (empty($errorArray)) {
+            if (empty($profile_pic)) {
+                //separate query without file upload
+            } else {
+                //a query with file upload
+            }
+           
+        }
+        
+
+
+
+    }
 }
+
 
 
 

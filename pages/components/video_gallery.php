@@ -134,6 +134,7 @@ body {
 
     </style>
 </head>
+
 <body>
 
     <h3 class="heading">Video Gallery</h3>
@@ -141,49 +142,29 @@ body {
     <div class="container">
 
         <div class="main-video">
+            <?php
+                 $query_videos = $conn->query("SELECT * FROM tbl_books WHERE file_type = 'mp4' ORDER BY book_id DESC");
+                 $first_vid = $query_videos->fetch_assoc();
+            ?>
             <div class="video">
-                <video src="../assets/references/videos/defaults/woman-58142.mp4" controls autoplay></video>
-                <h3 class="title">01. Woman</h3>
+                <video src="../assets/references/videos/<?php echo $first_vid['file_name']; ?>" controls autoplay></video>
+                <h3 class="title mt-2"><?php echo $first_vid['title']; ?></h3>
+                <p><?php echo $first_vid['details']; ?></p>
             </div>
         </div>
 
         <div class="video-list">
+            <?php
+                 $query_videos = $conn->query("SELECT * FROM tbl_books WHERE file_type = 'mp4' ORDER BY book_id DESC");
+                 while ($row = $query_videos->fetch_assoc()):
+            ?>
             <div class="vid active">
-                <video src="../assets/references/videos/defaults/woman-63241.mp4"  muted ></video>
-                <h3 class="title">02. Another Video</h3>
+                <video src="../assets/references/videos/<?php echo $row['file_name']; ?>"  muted ></video>
+                <h3 class="title"><?php echo ucwords($row['title']); ?></h3>
+                
             </div>
-            <div class="vid">
-                <video src="../assets/references/videos/defaults/nato-19537.mp4"  muted ></video>
-                <h3 class="title">03. Another Video</h3>
-            </div>
-            <div class="vid">
-                <video src="../assets/references/videos/defaults/u-boat-16394.mp4"  muted ></video>
-                <h3 class="title">04. Another Video</h3>
-            </div>
-            <div class="vid">
-                <video src="../assets/references/videos/defaults/war-46875.mp4"  muted ></video>
-                <h3 class="title">05. Another Video</h3>
-            </div>
-            <div class="vid">
-                <video src="../assets/references/videos/defaults/u-boat-16394.mp4"  muted ></video>
-                <h3 class="title">06. Another Video</h3>
-            </div>
-            <div class="vid">
-                <video src="../assets/references/videos/defaults/u-boat-16394.mp4"  muted ></video>
-                <h3 class="title">06. Another Video</h3>
-            </div>
-            <div class="vid">
-                <video src="../assets/references/videos/defaults/u-boat-16394.mp4"  muted ></video>
-                <h3 class="title">06. Another Video</h3>
-            </div>
-            <div class="vid">
-                <video src="../assets/references/videos/defaults/u-boat-16394.mp4"  muted ></video>
-                <h3 class="title">06. Another Video</h3>
-            </div>
-            <div class="vid">
-                <video src="../assets/references/videos/defaults/u-boat-16394.mp4"  muted ></video>
-                <h3 class="title">06. Another Video</h3>
-            </div>
+           <?php endwhile; ?>
+
         </div>
 
 

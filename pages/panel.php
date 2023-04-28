@@ -208,7 +208,7 @@
 
 
              <!-- =======================LOAD VIDEO GALLERY=============================== -->
-             <?php if (isset($_GET['load_vid_gallery'])): ?>
+             <?php if (isset($_GET['load_gallery'])): ?>
             <div class="col-12">
             
                 <?php include 'components/video_gallery.php'?>

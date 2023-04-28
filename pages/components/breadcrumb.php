@@ -56,8 +56,8 @@
                     echo  $panel_title = "Profile Settings";
                 }
 
-                if (isset($_GET['load_vid_gallery'])) {
-                    echo  $panel_title = "video_galleries";
+                if (isset($_GET['load_gallery'])) {
+                    echo  $panel_title = "LibraryTube";
                 }
 
                 
