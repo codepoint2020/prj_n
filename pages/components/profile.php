@@ -47,35 +47,41 @@
     </style>
 
 
+<?php
+
+$user_id = $_GET['user_id'];
+
+$current_user_query = $conn->query("SELECT tbl_users.*, tbl_address.*
+FROM tbl_users
+INNER JOIN tbl_address ON tbl_users.address_id = tbl_address.address_id WHERE user_id = $user_id;
+
+") or die("Failed to query current user ".$conn->error.__LINE__);
+$user_info = $current_user_query->fetch_assoc();
+
+
+// print_r($user_info);
+
+?>
+
 
 <div class="container">
         <div class="main-body">
         
-              <!-- Breadcrumb -->
-              <!-- <nav aria-label="breadcrumb" class="main-breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                  <li class="breadcrumb-item"><a href="javascript:void(0)">User</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">User Profile</li>
-                </ol>
-              </nav> -->
-              <!-- /Breadcrumb -->
         
               <div class="row gutters-sm">
                 <div class="col-md-4 mb-3">
                   <div class="card">
                     <div class="card-body">
                       <div class="d-flex flex-column align-items-center text-center">
-                        <img src="../assets/images/users/<?php echo $_SESSION['profile_pic']; ?>" alt="Admin" class="rounded-circle" width="150">
+                        <img src="../assets/images/users/<?php echo $user_info['profile_pic']; ?>" alt="Admin" class="rounded-circle" width="150">
                         <div class="mt-3">
-                          <h4><?php echo $_SESSION['system_user']; ?></h4>
-                          <p class="text-secondary mb-4"><?php echo ucwords($_SESSION['user_type']); ?></p>
-                          <!-- <p class="text-muted font-size-sm"><?php //echo $_SESSION['user_email']; ?></p> -->
-                          <!-- <button class="btn btn-primary">Follow</button>
-                          <button class="btn btn-outline-primary">Message</button> -->
+                          <h4><?php echo ucwords($user_info['first_name'] . " " . $user_info['last_name']); ?></h4>
+                          <p class="text-secondary mb-4"><?php echo ucwords($user_info['user_type']); ?></p>
+                    
+                          <!-- <button class="btn btn-outline-primary">Message</button> -->
                           <div class="row">
                         <div class="col-sm-12">
-                          <a class="btn btn-info mb-4" data-bs-toggle="tooltip" title="Click here to update your information" href="panel.php?update_profile=true&user=<?php echo $_SESSION['user_id']?>">Edit Profile</a>
+                          <a class="btn btn-info mb-4" data-bs-toggle="tooltip" title="Click here to update your information" href="panel.php?update_profile=true&user_id=<?php echo $user_info['user_id']?>">Edit Profile</a>
                         </div>
                       </div>
                         </div>
@@ -87,21 +93,22 @@
 
                     <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                         <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook mr-2 icon-inline text-primary"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>Facebook</h6>
-                        <span class="text-secondary">no record found</span>
+                        <span class="text-secondary"><a target = "_blank" href="<?php echo $user_info['facebook']; ?>"><?php echo $user_info['facebook']; ?></a></span>
+                        
                       </li>
                       
                       <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                         <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe mr-2 icon-inline"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>Website</h6>
-                        <span class="text-secondary">no record found</span>
+                        <span class="text-secondary"><a target = "_blank" href="<?php echo $user_info['website']; ?>"><?php echo $user_info['website']; ?></a></span>
                       </li>
                   
                       <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                         <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter mr-2 icon-inline text-info"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>Twitter</h6>
-                        <span class="text-secondary">no record found</span>
+                        <span class="text-secondary"><a target = "_blank" href="<?php echo $user_info['twitter']; ?>"><?php echo $user_info['twitter']; ?></a></span>
                       </li>
                       <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                         <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram mr-2 icon-inline text-danger"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>Instagram</h6>
-                        <span class="text-secondary">no record found</span>
+                        <span class="text-secondary"><a target = "_blank" href="<?php echo $user_info['instagram']; ?>"><?php echo $user_info['instagram']; ?></a></span>
                       </li>
                     
                     </ul>
@@ -115,7 +122,7 @@
                           <h6 class="mb-0">Full Name</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                          <?php echo $_SESSION['system_user']; ?>
+                        <?php echo ucwords($user_info['first_name'] . " " . $user_info['last_name']); ?>
                         </div>
                       </div>
                       <hr>
@@ -124,7 +131,7 @@
                           <h6 class="mb-0">Email</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                        <?php echo $_SESSION['user_email']; ?>
+                        <?php echo $user_info['email']; ?>
                         </div>
                       </div>
                       <hr>
@@ -133,7 +140,7 @@
                           <h6 class="mb-0">Primary Contact#</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                          <?php echo isset($_SESSION['contact_no']) && !empty($_SESSION['contact_no']) ? $_SESSION['contact_no'] : '  <span class="text-secondary">No record found</span>'; ?>
+                        <?php echo $user_info['contact_no']; ?>
                         </div>
 
                
@@ -147,7 +154,7 @@
                           <h6 class="mb-0">Secondary Contact#</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                        <?php echo isset($_SESSION['contact_no2']) && !empty($_SESSION['contact_no2']) ? $_SESSION['contact_no2'] : '  <span class="text-secondary">No record found</span>';?>
+                        <?php echo $user_info['contact_no2']; ?>
                         </div>
                       </div>
                       <hr>
@@ -156,7 +163,7 @@
                           <h6 class="mb-0">Address</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                        <?php echo isset($_SESSION['address']) && !empty($_SESSION['address']) ?  : '<span class="text-secondary">No record found</span>';?>
+                        <?php echo strtoupper($user_info['house_no'] . ", " . $user_info['street'] . ", " . $user_info['brgy']. ", " . $user_info['city'] . ", ".$user_info['province']. ", " . $user_info['zipcode']); ?>
                         </div>
                       </div>
                       <hr>
@@ -165,7 +172,7 @@
                           <h6 class="mb-0">Sex:</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                        <?php echo isset($_SESSION['sex']) && !empty($_SESSION['sex']) ? $_SESSION['sex'] : '<span class="text-secondary">No record found</span>';?>
+                        <?php echo $user_info['sex']; ?>
                         </div>
                       </div>
                       <hr>
@@ -174,14 +181,41 @@
                           <h6 class="mb-0">Date of birth:</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                        <?php echo isset($_SESSION['dob']) && !empty($_SESSION['dob']) ? $_SESSION['dob'] : '<span class="text-secondary">No record found</span>';?>
+                        <?php 
+                        
+                        // echo $user_info['dob']; 
+
+                        $dob = $user_info['dob'];
+
+                        if (!empty($dob)) {
+
+
+                          // $dateStr = '10-12-1986';
+                          $dob = DateTime::createFromFormat('m-d-Y', $dob);
+                          $dob = $dob->getTimestamp();
+                          $dob = date('F d, Y', $dob);
+
+                          echo $dob; // Output: October 12, 1986
+                          // $dob = strtotime($dob);
+                          // $dob = date('F j, Y', $dob);
+
+                          // echo $dob; // Output format: January 12, 1988
+
+                          // $month = substr($dob, 0, 2);
+                          // $day = substr($dob, 3, 2);
+                          // $year = substr($dob, 6, 4);
+                        } else {
+                          echo 'no record';
+                        }
+                    
+                        ?>
                         </div>
                       </div>
                   
                       
                     </div>
                   </div>
-    
+<!--     
                   <div class="row gutters-sm">
                     <div class="col-sm-6 mb-3">
                       <div class="card h-100">
@@ -213,7 +247,7 @@
                       </div>
                     </div>
                   </div>
-    
+     -->
     
     
                 </div>

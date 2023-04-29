@@ -33,15 +33,15 @@
                         ?>
                         <tr>
                             <td><?php echo  $num; ?></td>
-                            <td><?php echo "[".$row['book_id']."] " . ucwords($row['title']); ?></td>
+                            <td><?php echo "[".$row['book_id']."] " . short_desc_title(ucwords($row['title'])); ?></td>
                             <td><?php echo ucwords($row['category']); ?></td>
                             
                             <td><?php echo ucwords($row['author']); ?></td>
                             <td><?php echo ucwords($row['register_date']); ?></td>
                             <td>
-                                <a href="panel.php?manage_all_ref=true&delete_ref=true&id=<?php echo $row['book_id']; ?>" class="btn btn-danger btn-sm">Del</a>
-                                <a href="panel.php?manage_all_ref=true&edit_ref=true&id=<?php echo $row['book_id']; ?>" class="btn btn-warning btn-sm">Edit</a>
-                                <a href="panel.php?manage_all_ref=true&view_ref=true&id=<?php echo $row['book_id']; ?>" class="btn btn-success btn-sm">View</a>
+                                <a href="panel.php?manage_all_ref=true&delete_ref=true&id=<?php echo $row['book_id']; ?>" class="btn btn-danger btn-sm"><i class="fas fa-window-close"></i></a>
+                                <a href="panel.php?manage_all_ref=true&edit_ref=true&id=<?php echo $row['book_id']; ?>" class="btn btn-warning btn-sm"><i class=" fas fa-edit"></i></a>
+                                <a href="panel.php?manage_all_ref=true&view_ref=true&id=<?php echo $row['book_id']; ?>" class="btn btn-success btn-sm"><i class="fas fa-eye"></i></a>
                             </td>
                         </tr>
                         <?php endwhile; ?>

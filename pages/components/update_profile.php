@@ -45,6 +45,20 @@
 
  </style>
 
+<?php
+
+$user_id = $_GET['user_id'];
+
+$current_user_query = $conn->query("SELECT tbl_users.*, tbl_address.*
+FROM tbl_users
+INNER JOIN tbl_address ON tbl_users.address_id = tbl_address.address_id;
+
+") or die("Failed to query current user ".$conn->error.__LINE__);
+$user_info = $current_user_query->fetch_assoc();
+$edited_last = $user_info['last_update'];
+// print_r($user_info);
+
+?>
 
 <img src="" alt="">
 
@@ -105,8 +119,8 @@
        
             <div class="col-md-3 border-right">
 
-            <form action="panel.php?update_profile=true&system_user=<?php echo $_GET['system_user']; ?>&save=true" method="post" enctype="multipart/form-data">
-
+            <form action="panel.php?update_profile=true&user_id=<?php echo $_GET['user_id']; ?>&save=true" method="post" enctype="multipart/form-data">
+                <input name="address_id" type="hidden" value="<?php echo $user_info['address_id']; ?>">
                 <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img id="currentProfilePic" class="rounded-circle mt-5 mb-4" width="150px" src="../assets/images/users/<?php echo $_SESSION['profile_pic']; ?>">
 
                 
@@ -124,9 +138,9 @@
                 <button type="button" class="btn btn-dark mt-3 jm-btn-gradient" data-bs-toggle="modal" data-bs-target="#centermodal" id="displayModal">Change Password</button>
                 </div>
 
-            </div>
-            </div>
-            <div class="col-md-5 border-right">
+                </div>
+                </div>
+                <div class="col-md-5 border-right">
                 <div class="p-3 py-5">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 class="text-right">Profile Settings</h4>
@@ -136,54 +150,52 @@
                     <div class="row mt-2">
 
                         <div class="col-md-6"><label class="labels">Name</label>
-                            <input name="first_name" type="text" class="form-control" placeholder="first name" value="<?php echo ucwords($_SESSION['first_name']); ?>">
+                            <input name="first_name" type="text" class="form-control" placeholder="first name" value="<?php echo ucwords($user_info['first_name']); ?>">
                         </div>
 
                         <div class="col-md-6"><label class="labels">Surname</label>
-                            <input name="last_name" type="text" class="form-control" value="<?php echo ucwords($_SESSION['last_name']); ?>" placeholder="surname">
+                            <input name="last_name" type="text" class="form-control" value="<?php echo ucwords($user_info['last_name']); ?>" placeholder="surname">
                         </div>
 
                     </div>
                     <div class="row mt-3">
 
                         <div class="col-md-12"><label class="labels">Contact #1</label>
-                            <input name="contact_no" type="text" class="form-control" placeholder="enter contact number" value="<?php echo $_SESSION['contact_no']; ?>">
+                            <input name="contact_no" type="text" class="form-control" placeholder="enter contact number" value="<?php echo $user_info['contact_no']; ?>">
                         </div>
 
                         <div class="col-md-12"><label class="labels">Contact #2</label>
-                            <input name="contact_no2" type="text" class="form-control" placeholder="enter contact number" value="<?php echo $_SESSION['contact_no2']; ?>">
+                            <input name="contact_no2" type="text" class="form-control" placeholder="enter contact number" value="<?php echo $user_info['contact_no2']; ?>">
                         </div>
 
                         <div class="col-md-12"><label class="labels">House No./Bldg. Room No.</label>
-                            <input name="house_no" type="text" class="form-control" placeholder="enter address line 1" value="<?php echo $_SESSION['house_no']; ?>">
+                            <input name="house_no" type="text" class="form-control" placeholder="enter address line 1" value="<?php echo $user_info['house_no']; ?>">
                         </div>
 
                         <div class="col-md-12"><label class="labels">Street</label>
-                            <input name="street" type="text" class="form-control" placeholder="House No. or Bldg Room No. " value="<?php echo $_SESSION['street']; ?>">
+                            <input name="street" type="text" class="form-control" placeholder="House No. or Bldg Room No. " value="<?php echo $user_info['street']; ?>">
                         </div>
 
                         <div class="col-md-12"><label class="labels">Brgy</label>
-                            <input name="brgy" type="text" class="form-control" placeholder="House No. or Bldg Room No. " value="<?php echo $_SESSION['brgy']; ?>">
+                            <input name="brgy" type="text" class="form-control" placeholder="House No. or Bldg Room No. " value="<?php echo $user_info['brgy']; ?>">
                         </div>
 
                     
                         <div class="col-md-12"><label class="labels">City/Town</label>
-                            <input name="city" type="text" class="form-control" placeholder="enter city or town" value="<?php echo $_SESSION['city']; ?>">
+                            <input name="city" type="text" class="form-control" placeholder="enter city or town" value="<?php echo $user_info['city']; ?>">
                         </div>
 
                         <div class="col-md-12"><label class="labels">Province</label>
-                            <input name="province" type="text" class="form-control" placeholder="enter province" value="<?php echo $_SESSION['province']; ?>">
+                            <input name="province" type="text" class="form-control" placeholder="enter province" value="<?php echo $user_info['province']; ?>">
                         </div>
 
                         <div class="col-md-12"><label class="labels">Zipcode</label>
-                            <input name="zipcode" type="text" class="form-control" placeholder="enter zipcode" value="<?php echo $_SESSION['zipcode']; ?>">
+                            <input name="zipcode" type="text" class="form-control" placeholder="enter zipcode" value="<?php echo $user_info['zipcode']; ?>">
                         </div>
-
+                        </div>
                     </div>
-                
                 </div>
-            </div>
-            <div class="col-md-4">
+                <div class="col-md-4">
                 <div class="p-3 py-5">
                    
                     <div class="">
@@ -191,48 +203,126 @@
                                 <h4 class="card-title">Other information</h4>
                 
                                 <div class="form-group mb-4">
-                                    <label class="mr-sm-2" for="inlineFormCustomSelect">Biological sex at birth:</label>
+                                    <label class="mr-sm-2" for="inlineFormCustomSelect">Sex:</label>
                                     <select name="sex" class="form-select mr-sm-2" id="inlineFormCustomSelect">
-                                        <option selected="">Choose...</option>
-                                        <option value="M">Male</option>
-                                        <option value="F">Female</option>
+                                       
+                                        <option <?php if(empty($user_info['sex'])) { echo 'selected'; };?> value="">Choose...</option>
+                                        <option <?php if($user_info['sex'] == "M") { echo 'selected'; };?> value="M">Male</option>
+                                        <option <?php if($user_info['sex'] == "F") { echo 'selected'; };?> value="F">Female</option>
                                         <!-- <option value="3">custom</option> -->
                                     </select>
                                 </div>
 
+                               
+
                                 <div class="col-md-12"><label class="labels">Facebook</label>
-                                    <input name="facebook" type="text" class="form-control" placeholder="enter facebook url" value="<?php echo isset($_SESSION['facebook']) && !empty($_SESSION['facebook']) ? $_SESSION['facebook'] : 'No record found' ?>">
+                                    <input type="text" name="facebook" class="form-control" value="<?php echo $user_info['facebook']; ?>">
                                     <!-- <i><a href="#">Visit</a></i> -->
                                 </div>
 
                                 <div class="col-md-12"><label class="labels">Website</label>
-                                    <input name="website" type="text" class="form-control" placeholder="enter personal website" value="<?php echo isset($_SESSION['website']) && !empty($_SESSION['website']) ? $_SESSION['website'] : 'No record found';?>">
+                                    <input name="website" type="text" class="form-control" placeholder="enter personal website" value="<?php echo $user_info['website']; ?>">
                                 </div>
                                 
                                 <div class="col-md-12"><label class="labels">Instagram</label>
-                                    <input name="instagram" type="text" class="form-control" placeholder="enter your instagram url " value="<?php echo isset($_SESSION['ig']) && !empty($_SESSION['ig']) ? $_SESSION['ig'] : 'No record found';?>">
+                                    <input name="instagram" type="text" class="form-control" placeholder="enter your instagram url " value="<?php echo $user_info['instagram']; ?>">
                                 </div>
 
                                 <div class="col-md-12"><label class="labels">Twitter</label>
-                                    <input name="twitter" type="text" class="form-control" placeholder="enter your twitter url" value="<?php echo isset($_SESSION['twitter']) && !empty($_SESSION['twitter']) ? $_SESSION['twitter'] : 'No record found';?>">
+                                    <input name="twitter" type="text" class="form-control" placeholder="enter your twitter url" value="<?php echo $user_info['twitter']; ?>">
                                 </div>
 
-                                <div class="mb-3 mt-4" id="last_update">This profile was updated last: October 12, 2020</div>
+                                <?php
+                                    $dob = $user_info["dob"];
+                                    $month = "";
+                                    $day = "";
+                                    $year = "";
+
+                                    if (!empty($dob)) {
+                                        $month = substr($dob, 0, 2);
+                                        $day = substr($dob, 3, 2);
+                                        $year = substr($dob, 6, 4);
+                                    }
+                                    
+
+                                ?>
+                              
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-md-4">
+                                    <label for="month" class="form-label">Month</label>
+                                    <select name="month" class="form-select" id="month">
+                                        <option value="">Select</option>
+                                        <option <?php if (!empty($month) && $month == "01") { echo 'selected'; }?> value="01">Jan</option>
+                                        <option <?php if (!empty($month) && $month == "02") { echo 'selected'; }?> value="02">Feb</option>
+                                        <option <?php if (!empty($month) && $month == "03") { echo 'selected'; }?> value="03">Mar</option>
+                                        <option <?php if (!empty($month) && $month == "04") { echo 'selected'; }?> value="04">Apr</option>
+                                        <option <?php if (!empty($month) && $month == "05") { echo 'selected'; }?> value="05">May</option>
+                                        <option <?php if (!empty($month) && $month == "06") { echo 'selected'; }?> value="06">June</option>
+                                        <option <?php if (!empty($month) && $month == "07") { echo 'selected'; }?> value="07">July</option>
+                                        <option <?php if (!empty($month) && $month == "08") { echo 'selected'; }?> value="08">Aug</option>
+                                        <option <?php if (!empty($month) && $month == "09") { echo 'selected'; }?> value="09">Sept</option>
+                                        <option <?php if (!empty($month) && $month == "10") { echo 'selected'; }?> value="10">Oct</option>
+                                        <option <?php if (!empty($month) && $month == "11") { echo 'selected'; }?> value="11">Nov</option>
+                                        <option <?php if (!empty($month) && $month == "12") { echo 'selected'; }?> value="12">Dec</option>
+                                    </select>
+                              
+                                    </div>
+
+                                    <div class="col-md-4">
+                                    <label for="day" class="form-label">Day</label>
+                                    <select name="day" class="form-select" id="day">
+                                        <option value="">Select</option>
+                                       <?php for($i = 1; $i <= 31; $i++): ?>
+                                    <option <?php if ($i == $day) { echo 'selected'; }?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                        <?php endfor; ?>
+                                    </select>
+                                       
+                                    </div>
+
+                                    <div class="col-md-4">
+                                    <label for="year" class="form-label">Year</label>
+                                    <select name="year" class="form-select" id="year">
+                                    <option value="">Select</option>
+                                        <?php
+
+                                        $current_year = date("Y");
+                                        $current_year = intval($current_year); 
+                                        ?>
+                                       
+                                        <?php for($i = $current_year; $i >= 1960; $i--): ?>
+                                        <option <?php if ($i == $year) { echo 'selected'; }?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                        <?php endfor; ?>
+                                        
+                                    </select>
+                                        
+                                    </div>
+
+                                  
+                                </div>
+
+                        <div class="mb-3 mt-4" id="last_update">Updated last: <?php 
+                           
+                           $datetime = date("F j, Y, g:i a", $edited_last);
+                           echo $datetime;
+                           
+                           
+                           ?>
 
                                 <div class="mb-3 mt-4">
                                     <button class="btn btn-primary jm-btn-gradient" name="btn_profile_update">Save</button>
                                 </div>
 
-                            </form>
+                            
                               
                             </div>
 
                             
                         </div>
-                        
+                     
                 </div>
-            </div>
-
+                </div>
+            </form>  
         </div>
     </div>
     </div>

@@ -174,9 +174,9 @@
                                         class="svg-icon me-2 ms-1"></i>
                                     Inbox</a> -->
                                 <!-- <div class="dropdown-divider"></div> -->
-                                <a class="dropdown-item" href="panel.php?update_profile=true&system_user=<?php echo  $_SESSION['user_id']; ?>"><i class="fas fa-wrench"></i>
+                                <a class="dropdown-item" href="panel.php?update_profile=true&user_id=<?php echo  $_SESSION['user_id']; ?>"><i class="fas fa-wrench"></i>
                                     Account Setting</a>
-                                    <a class="dropdown-item" href="panel.php?profile=true&system_user=<?php echo $_SESSION['system_user']; ?>"><i class="fas fa-user"></i>
+                                    <a class="dropdown-item" href="panel.php?profile=true&user_id=<?php echo  $_SESSION['user_id']; ?>"><i class="fas fa-user"></i>
                                      Profile</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="authentication.php?logout=true"><i data-feather="power"
