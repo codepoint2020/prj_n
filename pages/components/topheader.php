@@ -159,9 +159,9 @@
                                 aria-haspopup="true" aria-expanded="false">
 
                                 <?php
-                                $user_id = $_SESSION['user_id'];
-                                $user_id = intval($user_id);
- $query_user = $conn->query("SELECT * FROM tbl_users WHERE user_id = $user_id; ") or die("FAILED to query target user" . $conn->error . __LINE__);
+                                $top_user_id = $_SESSION['user_id'];
+                                $top_user_id = intval($top_user_id);
+ $query_user = $conn->query("SELECT * FROM tbl_users WHERE user_id = $top_user_id; ") or die("FAILED to query target user" . $conn->error . __LINE__);
  $row = $query_user->fetch_assoc();
  if (!empty($row['profile_pic'])) {
     $top_photo = $row['profile_pic'];

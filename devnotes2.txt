@@ -21,15 +21,18 @@ test accounts
 Administrator
 jemor_237753
 _n1b0&!9
-11111
+12345
 
 gaort_236894
 Lz83!_9!
+123456
+696969
 
 students
 
 masmi_237197
 *K33_cW7_
+*
 
 jicar_239474
 12345
@@ -70,6 +73,7 @@ Lz83!_9!
 
 jagon_231191
 8UE3!2j#!
+12345
 
 
 

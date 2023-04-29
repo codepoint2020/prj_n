@@ -87,8 +87,8 @@
                                             </a>
                                         <?php endif; ?>
 
-                                        <a href="panel.php?edit=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Edit user's information">
-                                        <i class="fas fa-edit"></i>
+                                        <a href="panel.php?edit_user_info=true&user_id=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-success" data-bs-toggle="tooltip" title="View user's information">
+                                        <i class="fas fa-eye"></i>
                                     </a>
 
                                         <a href="panel.php?load_users=true&del=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="PERMANENTLY Delete this account of: <?php echo ucwords($student_data['first_name'] . " " . $student_data['last_name']) ?>">
@@ -97,7 +97,7 @@
 
                                   
 
-                                    <a href="panel.php?view=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-success" data-bs-toggle="tooltip" title="View details for this user"><i class="fas fa-eye"></i></a>
+                              
                                     
                                     </td>
                                     </tr>

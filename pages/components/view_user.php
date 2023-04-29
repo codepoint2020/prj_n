@@ -48,8 +48,8 @@
 
 <?php
 
-if (isset($_GET['view'])) {
-    $user_id = html_ent($_GET['view']);
+if (isset($_GET['edit_user_info'])) {
+    $user_id = html_ent($_GET['user_id']);
 }
 
 $query_user = $conn->query("SELECT * FROM tbl_users WHERE user_id = $user_id") or die("Failed to query user".$conn->error.__LINE__);
@@ -86,6 +86,7 @@ $user_address = $query_address->fetch_assoc();
                         <div class="mt-3">
                           <h4><?php echo ucwords($user_info['first_name'] . " " .$user_info['last_name']); ?></h4>
                           <p class="text-secondary mb-4"><?php echo ucwords($user_info['user_type']); ?></p>
+                          <p class="text-secondary mb-4">Username: <?php echo $user_info['username']; ?></p>
                           <!-- <p class="text-muted font-size-sm"><?php //echo $_SESSION['user_email']; ?></p> -->
                           <!-- <button class="btn btn-primary">Follow</button>
                           <button class="btn btn-outline-primary">Message</button> -->
@@ -99,7 +100,35 @@ $user_address = $query_address->fetch_assoc();
 
 
                         <div class="col-sm-12">
-                          <a class="btn btn-info mb-4" style="width: 100%" data-bs-toggle="tooltip" title="Click here to update your information" href="panel.php?reset_user_password=<?php echo $user_info['user_id']?>">Reset user's password</a>
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#manual_password" type="button" role="tab" aria-controls="home" aria-selected="true">Manual Password</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#generate_password" type="button" role="tab" aria-controls="profile" aria-selected="false">Auto Generate</button>
+            </li>
+          
+            </ul>
+
+            <form action="panel.php?edit_user_info=true&user_id=<?php echo $user_id; ?>" method="POST">
+                <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="manual_password" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="mb-3 mt-4">
+                       
+                            <input type="text" class="form-control" id="m_password" name="m_password" placeholder="Enter a password">
+                        </div>
+                        <div>
+                            <button class="btn btn-success" name="m_password_btn">Submit</button>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="generate_password" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="mt-3">
+                            <button class="btn btn-success" name="gen_password_btn">Reset Password</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
                         </div>
 
 

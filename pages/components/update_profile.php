@@ -47,11 +47,11 @@
 
 <?php
 
-$user_id = $_GET['user_id'];
+$edit_user_id = $_GET['user_id'];
 
 $current_user_query = $conn->query("SELECT tbl_users.*, tbl_address.*
 FROM tbl_users
-INNER JOIN tbl_address ON tbl_users.address_id = tbl_address.address_id;
+INNER JOIN tbl_address ON tbl_users.address_id = tbl_address.address_id WHERE tbl_users.user_id = $edit_user_id;
 
 ") or die("Failed to query current user ".$conn->error.__LINE__);
 $user_info = $current_user_query->fetch_assoc();
@@ -66,7 +66,8 @@ $edited_last = $user_info['last_update'];
         <div class="row">
 
     <!-- /.reset password modal-start -->
-    <form action="panel.php?update_profile=true" method="POST">
+    <form action="panel.php?update_profile=true&user_id=<?php echo $edit_user_id; ?>" method="POST">
+
         <div class="modal fade" id="centermodal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -137,6 +138,10 @@ $edited_last = $user_info['last_update'];
   
                 <button type="button" class="btn btn-dark mt-3 jm-btn-gradient" data-bs-toggle="modal" data-bs-target="#centermodal" id="displayModal">Change Password</button>
                 </div>
+
+                
+
+                
 
                 </div>
                 </div>
@@ -240,7 +245,7 @@ $edited_last = $user_info['last_update'];
                                     if (!empty($dob)) {
                                         $month = substr($dob, 0, 2);
                                         $day = substr($dob, 3, 2);
-                                        $year = substr($dob, 6, 4);
+                                        $year = substr($dob, -4);
                                     }
                                     
 
@@ -283,13 +288,7 @@ $edited_last = $user_info['last_update'];
                                     <label for="year" class="form-label">Year</label>
                                     <select name="year" class="form-select" id="year">
                                     <option value="">Select</option>
-                                        <?php
-
-                                        $current_year = date("Y");
-                                        $current_year = intval($current_year); 
-                                        ?>
-                                       
-                                        <?php for($i = $current_year; $i >= 1960; $i--): ?>
+                                        <?php for($i = 1965; $i < 2023; $i++): ?>
                                         <option <?php if ($i == $year) { echo 'selected'; }?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
                                         <?php endfor; ?>
                                         
@@ -302,7 +301,7 @@ $edited_last = $user_info['last_update'];
 
                         <div class="mb-3 mt-4" id="last_update">Updated last: <?php 
                            
-                           $datetime = date("F j, Y, g:i a", $edited_last);
+                           $datetime = date("F j, Y, g:i a", intval($edited_last));
                            echo $datetime;
                            
                            

@@ -49,11 +49,11 @@
 
 <?php
 
-$user_id = $_GET['user_id'];
+$profile_user_id = $_GET['user_id'];
 
 $current_user_query = $conn->query("SELECT tbl_users.*, tbl_address.*
 FROM tbl_users
-INNER JOIN tbl_address ON tbl_users.address_id = tbl_address.address_id WHERE user_id = $user_id;
+INNER JOIN tbl_address ON tbl_users.address_id = tbl_address.address_id WHERE user_id = $profile_user_id;
 
 ") or die("Failed to query current user ".$conn->error.__LINE__);
 $user_info = $current_user_query->fetch_assoc();
