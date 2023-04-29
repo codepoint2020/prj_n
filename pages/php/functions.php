@@ -1074,6 +1074,7 @@ function update_profile() {
         $day = $_POST['day'];
         $year = $_POST['year'];
         $dob = "";
+        
  
 
         if (!empty($month) && !empty($day) && !empty($year)) {
@@ -1105,32 +1106,6 @@ function update_profile() {
         //update query if there is no error
         if (empty($errorArray)) {
             if (empty($profile_pic)) {
-                // $combined_update = $conn->query("UPDATE tbl_users SET 
-                
-                // first_name = '$first_name',
-                // last_name = '$last_name',
-                // contact_no = '$contact_no',
-                // contact_no2 = '$contact_no2',
-               
-                // sex = '$sex',
-                // facebook = '$facebook',
-                // website = '$website',
-                // instagram = '$instagram',
-                // twitter = '$twitter',
-                // last_update = '$last_update',
-                // dob = '$dob'
-       
-                
-                // WHERE user_id = $user_id ") or die("Failed to query user: ".$conn->error.__LINE__);
-
-                // $update_address = $conn->query("UPDATE tbl_address SET                   
-                // house_no = '$house_no',
-                // street = '$street',
-                // brgy = '$brgy',
-                // city = '$city',
-                // province = '$province',
-                // zipcode = '$zipcode' WHERE address_id = $address_id; ") or die("<h1>Failed to update address: <h1>".$conn->error.__LINE__);
-
                 $combined_update_no_pic = $conn->query("UPDATE tbl_users 
                                     JOIN tbl_address ON tbl_users.address_id = tbl_address.address_id
                                     SET 
@@ -1154,7 +1129,6 @@ function update_profile() {
                                     WHERE tbl_users.user_id = $user_id AND tbl_address.address_id = $address_id") 
                                     or die("Failed to query user: ".$conn->error.__LINE__);
 
-
                 if ($combined_update_no_pic) {
 
                     $_SESSION['prevent_reload_data'] = 'set';
@@ -1162,14 +1136,58 @@ function update_profile() {
                 }
 
             } else {
-                NULL;
+
+
+                $profile_pic_dir = "../assets/images/users/";
+
+                $new_profile_pic_filename = "id_" . $user_id. "_" . filenameAppend() .$profile_pic;
+
+                $combined_update= $conn->query("UPDATE tbl_users 
+                JOIN tbl_address ON tbl_users.address_id = tbl_address.address_id
+                SET 
+                    tbl_users.profile_pic = '$new_profile_pic_filename',
+
+                    tbl_users.first_name = '$first_name',
+                    tbl_users.last_name = '$last_name',
+                    tbl_users.contact_no = '$contact_no',
+                    tbl_users.contact_no2 = '$contact_no2',
+                    tbl_users.sex = '$sex',
+                    tbl_users.facebook = '$facebook',
+                    tbl_users.website = '$website',
+                    tbl_users.instagram = '$instagram',
+                    tbl_users.twitter = '$twitter',
+                    tbl_users.last_update = '$last_update',
+                    tbl_users.dob = '$dob',
+                    tbl_address.house_no = '$house_no',
+                    tbl_address.street = '$street',
+                    tbl_address.brgy = '$brgy',
+                    tbl_address.city = '$city',
+                    tbl_address.province = '$province',
+                    tbl_address.zipcode = '$zipcode'
+                WHERE tbl_users.user_id = $user_id AND tbl_address.address_id = $address_id") 
+                or die("Failed to query user: ".$conn->error.__LINE__);
+
+                if ($combined_update) {
+                    //delete existing photo
+                    $current_pic = $existing_record['profile_pic'];
+                    $target_path = $profile_pic_dir.$current_pic;
+
+                    if (file_exists($target_path)) {
+                        unlink($target_path);
+                    }
+
+                    //add existing photo
+                    move_uploaded_file($profile_pic_tmp, $profile_pic_dir . $new_profile_pic_filename);
+                    $_SESSION['prevent_reload_data'] = 'set';
+                    redirect("panel.php?update_profile=true&user_id=".$user_id."&updated=true");
+                }
             }
         }
     }
 }
 
 if (isset($_GET['updated']) && isset($_GET['update_profile']) && isset($_SESSION['prevent_reload_data'])) {
-    set_alert_success('Profile updated');
+    set_alert_success('Profile updated.');
     unset($_SESSION['prevent_reload_data']);
 }
 

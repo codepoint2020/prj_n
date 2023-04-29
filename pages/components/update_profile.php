@@ -121,10 +121,10 @@ $edited_last = $user_info['last_update'];
 
             <form action="panel.php?update_profile=true&user_id=<?php echo $_GET['user_id']; ?>&save=true" method="post" enctype="multipart/form-data">
                 <input name="address_id" type="hidden" value="<?php echo $user_info['address_id']; ?>">
-                <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img id="currentProfilePic" class="rounded-circle mt-5 mb-4" width="150px" src="../assets/images/users/<?php echo $_SESSION['profile_pic']; ?>">
+                <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img id="currentProfilePic" class="mt-5 mb-4" width="150px" src="../assets/images/users/<?php echo $user_info['profile_pic']; ?>">
 
                 
-                <span class="font-weight-bold mb-4"><?php echo $_SESSION['system_user']; ?></span>
+                <span class="font-weight-bold mb-4"><?php echo ucwords($user_info['first_name'] . " " . $user_info['last_name']); ?></span>
                 <small id="filenamePreview"></small>
             
          
@@ -213,7 +213,6 @@ $edited_last = $user_info['last_update'];
                                     </select>
                                 </div>
 
-                               
 
                                 <div class="col-md-12"><label class="labels">Facebook</label>
                                     <input type="text" name="facebook" class="form-control" value="<?php echo $user_info['facebook']; ?>">

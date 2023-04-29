@@ -157,7 +157,19 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-bs-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                <img src="../assets/images/users/<?php echo isset($_SESSION['profile_pic']) ? $_SESSION['profile_pic'] : "user_def_img.png"; ?>" alt="user" class="rounded-circle" width="40" />
+
+                                <?php
+                                $user_id = $_SESSION['user_id'];
+                                $user_id = intval($user_id);
+ $query_user = $conn->query("SELECT * FROM tbl_users WHERE user_id = $user_id; ") or die("FAILED to query target user" . $conn->error . __LINE__);
+ $row = $query_user->fetch_assoc();
+ if (!empty($row['profile_pic'])) {
+    $top_photo = $row['profile_pic'];
+ } else {
+    $top_photo = "user_def_img.png";
+ }
+                                ?>
+                                <img src="../assets/images/users/<?php echo $top_photo; ?>" alt="user" class="jm-circular" width="40" />
 
                                     
                                 <span class="ms-2 d-none d-lg-inline-block"><span class="text-white">Hello,</span> <span

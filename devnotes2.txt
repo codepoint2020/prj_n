@@ -10,6 +10,10 @@ in order to display an alternate image, if working on a different device that do
 
 *prevent uploads for .exe, .cmd etc., implement whitelist
 
+uppon changing password error:   
+
+Undefined index: user_id in D:\xampp\htdocs\2023\prj_n\pages\components\update_profile.php on line 50
+
 
 
 test accounts
@@ -17,6 +21,7 @@ test accounts
 Administrator
 jemor_237753
 _n1b0&!9
+11111
 
 gaort_236894
 Lz83!_9!

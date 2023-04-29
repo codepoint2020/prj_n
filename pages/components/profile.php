@@ -73,7 +73,7 @@ $user_info = $current_user_query->fetch_assoc();
                   <div class="card">
                     <div class="card-body">
                       <div class="d-flex flex-column align-items-center text-center">
-                        <img src="../assets/images/users/<?php echo $user_info['profile_pic']; ?>" alt="Admin" class="rounded-circle" width="150">
+                        <img src="../assets/images/users/<?php echo $user_info['profile_pic']; ?>" alt="Admin" class="mt-4" width="200">
                         <div class="mt-3">
                           <h4><?php echo ucwords($user_info['first_name'] . " " . $user_info['last_name']); ?></h4>
                           <p class="text-secondary mb-4"><?php echo ucwords($user_info['user_type']); ?></p>

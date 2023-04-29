@@ -117,4 +117,12 @@
   cursor: pointer;
 }
 
+.jm-circular {
+  height: 40px;
+  width: 40px;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+}
+
 
