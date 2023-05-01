@@ -60,6 +60,17 @@
                     echo  $panel_title = "LibraryTube";
                 }
 
+
+                if (isset($_GET['edit_ref'])) {
+                    echo  $panel_title = "Edit Reference";
+                }
+
+                if (isset($_GET['changed_main_file']) || isset($_GET['cover_image_changed'])) {
+                    echo  $panel_title = "Update confirmation";
+                }
+                
+                
+
                 
                     
           

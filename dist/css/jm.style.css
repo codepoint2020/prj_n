@@ -125,4 +125,10 @@
   object-position: center center !important;
 }
 
+.jm-icon {
+  width: 200px !important;
+  display: block !important;
+  object-fit: fill !important;
+  
+}
 

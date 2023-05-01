@@ -40,8 +40,8 @@
                             <td><?php echo ucwords($row['register_date']); ?></td>
                             <td>
                                 <a href="panel.php?manage_all_ref=true&delete_ref=true&id=<?php echo $row['book_id']; ?>" class="btn btn-danger btn-sm"><i class="fas fa-window-close"></i></a>
-                                <a href="panel.php?manage_all_ref=true&edit_ref=true&id=<?php echo $row['book_id']; ?>" class="btn btn-warning btn-sm"><i class=" fas fa-edit"></i></a>
-                                <a href="panel.php?manage_all_ref=true&view_ref=true&id=<?php echo $row['book_id']; ?>" class="btn btn-success btn-sm"><i class="fas fa-eye"></i></a>
+                                <a href="panel.php?edit_ref=true&edit_form=true&book_id=<?php echo $row['book_id']; ?>" class="btn btn-warning btn-sm"><i class=" fas fa-edit"></i></a>
+                           
                             </td>
                         </tr>
                         <?php endwhile; ?>
@@ -59,4 +59,10 @@
 
 
 </script>
+
+<?php if(isset($_SESSION['reference_update_event'])) {
+    unset($_SESSION['reference_update_event']); 
+}
+
+?>
 

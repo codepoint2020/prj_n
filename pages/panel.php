@@ -120,22 +120,20 @@
             <!-- UNDER CONSTRUCTION END -->
             <!-- ============================================================== -->
 
+        
             
 
-             <!-- =========================Load Category Tiles========================== -->
-             <?php if (isset($_GET['category_tiles'])): ?>
+            <!-- =========================Load edit reference page========================== -->
+            <?php if (isset($_GET['edit_ref']) && $_SESSION['user_type'] == 'administrator'): ?>
+                
             <div class="col-12">
                 <div class="card-body">
-                <?php include 'components/category_tiles.php'?>
+                <?php  ?>
+                <?php include 'components/edit_reference.php'?>
                 </div>
             </div>
             <?php endif; ?>
-          
-            
-            
-
-            
-            
+     
             
             <!-- ============================================================== -->
             <!-- CARDS START -->
@@ -151,10 +149,20 @@
             <div class="col-12">
                 
                 <?php include 'components/profile.php'?>
-              
-               
+
             </div>
             <?php endif; ?>
+
+               <!-- =========================REFERENCE UPDATED PAGE========================== -->
+               <?php if (isset($_GET['reference_updated'])): ?>
+            <div class="col-12">
+                
+                <?php include 'components/file_update.php'?>
+
+            </div>
+            <?php endif; ?>
+
+            
 
 
              <!-- =========================LOAD edit profile========================== -->

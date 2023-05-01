@@ -62,6 +62,7 @@ $edited_last = $user_info['last_update'];
 
 <img src="" alt="">
 
+<div class="error_handler"></div>
 <div class="container rounded bg-white mt-5 mb-5">
         <div class="row">
 
@@ -308,7 +309,7 @@ $edited_last = $user_info['last_update'];
                            ?>
 
                                 <div class="mb-3 mt-4">
-                                    <button class="btn btn-primary jm-btn-gradient" name="btn_profile_update">Save</button>
+                                    <button class="btn btn-primary jm-btn-gradient" name="btn_profile_update" id="btnSave">Save</button>
                                 </div>
 
                             
@@ -335,6 +336,25 @@ let oldPassword = document.getElementById("oldPassword");
 let retypeNewPassword = document.getElementById("retypeNewPassword");
 let btnSubmitNewPassword = document.getElementById("btnSubmitNewPassword");
 let passwordEye2 = document.getElementById("passwordEye2");
+
+let error_handler = document.querySelector(".error_handler");
+let photoChange = document.querySelector("#photoChange");
+let btnSave = document.querySelector("#btnSave");
+
+
+photoChange.addEventListener('change', function() {
+        const allowedExtensions = ['png', 'jpg', 'jpeg', 'bmp'];
+        const file = photoChange.files[0];
+        const extension = file.name.split('.').pop().toLowerCase();
+        if (!allowedExtensions.includes(extension)) {
+        //   alert('The selected file is not supported by the system. Please upload a .mp4, .pdf, or .pptx file.');
+        error_handler.innerHTML = '<div style="z-index: 99" class="alert alert-danger alert-dismissible fade show" role="alert"><button type="button"></button>File Supported for profile picture: .jpg, .png, .jpeg and .bmp</div>';
+        photoChange.value = '';
+        btnSave.disabled = true;
+        } else {
+            btnSave.disabled = false;
+        }
+      });
 
 
 // //temporary

@@ -607,6 +607,402 @@ function add_book() {
 
 }
 
+
+function update_book() {
+    
+    global $conn;
+    $_SESSION['set_page'] ="true";
+    if (isset($_POST['update_book'])) {
+
+        $admin_user_id = $_SESSION['user_id'];
+        $book_id = escape_string($_POST['book_id']);
+        $title = escape_string($_POST['title']);
+        $details = escape_string($_POST['details']);
+        $category_id = escape_string($_POST['category_id']);
+        $category = escape_string($_POST['category']);
+        $author = escape_string($_POST['author']);
+        $date_updated = time();
+        // $file_type = "";
+
+
+        $formFile = $_FILES['formFile']['name'];
+        $formFile_temp = $_FILES['formFile']['tmp_name'];
+        $cover_image = $_FILES['cover_image']['name'];
+        $cover_image_temp = $_FILES['cover_image']['tmp_name'];
+
+       
+
+        
+        //If the user changed the associated file of an existing reference
+        if (!empty($formFile) && empty($cover_image)) {
+
+            $formFile = "id_" . $book_id. "_" . filenameAppend() .$formFile;
+            $cover_image = "id_" . $book_id. "_" . filenameAppend() .$cover_image;
+
+            $query_existing = $conn->query("SELECT * FROM tbl_books WHERE book_id = $book_id") or die("Query existing book for edit failed. ".$conn->error.__LINE__);
+            $book_info = $query_existing->fetch_assoc();
+
+             //If the user did not change the cover image
+            // if (empty($cover_image)) {
+            //     $cover_image = $book_info['cover_img'];
+            // }
+
+            $video_path = "../assets/references/videos/";
+            $pdf_path = "../assets/references/pdf/";
+            $pptx_path = "./pptx_player/file/";
+
+            $existing_file = $book_info["file_name"];
+            $existing_cover_image = $book_info["cover_img"];
+            $existing_file_type = $book_info["file_type"];
+            
+            //Check the file extension of the new file being uploaded
+            $file_extension = pathinfo($formFile, PATHINFO_EXTENSION);
+
+            if ($file_extension === "pdf" && $existing_file_type === "pdf" ) {
+
+                $dir = "../assets/references/pdf/";
+                $file_type = "pdf";
+
+            } elseif ($file_extension === "mp4" && $existing_file_type === "mp4"){
+
+                $dir = "../assets/references/videos/";
+                $file_type = "mp4";
+
+            } elseif ($file_extension === "pptx" && $existing_file_type === "pptx") {
+                $dir = "./pptx_player/file/";
+                $file_type = "pptx";
+
+
+            } elseif ($file_extension === "pdf" && $existing_file_type === "mp4") {
+
+                if (file_exists($video_path.$existing_cover_image)) {
+                    rename($video_path.$existing_cover_image, $pdf_path.$existing_cover_image);
+                }
+
+                $dir = "../assets/references/pdf/";
+                $file_type = "pdf";
+
+
+            } elseif ($file_extension == "pdf" && $existing_file_type == "pptx") {
+                    if (file_exists($pptx_path.$existing_cover_image)) {
+                        rename($pptx_path.$existing_cover_image, $pdf_path.$existing_cover_image);
+                    }
+    
+                    $dir = "../assets/references/pdf/";
+                    $file_type = "pdf";
+            
+            }   elseif ($file_extension === "mp4" && $existing_file_type === "pptx") {
+                if (file_exists($pptx_path.$existing_cover_image)) {
+                    rename($pptx_path.$existing_cover_image, $video_path.$existing_cover_image);
+                }
+
+                $dir = "../assets/references/videos/";
+                $file_type = "mp4";
+
+            }   elseif ($file_extension === "mp4" && $existing_file_type === "pdf") {
+
+                if (file_exists($pdf_path.$existing_cover_image)) {
+                    rename($pdf_path.$existing_cover_image, $video_path.$existing_cover_image);
+                }
+
+                $dir = "../assets/references/videos/";
+                $file_type = "mp4";
+
+                
+            } elseif ($file_extension === "pptx" && $existing_file_type === "pdf") {
+                if (file_exists($pdf_path.$existing_cover_image)) {
+                    rename($pdf_path.$existing_cover_image, $pptx_path.$existing_cover_image);
+                }
+
+                $dir = "./pptx_player/file/";
+                $file_type = "pptx";
+
+            
+            } elseif ($file_extension === "pptx" && $existing_file_type === "mp4") {
+                if (file_exists($video_path.$existing_cover_image)) {
+                    rename($video_path.$existing_cover_image, $pptx_path.$existing_cover_image);
+                }
+
+                $dir = "./pptx_player/file/";
+                $file_type = "pptx";
+            
+            }
+    
+
+            $new_file_update = $conn->query("UPDATE tbl_books SET
+            
+            file_name = '$formFile',
+            file_type = '$file_type',
+            title = '$title',
+            category_id = '$category_id',
+            category = '$category',
+            details = '$details',
+            author = '$author',
+    
+            date_updated = '$date_updated' WHERE book_id = $book_id; ") or die("Reference update failed: " .$conn->error.__LINE__);
+
+            if ($new_file_update) {
+
+               //remove the existing file and upload the new one
+                unlink($dir.$existing_file);
+                move_uploaded_file($formFile_temp, $dir . $formFile);
+                
+                $_SESSION['prevent_reload'] = "set";
+                jemor_log("edited", "reference", $title);
+                
+                redirect("panel.php?reference_updated=true&book_id=".$book_id."&changed_main_file=true");
+                
+            }
+
+            //else if NO FILE CHANGE BUT OTHER INFO GOT CHANGED INCLUDING THE COVER IMAGE
+        } elseif (empty($formFile) && !empty($cover_image)) {
+
+            $cover_image = "id_" . $book_id. "_" . filenameAppend() .$cover_image;
+
+            $query_existing = $conn->query("SELECT * FROM tbl_books WHERE book_id = $book_id") or die("Query existing book for edit failed. ".$conn->error.__LINE__);
+            $book_info = $query_existing->fetch_assoc();
+            $file_type = $book_info["file_type"];
+            $existing_cover_image = $book_info["cover_img"];
+
+            if ($file_type === "pdf") {
+                $path = "../assets/references/pdf/";
+            } elseif ($file_type === "mp4") {
+                $path = "../assets/references/videos/";
+            } elseif ($file_type === "pptx") {
+                $path = "./pptx_player/file/";
+            } else {
+                NULL;
+            }
+            
+        
+            $new_cover_img_update = $conn->query("UPDATE tbl_books SET
+            
+            title = '$title',
+            category_id = '$category_id',
+            category = '$category',
+            details = '$details',
+            author = '$author',
+            cover_img = '$cover_image',
+            date_updated = '$date_updated' WHERE book_id = $book_id; ") or die("Reference update failed: " .$conn->error.__LINE__);
+
+            if ($new_cover_img_update) {
+
+                // $cover_image = $_FILES['cover_image']['name'];
+                // $cover_image_temp = $_FILES['cover_image']['tmp_name'];
+               //remove the existing file and upload the new one
+                // unlink($path.$existing_cover_image);
+
+                move_uploaded_file($cover_image_temp, $path . $cover_image);
+                
+                $_SESSION['prevent_reload'] = "set";
+                jemor_log("edited", "reference", $title);
+                
+                redirect("panel.php?reference_updated=true&book_id=".$book_id."&cover_image_changed=true");
+          
+            }
+        
+        } elseif (!empty($formFile) && !empty($cover_image)) {
+
+            $formFile = "id_" . $book_id. "_" . filenameAppend() .$formFile;
+            $cover_image = "id_" . $book_id. "_" . filenameAppend() .$cover_image;
+
+            $query_existing = $conn->query("SELECT * FROM tbl_books WHERE book_id = $book_id") or die("Query existing book for edit failed. ".$conn->error.__LINE__);
+            $book_info = $query_existing->fetch_assoc();
+            $file_type = $book_info['file_type'];
+
+             //If the user did not change the cover image
+            // if (empty($cover_image)) {
+            //     $cover_image = $book_info['cover_img'];
+            // }
+
+            // if ($file_type === "pdf") {
+            //     $path = "../assets/references/pdf/";
+            // } elseif ($file_type === "mp4") {
+            //     $path = "../assets/references/videos/";
+            // } elseif ($file_type === "pptx") {
+            //     $path = "./pptx_player/file/";
+            // } else {
+            //     NULL;
+            // }
+            
+
+            $video_path = "../assets/references/videos/";
+            $pdf_path = "../assets/references/pdf/";
+            $pptx_path = "./pptx_player/file/";
+
+            $existing_file = $book_info["file_name"];
+            $existing_cover_image = $book_info["cover_img"];
+            $existing_file_type = $book_info["file_type"];
+            
+            //Check the file extension of the new file being uploaded
+            $file_extension = pathinfo($formFile, PATHINFO_EXTENSION);
+
+            if ($file_extension === "pdf" && $existing_file_type === "pdf" ) {
+
+                $dir = "../assets/references/pdf/";
+                $file_type = "pdf";
+
+            } elseif ($file_extension === "mp4" && $existing_file_type === "mp4"){
+
+                $dir = "../assets/references/videos/";
+                $file_type = "mp4";
+
+            } elseif ($file_extension === "pptx" && $existing_file_type === "pptx") {
+                $dir = "./pptx_player/file/";
+                $file_type = "pptx";
+
+
+            } elseif ($file_extension === "pdf" && $existing_file_type === "mp4") {
+
+                if (file_exists($video_path.$existing_cover_image)) {
+                    rename($video_path.$existing_cover_image, $pdf_path.$existing_cover_image);
+                }
+
+                $dir = "../assets/references/pdf/";
+                $file_type = "pdf";
+
+
+            } elseif ($file_extension == "pdf" && $existing_file_type == "pptx") {
+                    if (file_exists($pptx_path.$existing_cover_image)) {
+                        rename($pptx_path.$existing_cover_image, $pdf_path.$existing_cover_image);
+                    }
+    
+                    $dir = "../assets/references/pdf/";
+                    $file_type = "pdf";
+            
+            }   elseif ($file_extension === "mp4" && $existing_file_type === "pptx") {
+                if (file_exists($pptx_path.$existing_cover_image)) {
+                    rename($pptx_path.$existing_cover_image, $video_path.$existing_cover_image);
+                }
+
+                $dir = "../assets/references/videos/";
+                $file_type = "mp4";
+
+            }   elseif ($file_extension === "mp4" && $existing_file_type === "pdf") {
+
+                if (file_exists($pdf_path.$existing_cover_image)) {
+                    rename($pdf_path.$existing_cover_image, $video_path.$existing_cover_image);
+                }
+
+                $dir = "../assets/references/videos/";
+                $file_type = "mp4";
+
+                
+            } elseif ($file_extension === "pptx" && $existing_file_type === "pdf") {
+                if (file_exists($pdf_path.$existing_cover_image)) {
+                    rename($pdf_path.$existing_cover_image, $pptx_path.$existing_cover_image);
+                }
+
+                $dir = "./pptx_player/file/";
+                $file_type = "pptx";
+
+            
+            } elseif ($file_extension === "pptx" && $existing_file_type === "mp4") {
+                if (file_exists($video_path.$existing_cover_image)) {
+                    rename($video_path.$existing_cover_image, $pptx_path.$existing_cover_image);
+                }
+
+                $dir = "./pptx_player/file/";
+                $file_type = "pptx";
+            
+            }
+    
+
+            $new_file_cover_img = $conn->query("UPDATE tbl_books SET
+            
+            file_name = '$formFile',
+            file_type = '$file_type',
+            title = '$title',
+            category_id = '$category_id',
+            category = '$category',
+            details = '$details',
+            author = '$author',
+            cover_img = '$cover_image',
+            date_updated = '$date_updated' WHERE book_id = $book_id; ") or die("Reference update failed: " .$conn->error.__LINE__);
+
+            if ($new_file_cover_img) {
+
+               //remove the existing file and upload the new one
+                unlink($dir.$existing_file);
+                move_uploaded_file($formFile_temp, $dir . $formFile);
+
+                //upload new cover image
+                move_uploaded_file($cover_image_temp, $dir . $cover_image);
+
+
+                
+                $_SESSION['prevent_reload'] = "set";
+                jemor_log("edited", "reference", $title);
+                
+                redirect("panel.php?reference_updated=true&book_id=".$book_id."&changed_main_file_and_cover_image=true");
+                
+            }
+
+
+        } else {
+
+            $info_update_only = $conn->query("UPDATE tbl_books SET
+            
+            title = '$title',
+            category_id = '$category_id',
+            category = '$category',
+            details = '$details',
+            author = '$author',
+        
+            date_updated = '$date_updated' WHERE book_id = $book_id; ") or die("Reference update failed: " .$conn->error.__LINE__);
+
+            if ($info_update_only) {
+
+            
+                $_SESSION['prevent_reload'] = "set";
+                jemor_log("edited", "reference", $title);
+                
+                redirect("panel.php?reference_updated=true&book_id=".$book_id."&info_update=true");
+            }
+
+        }
+    }
+}
+
+
+//IF MAIN FILE HAS BEEN CHANGED
+if (isset($_GET['changed_main_file']) && isset($_SESSION['prevent_reload'])) {
+  
+    set_alert_success('File has been successfully edited, attached file changed'.'<a href="panel.php?manage_all_ref=true"> Back to Manage References</a>
+    ');
+    unset($_SESSION['prevent_reload']);
+
+}
+
+//IF MAIN FILE HAS BEEN CHANGED
+if (isset($_GET['cover_image_changed']) && isset($_SESSION['prevent_reload'])) {
+  
+    set_alert_success('File has been successfully edited, cover image changed.'.'<a href="panel.php?manage_all_ref=true"> Back to Manage References</a>
+    ');
+    unset($_SESSION['prevent_reload']);
+
+}
+
+//IF MAIN FILE HAS BEEN CHANGED
+if (isset($_GET['info_update']) && isset($_SESSION['prevent_reload'])) {
+  
+    set_alert_success('File has been successfully updated.'.'<a href="panel.php?manage_all_ref=true"> Back to Manage References</a>
+    ');
+
+    unset($_SESSION['prevent_reload']);
+
+}
+
+
+//NOTIFICATION IF A NEW BOOK HAS BEEN EDITED
+
+// if (isset($_GET['file_edited']) && isset($_SESSION['prevent_reload'])) {
+//     $edited_file = ucwords(html_ent($_GET['file_edited']));
+//     set_alert_success($edited_file . ' ' . 'has been successfully edited. ' .'<a href="panel.php?all_references=true">Go to all categories to view the file.</a>');
+//     unset($_SESSION['prevent_reload']);
+    
+// }
+
 //NOTIFICATION IF A NEW BOOK HAS BEEN ADDED
 
 if (isset($_GET['manage_references']) && isset($_GET['file_added'])) {
@@ -689,6 +1085,7 @@ if (isset($_GET['reference_deleted']) && isset($_SESSION['prevent_reload_data'])
     
 }
 
+
 //ADD A CATEGORY
 function add_category() {
 
@@ -755,6 +1152,7 @@ function delete_category() {
             die(jm_error('Delete category Query Failed').$conn->error."<h2>At line: ".__LINE__."</h2>");
 
             if ($delete_category_query) {
+                
                 jemor_log("deleted", "category", $target_category);
                 redirect("panel.php?categories=true&category_deleted=".$target_category);
             }
