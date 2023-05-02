@@ -46,7 +46,7 @@
 
     //items per page
  
-    $items_per_page = 12;
+    $items_per_page = 100;
 
 
     if (isset($_POST['btn_cat_filter'])) {
