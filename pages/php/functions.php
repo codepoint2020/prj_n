@@ -1238,6 +1238,7 @@ function get_num_users() {
     return $num_of_users;
 }
 
+//total number of books
 function get_num_books() {
     global $conn;
 
@@ -1245,6 +1246,36 @@ function get_num_books() {
     $num_of_books = $get_books->num_rows;
     return $num_of_books;
 }
+
+
+//total number of videos
+function get_num_mp4() {
+    global $conn;
+
+    $get_books = $conn->query("SELECT * FROM tbl_books WHERE file_type = 'mp4' ") or die(jm_error('Get books Failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+    $num_of_videos = $get_books->num_rows;
+    return $num_of_videos;
+}
+
+//total number of pptx
+function get_num_pptx() {
+    global $conn;
+
+    $get_books = $conn->query("SELECT * FROM tbl_books WHERE file_type = 'pptx' ") or die(jm_error('Get books Failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+    $num_of_pptx = $get_books->num_rows;
+    return $num_of_pptx;
+}
+
+//total number of pdf
+function get_num_pdf() {
+    global $conn;
+
+    $get_books = $conn->query("SELECT * FROM tbl_books WHERE file_type = 'pdf' ") or die(jm_error('Get books Failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
+    $num_of_pdf = $get_books->num_rows;
+    return $num_of_pdf;
+}
+
+
 
 
 

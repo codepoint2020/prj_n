@@ -45,7 +45,7 @@
     <?php 
 
     //items per page
-    // $_SESSION['items_per_page'] =
+ 
     $items_per_page = 12;
 
 
