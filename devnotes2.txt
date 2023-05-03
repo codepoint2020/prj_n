@@ -15,7 +15,6 @@ uppon changing password error:
 Undefined index: user_id in D:\xampp\htdocs\2023\prj_n\pages\components\update_profile.php on line 50
 
 
-
 test accounts
 
 Administrator

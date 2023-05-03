@@ -33,14 +33,39 @@
             <button style="display: none" class="btn btn-sm btn-primary" name="btn_cat_filter" id="btn_cat_filter">btn_cat_filter</button>
         </form>
     </div>
+
+    <!-- LIST VIEW -->
     <div class="col-md-3 alert_parent">
- 
+
+    
+        <li class="nav-item d-none d-md-block mt-1">
+            <a class="nav-link" href="javascript:void(0)">
+            
+                    <div class="customize-input">
+                        <a href="panel.php?all_references=true" class="btn btn-dark btn-sm jm-info"> <i class="fas fa-th-large" data-bs-toggle="tooltip" title="Card View: This is the default view, allows quicker search functionality but more optimized on recently uploaded references"></i> </a>
+                        <a href="panel.php?list_view=true" class="btn btn-dark btn-sm jm-info"> <i class="fas fa-th-list" data-bs-toggle="tooltip" title="List View: Similar with card view on a list styled layout. "></i> </a>
+                        <a href="#" class="btn btn-dark btn-sm jm-info"> <i class="fas fa-table" data-bs-toggle="tooltip" title="Table View: This offers a detailed and more verbose searching experience of references"></i> </a>
+                    </div>
+               
+            </a>
+        </li>
+
+      
+     
     </div>
+
+     <!-- CARD VIEW -->
+     <div class="col-md-3 alert_parent">
+                  
+        
+     </div>
     
 </div>
  <!-- card parent -->
 
 <div class="row card-parent">
+
+<hr class="mb-4">
 
     <?php 
 
@@ -122,6 +147,7 @@
     }
     
       while ($row = $get_all_books->fetch_assoc()):
+        
         $file_format = pathinfo($row['file_name'], PATHINFO_EXTENSION);
 
         $cover_img_default = "../assets/images/default_cover2.png";

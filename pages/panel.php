@@ -138,10 +138,29 @@
             <!-- ============================================================== -->
             <!-- CARDS START -->
             <!-- ============================================================== -->
-            <?php if (isset($_GET['all_references'])): ?>
+            <?php if (isset($_GET['all_references']) || isset($_GET['card_view']) || isset($_GET['default_view'])): ?>
             <div class="col-12">
                 <?php include 'components/cards.php'?>
             </div>
+            <?php endif; ?>
+
+            <!-- ============================================================== -->
+            <!-- LIST VIEW START -->
+            <!-- ============================================================== -->
+            <?php if (isset($_GET['list_view'])): ?>
+        
+                <?php include 'components/list_view.php'?>
+              
+       
+            <?php endif; ?>
+
+             <!-- ============================================================== -->
+            <!-- LIST VIEW START -->
+            <!-- ============================================================== -->
+            <?php if (isset($_GET['all_references']) && isset($_GET['table_view'])): ?>
+         
+                <?php include 'components/table_view.php'?>
+
             <?php endif; ?>
 
             <!-- =========================LOAD PROFILE========================== -->
@@ -162,9 +181,7 @@
             </div>
             <?php endif; ?>
 
-            
-
-
+        
              <!-- =========================LOAD edit profile========================== -->
              <?php if (isset($_GET['update_profile'])): ?>
             <div class="col-12">

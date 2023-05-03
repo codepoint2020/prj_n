@@ -1,4 +1,6 @@
 
+
+
 <div class="row">
     
     <div class="card shadow-1">
@@ -30,8 +32,40 @@
                             $num = 0;           
                             while($row = $query_references->fetch_assoc()):
                                 $num++;
+
+                                $file_format = pathinfo($row['file_name'], PATHINFO_EXTENSION);
+
+                                $cover_img_default = "../assets/images/default_cover2.png";
+                                $cover_img = $row['cover_img'];
+                          
+                                
+                                $cover_img_pdf = "../assets/references/pdf/" . $cover_img;
+                                $cover_img_pptx = "./pptx_player/file/" . $cover_img;
+                                $cover_img_vids = "../assets/references/videos/" . $cover_img;
+
+                                if ($file_format == "pdf") {
+
+                                    $cover_img = $cover_img_pdf;
+
+                                } elseif ($file_format == "mp4") {
+                                
+                                    $cover_img = $cover_img_vids;
+
+                                } elseif ($file_format == "pptx") {
+
+                                    $cover_img = $cover_img_pptx;
+                                
+                                } else {
+
+                                    NULL;
+
+                                }
+                        
                         ?>
                         <tr>
+
+                     
+
                             <td><?php echo  $num; ?></td>
                             <td><?php echo "[".$row['book_id']."] " . short_desc_title(ucwords($row['title'])); ?></td>
                             <td><?php echo ucwords($row['category']); ?></td>
@@ -55,10 +89,7 @@
 
 </div>
 
-<script>
 
-
-</script>
 
 <?php if(isset($_SESSION['reference_update_event'])) {
     unset($_SESSION['reference_update_event']); 

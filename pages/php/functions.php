@@ -47,6 +47,18 @@ function short_desc($string)
     }
 }
 
+function short_desc_extended($string)
+{
+    $max_length = 100;
+    $current_length = strlen($string);
+
+    if ($current_length <= $max_length) {
+        return $string;
+    } else {
+        return substr($string, 0, $max_length) . "...";
+    }
+}
+
 function short_desc_title($string)
 {
     $max_length = 35;

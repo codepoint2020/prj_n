@@ -125,10 +125,52 @@
   object-position: center center !important;
 }
 
-.jm-icon {
+ .jm-media-pic {
+  height: 140px !important;
   width: 200px !important;
+
+  object-fit: cover !important;
+   object-position: center center !important; 
+
+   margin: 20px; 
+ } 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.jm-icon {
+  
+  height: 80px !important;
+  width: 180 !important;
   display: block !important;
   object-fit: fill !important;
+  object-fit: cover !important;
   
 }
 
+.jm-info {
+  background-color: #3e4243 !important;
+  border: none !important;
+}
+
+.jm-info:hover {
+  background-color: #2ab6dd !important;
+  border: none !important;
+}

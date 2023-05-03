@@ -25,7 +25,7 @@
                     echo  $panel_title = "List of Users";
                 }
 
-                if (isset($_GET['all_references']) && $_GET['all_references'] =='true') {
+                if (isset($_GET['all_references']) || isset($_GET['list_view']) || isset($_GET['table_view'])) {
                     echo  $panel_title = "All references";
                 }
 
