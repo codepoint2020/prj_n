@@ -144,49 +144,61 @@ body {
 
     <!-- Searchbox Here -->  
     <div class="row card-parent">
-    <div class="card">
-        <div class="card-body">
-            <div class="col-md-4 mb-4">
-                <div class="form-group">
-                    <input type="text" class="form-control search-input mt-4 shadow-1 br4" placeholder="Search">
-                </div>
+        
+                    <div class="card">
+                        <div class="card-body">
+                                <div class="col-md-4 mb-4">
+                          
+                                        <div class="form-group">
+                                            <input type="text" class="form-control search-input" placeholder="Search">
+                                        </div>
+                                 
+                                </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="body">
+                       
+                            <div class="container mt-4">
+        <div class="main-video">
+            <?php
+                 $query_videos = $conn->query("SELECT * FROM tbl_books WHERE file_type = 'mp4' ORDER BY book_id DESC");
+                 $first_vid = $query_videos->fetch_assoc();
+            ?>
+            <div class="video">
+                <video src="../assets/references/videos/<?php echo $first_vid['file_name']; ?>" controls autoplay></video>
+                <h3 class="title mt-2"><?php echo $first_vid['title']; ?></h3>
+                <p><?php echo $first_vid['details']; ?></p>
             </div>
         </div>
-    </div>
-    <div class="card">
-        <div class="body">
-            <div class="container mt-4">
-                <div class="main-video">
-                    <?php
-                    $query_videos = $conn->query("SELECT * FROM tbl_books WHERE file_type = 'mp4' ORDER BY book_id DESC");
-                    $first_vid = $query_videos->fetch_assoc();
-                    ?>
-                    <div class="video">
-                        <video src="../assets/references/videos/<?php echo $first_vid['file_name']; ?>" controls autoplay></video>
-                        <h3 class="title mt-2"><?php echo $first_vid['title']; ?></h3>
-                        <p><?php echo $first_vid['details']; ?></p>
-                    </div>
-                </div>
 
-                <div class="video-list card-handle">
-                    <?php
-                    $query_videos = $conn->query("SELECT * FROM tbl_books WHERE file_type = 'mp4' ORDER BY book_id DESC");
-                    while ($row = $query_videos->fetch_assoc()):
-                    ?>
-                    <div class="vid active">
-                        <video src="../assets/references/videos/<?php echo $row['file_name']; ?>" muted></video>
-                        <h3 class="title"><?php echo ucwords($row['title']); ?></h3>
-                    </div>
-                    <?php endwhile; ?>
-                </div>
+        <div class="video-list card-handle">
+            <?php
+                 $query_videos = $conn->query("SELECT * FROM tbl_books WHERE file_type = 'mp4' ORDER BY book_id DESC");
+                 while ($row = $query_videos->fetch_assoc()):
+            ?>
+            <div class="vid active">
+                <video src="../assets/references/videos/<?php echo $row['file_name']; ?>"  muted ></video>
+                <h3 class="title"><?php echo ucwords($row['title']); ?></h3>
+                
             </div>
+           <?php endwhile; ?>
+
         </div>
+
     </div>
-</div>
+                        </div>
+                    </div>
+
+    </div>
+
+    
+
+   
+    
 
     <script>
 
- //====================PRE LOAD ALL AVAILABLE VIDEOS=====================//
         let listVideo = document.querySelectorAll('.video-list .vid');
         let mainVideo = document.querySelector('.main-video video');
         let title = document.querySelector('.main-video .title');
@@ -207,25 +219,6 @@ body {
         //=====================QUICK SEARCH FUNCTIONALITY=====================//
 
 
-</script>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(document).ready(function() {
-    $('.search-input').on('input', function() {
-        var searchQuery = $(this).val().toLowerCase();
-
-        $('.video-list .vid').each(function() {
-            var title = $(this).find('.title').text().toLowerCase();
-
-            if (title.includes(searchQuery)) {
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
-        });
-    });
-});
 </script>
 
 </body>

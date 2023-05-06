@@ -290,8 +290,6 @@
 //=====================FILTER BY CATEGORY with associated PHP Script under PHP Dir=====================//
 const btn_cat_filter = document.getElementById("btn_cat_filter");
 
-
-
 const cat_filter = document.getElementById("cat_filter");
 
 cat_filter.addEventListener("change", function() {
