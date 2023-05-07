@@ -3,6 +3,9 @@
 if (isset($_GET['file'])) {
   $pdf_location = '../assets/references/pdf/';
   $pdf_file = $pdf_location . $_GET['file'];
+  $book_id = intval($_GET['id']);
+
+  log_view($book_id);
 
 }
 

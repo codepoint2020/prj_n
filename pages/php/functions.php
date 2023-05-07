@@ -35,6 +35,20 @@ function redirect($location)
 
 
 //limit the number of text to based on character string on the description/details of references/books
+function very_short_desc($string)
+{
+    $max_length = 30;
+    $current_length = strlen($string);
+
+    if ($current_length <= $max_length) {
+        return $string;
+    } else {
+        return substr($string, 0, $max_length) . "...";
+    }
+}
+
+
+//limit the number of text to based on character string on the description/details of references/books
 function short_desc($string)
 {
     $max_length = 70;
@@ -99,7 +113,7 @@ function add_user()
         $contact_no = escape_string_lower($_POST['contact_no']);
         $profile_pic = $_FILES['profile_pic']['name'];
 
-        $register_date = current_date();
+        $register_date = time();
 
         
        
@@ -492,7 +506,7 @@ function add_book() {
         $cover_image = $_FILES['cover_image']['name'];
         $cover_image_temp = $_FILES['cover_image']['tmp_name'];
 
-        $register_date = current_date();
+        $register_date = time();
 
         $file_type = "";
 
@@ -1396,7 +1410,7 @@ function activate_user() {
         $target_user = $target_record["first_name"] . " " . $target_record["last_name"];
         $user_type = $target_record['user_type'];
 
-        $current_date = date('Y-m-d');
+        $current_date = time();
         $expiration_date = $target_record["active_until"];
         $set_exp_date = $_SESSION['def_exp_date'];
 
@@ -1819,6 +1833,27 @@ if (isset($_GET['edited']) && isset($_GET['edit_user_info']) && isset($_SESSION[
     set_alert_success('Profile has been edited.');
     unset($_SESSION['prevent_reload_data']);
 }
+
+
+//LOGS PER VIEW PER REFERENCE
+
+// reference_id
+// user_id
+// log the date
+
+function log_view($book_id) {
+
+    global $conn;
+
+    $viewer_id = $_SESSION['user_id'];
+    $book_id = $book_id;
+    $log_date = time();
+
+   $conn->query("INSERT INTO tbl_views (book_id, user_id, last_viewed) VALUES ($book_id, $viewer_id, '$log_date'); ") or die("failed to insert view logs".$conn->error.__LINE__);
+
+}
+
+
 
 ?>
 

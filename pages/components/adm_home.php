@@ -397,7 +397,7 @@
                 </div> -->
 
                 <div class="ms-3 mt-2">             
-                    <a href="#"
+                    <a href="panel.php?data_changes=true"
                         class="font-14 border-bottom pb-1 border-info">View All</a>
                 </div>
                 

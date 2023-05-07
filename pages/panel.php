@@ -2,7 +2,12 @@
 <!-- IMPORT(S): Php scripts, Header-->
 <!-- ============================================================== -->
 
-<?php include "php/connection.php"; include "php/functions.php"; ?>
+
+<?php
+
+ include "php/connection.php"; include "php/functions.php";
+ 
+?>
 
 <?php if ($_SESSION['is_in'] == 'true'): ?>
 
@@ -147,17 +152,17 @@
             <!-- ============================================================== -->
             <!-- LIST VIEW START -->
             <!-- ============================================================== -->
-            <?php if (isset($_GET['list_view'])): ?>
-        
-                <?php include 'components/list_view.php'?>
-              
-       
-            <?php endif; ?>
+
+     
+            
+
+
+      
 
              <!-- ============================================================== -->
-            <!-- LIST VIEW START -->
+            <!-- TABLE VIEW START -->
             <!-- ============================================================== -->
-            <?php if (isset($_GET['all_references']) && isset($_GET['table_view'])): ?>
+            <?php if (isset($_GET['table_view'])): ?>
          
                 <?php include 'components/table_view.php'?>
 
@@ -234,10 +239,11 @@
 
                 $pptx = $_GET['file'];
                 $title = $_GET['title'];
+                $id = $_GET['id'];
                 
                 //include 'pptx_viewer/powerpoint_viewer.php'
 
-                redirect("pptx_player/pptx_viewer.php?powerpoint=".$pptx."&title=".$title);
+                redirect("pptx_player/pptx_viewer.php?powerpoint=".$pptx."&title=".$title."&id=".$id);
                 
                 
                 ?>
@@ -288,6 +294,16 @@
                 
             </div>
             <?php endif; ?>
+
+            <?php if (isset($_GET['data_changes']) && $_SESSION['user_type'] == 'administrator'): ?>
+            <div class="col-12">
+          
+                <?php include 'components/data_changes.php'; ?>
+                
+            </div>
+            <?php endif; ?>
+
+
 
             <!-- ============================================================== -->
             <!-- USERS' TABLE END -->

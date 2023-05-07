@@ -15,6 +15,12 @@
     font-weight: normal;
 }
 
+a {
+    margin: 0px;
+    padding: 0px;
+    border: none;
+}
+
 body {
     background: #eee;
 
@@ -53,7 +59,7 @@ body {
 .container .video-list {
     background: #fff;
     border-radius: 5px;
-    height: 520px;
+    height: 700px;
     overflow-y: scroll;
 }
 
@@ -153,9 +159,43 @@ body {
             </div>
         </div>
     </div>
+
+    <?php
+
+
+
+
+    ?>
+
+
     <div class="card">
         <div class="body">
             <div class="container mt-4">
+
+                <?php 
+                    if (isset($_GET['video_selected'])): {
+
+                        $book_id = $_GET['id'];
+
+                        $query_selected = $conn->query("SELECT * FROM tbl_books WHERE file_type = 'mp4' AND book_id = $book_id");
+                        $row = $query_selected->fetch_assoc();
+
+                        $book_id = intval($_GET['id']);
+		                log_view($book_id);
+
+                    }
+                ?>
+                <div class="main-video">
+                    
+                    <div class="video">
+                        <video src="../assets/references/videos/<?php echo $row['file_name']; ?>" controls autoplay></video>
+                        <h3 class="title mt-2"><?php echo $row['title']; ?></h3>
+                        <p><?php echo $row['details']; ?></p>
+                    </div>
+                </div>
+
+                <?php else: ?>
+
                 <div class="main-video">
                     <?php
                     $query_videos = $conn->query("SELECT * FROM tbl_books WHERE file_type = 'mp4' ORDER BY book_id DESC");
@@ -168,15 +208,22 @@ body {
                     </div>
                 </div>
 
+
+                <?php endif; ?>
+
                 <div class="video-list card-handle">
                     <?php
                     $query_videos = $conn->query("SELECT * FROM tbl_books WHERE file_type = 'mp4' ORDER BY book_id DESC");
                     while ($row = $query_videos->fetch_assoc()):
                     ?>
+                    <a href="panel.php?load_gallery=true&video_selected=true&id=<?php echo $row['book_id']; ?>">
                     <div class="vid active">
+                        
                         <video src="../assets/references/videos/<?php echo $row['file_name']; ?>" muted></video>
                         <h3 class="title"><?php echo ucwords($row['title']); ?></h3>
+                        
                     </div>
+                    </a>
                     <?php endwhile; ?>
                 </div>
             </div>
@@ -184,9 +231,7 @@ body {
     </div>
 </div>
 
-    <script>
-
- //====================PRE LOAD ALL AVAILABLE VIDEOS=====================//
+<!-- <script>
         let listVideo = document.querySelectorAll('.video-list .vid');
         let mainVideo = document.querySelector('.main-video video');
         let title = document.querySelector('.main-video .title');
@@ -199,15 +244,13 @@ body {
                     let src = video.children[0].getAttribute('src');
                     mainVideo.src = src;
                     let text=video.children[1].innerHTML;
-                    title.innerHTML = text;
+                    title.innerHTML = text;    
                 }
             }
         })
+</script> -->
 
-        //=====================QUICK SEARCH FUNCTIONALITY=====================//
 
-
-</script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>

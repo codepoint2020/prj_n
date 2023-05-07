@@ -1,3 +1,10 @@
+<?php
+
+include "../php/connection.php"; 
+include "../php/functions.php";
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -54,6 +61,8 @@
 <style>
 	html, body { margin: 0; padding: 0; }
 	#warper { margin-right: auto; margin-left: auto; width: 900px; }
+
+
 </style>
 </head>
 
@@ -61,9 +70,14 @@
 	if (isset($_GET['powerpoint'])) {
 		$x = "file/".$_GET['powerpoint'];
 		$title = $_GET['title'];
+		$book_id = intval($_GET['id']);
+		log_view($book_id);
 	}
 ?>
 <body>
+	<div class="sticky">
+		
+	</div>
 	<div id="warper">
 		<!-- <input id="uploadFileInput" type="file" />
 		<br><br>

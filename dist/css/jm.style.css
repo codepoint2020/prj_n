@@ -141,20 +141,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .jm-icon {
   
   height: 80px !important;
@@ -174,3 +160,21 @@
   background-color: #2ab6dd !important;
   border: none !important;
 }
+
+
+.jm-underline {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-decoration: underline;
+  color:rgb(51, 51, 53);
+ 
+}
+
+.jm-underline:hover {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color:rgb(50, 95, 208);
+ 
+}
+
+

@@ -25,7 +25,7 @@
                     echo  $panel_title = "List of Users";
                 }
 
-                if (isset($_GET['all_references']) || isset($_GET['list_view']) || isset($_GET['table_view'])) {
+                if (isset($_GET['all_references'])) {
                     echo  $panel_title = "All references";
                 }
 
@@ -68,6 +68,24 @@
                 if (isset($_GET['changed_main_file']) || isset($_GET['cover_image_changed'])) {
                     echo  $panel_title = "Update confirmation";
                 }
+                
+                if (isset($_GET['edit_user_info'])) {
+                    echo  $panel_title = "User Profile";
+                }
+
+                if (isset($_GET['table_view'])) {
+                    echo  $panel_title = "Table view";
+
+                }
+
+                if (isset($_GET['data_changes'])) {
+                    echo  $panel_title = "Data Changes Monitoring";
+
+                }
+
+
+                
+
                 
                 
 

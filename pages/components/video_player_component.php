@@ -10,6 +10,10 @@ if (isset($_GET['file'])) {
     $id = html_ent($_GET['id']);
     $file_query = $conn->query("SELECT * FROM tbl_books WHERE book_id = $id");
     $row = $file_query->fetch_assoc();
+
+    $book_id = intval($id);
+
+    log_view($book_id);
   }
 ?>
 

@@ -42,9 +42,9 @@
             <a class="nav-link" href="javascript:void(0)">
             
                     <div class="customize-input">
-                        <a href="panel.php?all_references=true" class="btn btn-dark btn-sm jm-info"> <i class="fas fa-th-large" data-bs-toggle="tooltip" title="Card View: This is the default view, allows quicker search functionality but more optimized on recently uploaded references"></i> </a>
-                        <a href="panel.php?list_view=true" class="btn btn-dark btn-sm jm-info"> <i class="fas fa-th-list" data-bs-toggle="tooltip" title="List View: Similar with card view on a list styled layout. "></i> </a>
-                        <a href="#" class="btn btn-dark btn-sm jm-info"> <i class="fas fa-table" data-bs-toggle="tooltip" title="Table View: This offers a detailed and more verbose searching experience of references"></i> </a>
+                        <!-- <a href="panel.php?all_references=true" class="btn btn-dark btn-sm jm-info"> <i class="fas fa-th-large" data-bs-toggle="tooltip" title="Card View: This is the default view, allows quicker search functionality but more optimized on recently uploaded references"></i> </a>
+                -->
+                        <a href="panel.php?table_view=true" class="btn btn-dark btn-sm jm-info"> <i class="fas fa-table mx-2" data-bs-toggle="tooltip" title="Table View: This offers a detailed and more verbose searching experience of references"></i> Table View</a>
                     </div>
                
             </a>
