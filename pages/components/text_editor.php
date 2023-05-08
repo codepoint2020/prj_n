@@ -1,5 +1,9 @@
 <?php
 
+$updating = 'false';
+$note_title = "";
+$note_content = "";
+
 //CREATE DATA
 if (isset($_POST['submit'])) {
 
@@ -39,6 +43,7 @@ if (isset($_GET['confirm_delete'])) {
 
 if (isset($_GET['notes_deleted']) && isset($_SESSION['prevent_reload'])) {
     set_alert_success("A note has been deleted");
+    unset($_SESSION['prevent_reload']);
 }   
 
 
@@ -48,8 +53,8 @@ function delete_note_confirm_box() {
 
     if (isset($_GET['delete_notes'])) {
 
-        $note_id = html_ent($_GET['note_id']);
-        $note_title = html_ent($_GET['note_title']);
+        $note_id = html_ent(escape_string($_GET['note_id']));
+        $note_title = html_ent(escape_string($_GET['note_title']));
     
 $confirm_box = <<<DELIMETER
             <div class="alert alert-warning" role="alert">
@@ -71,10 +76,62 @@ DELIMETER;
 
 //EDIT DATA
 
+if (isset($_GET['edit_notes'])) {
+
+    $note_id = escape_string($_GET['note_id']);
+    $note_id = intval($note_id);
+    $note_title = escape_string($_GET['note_title']);
+
+    $query_note = $conn->query("SELECT * FROM tbl_notes WHERE note_id = $note_id; ") or die($conn->error.__LINE__);
+
+    $row = $query_note->fetch_assoc();
+    $note_content = $row['content'];
+
+    $updating = 'true';
+        
+}
+
+if (isset($_GET['cancel'])) {
+    $updating = 'false';
+}
 
 
+//UPDATE
+if (isset($_POST['update'])) {
+
+    $note_id =  intval(escape_string($_POST['note_id']));
+    $note_title = mysqli_real_escape_string($conn, $_POST['note_title']);
+    $content = escape_string($_POST['content']);
+    $log_date = time();
+    $user_id = intval($_SESSION['user_id']);
+
+    $update_data = $conn->query("UPDATE tbl_notes SET
+    note_title = '$note_title',
+    content = '$content',
+    log_date = '$log_date' 
+    WHERE note_id = $note_id");
+
+    if ($update_data) {
+        $_SESSION['prevent_reload'] = 'set';
+        redirect("panel.php?text_editor=true&notes_updated=true&note_id=".$note_id);
+    }
+}
+
+if (isset($_GET['notes_updated'])) {
+
+    $updating = 'true';
+    set_alert_success("Notes changes saved!");
+
+    $note_id = html_ent($_GET['note_id']);
+    $query_note = $conn->query("SELECT * FROM tbl_notes WHERE note_id = $note_id");
+    $row = $query_note->fetch_assoc();
+
+    $note_title = $row['note_title'];
+    $note_content = $row['content'];
 
 
+}
+    
 
 display_notification();
 delete_note_confirm_box();
@@ -82,18 +139,21 @@ delete_note_confirm_box();
 ?>
 
 
-
-
 <div class="row">
     <div class="col-md-8">
         <form action="" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="note_id" value="<?php echo $note_id; ?>">
             <label for="note_title" class="form-label">Title:</label>
-            <input type="text" id="note_title" name="note_title" class="form-control mb-2 shadow-2" placeholder="Type a name for this note...">
+            <input type="text" id="note_title" name="note_title" class="form-control mb-2 shadow-2" placeholder="Type a name for this note..." value="<?php echo $note_title; ?>">
 
-            <textarea name="content" id="editor"><?php ?></textarea>
-            <input type="submit" name="submit" value="SAVE" class="btn btn-dark mt-4">
-            <input type="submit" name="update" value="UPDATE" class="btn btn-success mt-4">
-            <a href="panel.php?text_editor=true" class="btn btn-secondary mt-4">Cancel</a>
+            <textarea name="content" id="editor"><?php echo $note_content; ?></textarea>
+            <?php if ($updating == 'true'):?>
+                <input type="submit" name="update" value="UPDATE" class="btn btn-success mt-4">
+           
+            <?php else: ?>
+                <input type="submit" name="submit" value="SAVE" class="btn btn-dark mt-4">
+            <?php endif; ?>
+            <a href="panel.php?text_editor=true&cancel=true" class="btn btn-secondary mt-4">Cancel</a>
         </form>
     </div>
 
@@ -130,8 +190,8 @@ delete_note_confirm_box();
                                                 <td><?php echo short_desc($note['content']); ?></td>
                                     
                                                 <td>
-                                                    <a href="#" data-bs-toggle="tooltip" title="Edit this note"><i class="fas fa-edit jm-fas"></i></a>
-                                                    <a href="panel.php?text_editor=true&delete_notes=true&note_title=<?php echo $note['note_title']; ?>&note_id=<?php echo $note['note_id']; ?>" data-bs-toggle="tooltip" title="Remove from the list"><i class="fas fa-window-close jm-fas"></i></a>
+                                                    <a href="panel.php?text_editor=true&edit_notes=true&note_title=<?php echo urlencode($note ['note_title']); ?>&note_id=<?php echo $note['note_id']; ?>" data-bs-toggle="tooltip" title="Edit this note"><i class="fas fa-edit jm-fas"></i></a>
+                                                    <a href="panel.php?text_editor=true&delete_notes=true&note_title=<?php echo urlencode($note['note_title']); ?>&note_id=<?php echo $note['note_id']; ?>" data-bs-toggle="tooltip" title="Remove from the list"><i class="fas fa-window-close jm-fas"></i></a>
                                                 </td>
                                             </tr>
                                             <?php endwhile; ?>

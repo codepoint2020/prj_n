@@ -52,7 +52,7 @@ if (isset($_GET['saved'])) {
 }
 
 if (isset($_GET['save_complete']) && isset($_SESSION['prevent_reload'])) {
-    set_alert_success("Success! This reference is now added in your study list");
+    set_alert_success("Success! This reference is now added in your study list: ".'<a href="panel.php?study_list=true">Go to My Study List</a>');
     unset($_SESSION['prevent_reload']);
 
 }
