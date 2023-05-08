@@ -1,7 +1,6 @@
 <div class="card shadow-2">
                             <div class="card-body ">
-                                <h4 class="card-title"> <a href="panel.php?all_references=true" class="btn btn-dark btn-sm">Back to default view</a>  </h4>
-                                <h6 class="card-subtitle">Type any keywords like possible title, description, category, author, file type, date posted etc.</h6>
+                                
                                 <div class="table-responsive">
                                     <table id="default_order" class="table border table-striped table-bordered text-wrap table-info"
                                         style="width:100%">

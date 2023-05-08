@@ -3,11 +3,31 @@
 if (isset($_GET['file'])) {
   $pdf_location = '../assets/references/pdf/';
   $pdf_file = $pdf_location . $_GET['file'];
+  $file = $_GET['file'];
   $book_id = intval($_GET['id']);
+  $title = html_ent($_GET['title']);
 
   log_view($book_id);
 
 }
+
+if (isset($_GET['saved'])) {
+    
+  $book_id = intval($_GET['id']);
+  add_to_list($book_id);
+  $_SESSION['prevent_reload'] = 'set';
+  redirect("panel.php?load_pdf=true&id=".$book_id."&file=".$file."&title=".$title."&save_complete=true");
+  
+}
+
+
+if (isset($_GET['save_complete']) && isset($_SESSION['prevent_reload'])) {
+  set_alert_success("Success! This reference is now added in your study list");
+  unset($_SESSION['prevent_reload']);
+
+}
+
+display_notification();
 
 
 ?>
@@ -59,9 +79,34 @@ if (isset($_GET['file'])) {
   padding: 1rem;
 }
 
+.download {
+  background-color: #19A7CE !important;
+  color: #fff;
+}
+
+.download:hover {
+  background-color: #009FBD !important;
+  color: #fff;
+}
+
+
+
+
+
+
+.add_to_list {
+  background-color: #333 !important;
+  color: #fff;
+}
+
     </style>
     <title><?php echo $title; ?></title>
   </head>
+
+  <a class="btn btn-primary mb-4 download" href="<?php echo $pdf_file; ?>" download>Download</a>
+
+  <a  class="btn btn-dark mb-4 add_to_list" href="panel.php?load_pdf=true&id=<?php echo $book_id; ?>&file=<?php echo $file; ?>&title=<?php echo $title; ?>&saved=true">Add To My Study List</a>
+
   <body oncontextmenu="return false">
     <div class="top-bar">
       <button class="btn" id="prev-page">

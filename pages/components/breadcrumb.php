@@ -10,12 +10,20 @@
 
 <?php else: ?>
 
-            
-    
             <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">
                 <?php 
 
                 $panel_title = "";
+                
+
+                
+                if (isset($_GET['text_editor'])) {
+                    echo $panel_title =  "Scratch Pad";
+                }
+
+                if (isset($_GET['study_list'])) {
+                    echo $panel_title =  "My Study List";
+                }
                 
                 if (isset($_GET['manage_references']) && $_GET['manage_references'] =='true') {
                     echo $panel_title =  "Add New Reference";

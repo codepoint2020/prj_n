@@ -1,23 +1,4 @@
 
-
-<?php
-
-
-
-if (isset($_GET['file'])) {
-    $video_location = '../assets/references/videos/';
-    $video_file = $video_location . $_GET['file'];
-    $id = html_ent($_GET['id']);
-    $file_query = $conn->query("SELECT * FROM tbl_books WHERE book_id = $id");
-    $row = $file_query->fetch_assoc();
-
-    $book_id = intval($id);
-
-    log_view($book_id);
-  }
-?>
-
-
 <style>
 
 .video-player {
@@ -43,10 +24,46 @@ if (isset($_GET['file'])) {
     transform: scale(1.15);
 }
 
-
-
-
 </style>
+
+<?php
+
+if (isset($_GET['file'])) {
+    $video_location = '../assets/references/videos/';
+    $video_file = $video_location . $_GET['file'];
+    $file = $_GET['file'];
+    $id = html_ent($_GET['id']);
+    $title = html_ent($_GET['title']);
+    $file_query = $conn->query("SELECT * FROM tbl_books WHERE book_id = $id");
+    $row = $file_query->fetch_assoc();
+
+    $book_id = intval($id);
+
+    log_view($book_id);
+}
+
+if (isset($_GET['saved'])) {
+    
+    $book_id = intval($_GET['id']);
+    add_to_list($book_id);
+    $_SESSION['prevent_reload'] = 'set';
+    redirect("panel.php?load_video=true&id=".$book_id."&file=".$file."&title=".$title."&save_complete=true");
+    
+}
+
+if (isset($_GET['save_complete']) && isset($_SESSION['prevent_reload'])) {
+    set_alert_success("Success! This reference is now added in your study list");
+    unset($_SESSION['prevent_reload']);
+
+}
+
+display_notification();
+
+?>
+
+
+
+<a id="add_to_list" class="btn btn-dark mb-4" href="panel.php?load_video=true&id=<?php echo $book_id; ?>&file=<?php echo $file; ?>&title=<?php echo $title; ?>&saved=true">Add To My Study List</a>
 
     <div class="video-player" id="videoPlayer">
     <a href="panel.php?all_references=true" id="hidden_link">

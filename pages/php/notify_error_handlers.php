@@ -111,7 +111,7 @@ function set_alert_success($message_alert)
 {
    
     if (!empty($message_alert)) {
-        $_SESSION['message_alert'] = "<div class='alert alert-success alert-dismissible fade show'>"."<strong>".$message_alert."</strong>".
+        $_SESSION['message_alert'] = "<div class='alert alert-success alert-dismissible text-center fade show'>"."<strong>".$message_alert."</strong>".
         '<button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>'."</div>";
     } else {
         $message_alert = "";

@@ -22,6 +22,7 @@
     <script src="../dist/js/pages/datatable/datatable-basic.init.js"></script>
     
     <!-- <script src="../dist/js/jmpw_gen.js"></script> -->
+    
 </body>
 
 </html>

@@ -37,7 +37,7 @@ function redirect($location)
 //limit the number of text to based on character string on the description/details of references/books
 function very_short_desc($string)
 {
-    $max_length = 30;
+    $max_length = 28;
     $current_length = strlen($string);
 
     if ($current_length <= $max_length) {
@@ -346,7 +346,6 @@ function signin_user()
 {
 
     global $conn;
-   
 
     if (isset($_POST['btn_signin'])) {
         $uname = escape_string($_POST['uname']);
@@ -371,12 +370,6 @@ function signin_user()
             
             if (password_verify($user_password, $correct_password)) {
                 
-
-
-
-
-
-
                 $auth_user = strtolower($row['first_name']) . " " . strtolower($row['last_name']);
                 $auth_user = ucwords($auth_user);
 
@@ -1851,6 +1844,16 @@ function log_view($book_id) {
 
    $conn->query("INSERT INTO tbl_views (book_id, user_id, last_viewed) VALUES ($book_id, $viewer_id, '$log_date'); ") or die("failed to insert view logs".$conn->error.__LINE__);
 
+}
+
+function add_to_list($id) {
+    global $conn;
+
+    $user_id = $_SESSION['user_id'];
+    $book_id = $id;
+    $log_date = time();
+
+    $conn->query("INSERT INTO tbl_save (book_id, user_id, log_date) VALUES ($book_id, $user_id, '$log_date'); ") or die("Add to my list query failed: ". $conn->error.__LINE__);
 }
 
 

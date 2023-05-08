@@ -98,6 +98,9 @@
                
             <?php endif; ?>
 
+       
+    
+
 
             <?php if (isset($_GET['categories']) && $_SESSION['user_type'] == 'administrator'): ?>
                 <?php add_category(); display_notification(); delete_category_confirm_box(); delete_category(); editCategory(); ?>
@@ -302,6 +305,25 @@
                 
             </div>
             <?php endif; ?>
+
+            <?php if (isset($_GET['study_list'])): ?>
+            <div class="col-12">
+          
+                <?php include 'components/study_list.php'; ?>
+                
+            </div>
+            <?php endif; ?>
+
+            <?php if (isset($_GET['text_editor'])): ?>
+            <div class="col-12">
+          
+                <?php include 'components/text_editor.php'; ?>
+                
+            </div>
+            <?php endif; ?>
+
+
+            
 
 
 

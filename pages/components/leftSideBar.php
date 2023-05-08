@@ -61,25 +61,7 @@
                         </li>
 
                         <?php if ($_SESSION['user_type'] == 'administrator'): ?>
-                        <!-- <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
-                                aria-expanded="false"><i data-feather="bar-chart" class="feather-icon"></i><span
-                                    class="hide-menu">System Statistics </span></a>
-                            <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                                <li class="sidebar-item"><a href="chart-morris.html" class="sidebar-link"><span
-                                            class="hide-menu"> Overview
-                                        </span></a>
-                                </li>
-                                <li class="sidebar-item"><a href="chart-chart-js.html" class="sidebar-link"><span
-                                            class="hide-menu"> References Utilization
-                                        </span></a>
-                                </li>
-                                <li class="sidebar-item"><a href="chart-knob.html" class="sidebar-link"><span
-                                            class="hide-menu">
-                                            Logs
-                                        </span></a>
-                                </li>
-                            </ul>
-                        </li> -->
+                   
                         <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
                                 aria-expanded="false"><i data-feather="settings"
                                         class="svg-icon me-2 ms-1"></i><span
@@ -112,14 +94,14 @@
 
                         <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
                                 aria-expanded="false"><i data-feather="box" class="feather-icon"></i><span
-                                    class="hide-menu">Saved References</span></a>
+                                    class="hide-menu">Miscellaneous</span></a>
                             <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                                <li class="sidebar-item"><a href="panel.php?underconstruction=true" class="sidebar-link"><span
-                                            class="hide-menu"> Frequently Used
+                                <li class="sidebar-item"><a href="panel.php?study_list=true" class="sidebar-link"><span
+                                            class="hide-menu"> My Study List
                                         </span></a>
                                 </li>
-                                <li class="sidebar-item"><a href="panel.php?underconstruction=true" class="sidebar-link"><span
-                                            class="hide-menu"> By Categories </span></a>
+                                <li class="sidebar-item"><a href="panel.php?text_editor=true" class="sidebar-link"><span
+                                            class="hide-menu"> Scratch Pad </span></a>
                                 </li>
                                
                             </ul>

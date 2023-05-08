@@ -69,15 +69,34 @@ include "../php/functions.php";
 <?php
 	if (isset($_GET['powerpoint'])) {
 		$x = "file/".$_GET['powerpoint'];
+		$file_name = $_GET['powerpoint'];
 		$title = $_GET['title'];
 		$book_id = intval($_GET['id']);
 		log_view($book_id);
+		
+		if (isset($_GET['saved'])) {
+			$book_id = intval($_GET['id']);
+			add_to_list($book_id);
+			$_SESSION['prevent_reload'] = 'set';
+			redirect("pptx_viewer.php?powerpoint=".$file_name."&title=".$title."&id=".$book_id."&save_complete=true");
+			
+		}
 	}
+
+	if (isset($_GET['save_complete']) && isset($_SESSION['prevent_reload'])) {
+		echo '
+		<script>
+		alert("Success! This reference was added to your study list");
+	</script>
+		';
+	
+		unset($_SESSION['prevent_reload']);
+
+	}
+
 ?>
 <body>
-	<div class="sticky">
-		
-	</div>
+	
 	<div id="warper">
 		<!-- <input id="uploadFileInput" type="file" />
 		<br><br>
@@ -86,11 +105,14 @@ include "../php/functions.php";
 			<br> -->
 			<h3 class="text-center mt-4"><?php echo $title; ?></h3> 
 			<a class="btn btn-primary mb-4" href="<?php echo $x; ?>">Download</a>
+			<a id="add_to_list" disabled class="btn btn-dark mb-4" href="pptx_viewer.php?powerpoint=<?php echo $file_name; ?>&id=<?php echo $book_id; ?>&saved=true&title=<?php echo $title; ?>">Add To My Study List</a>
 			<div  id="result"></div>
 		<!-- </div> -->
 	</div>
 
 <?php
+
+
 
 
 
@@ -130,7 +152,6 @@ echo $pptx;
 
 
 ?>
-
 
 </body>
 </html>
