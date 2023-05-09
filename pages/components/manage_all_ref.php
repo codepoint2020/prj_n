@@ -1,5 +1,9 @@
 
-
+<style>
+    .fa-window-close {
+        color: #fff;
+    }
+</style>
 
 <div class="row">
     

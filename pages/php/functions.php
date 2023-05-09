@@ -1037,11 +1037,26 @@ function delete_book_confirm_box()
     global $conn;
 
     if (isset($_GET['delete_ref'])) {
+
+       
         $book_id = html_ent($_GET['id']);
 
         $query_book = $conn->query("SELECT * FROM tbl_books WHERE book_id = $book_id; ") or die("FAILED TO QUERY BOOK" . $conn->error . __LINE__);
         $row = $query_book->fetch_assoc();
         $book = ucwords($row['title']);
+    
+
+
+        // if (file_exists($filePath)) {
+        //     unlink($filePath);
+        //     echo "File deleted successfully.";
+        // } else {
+        //     echo "File not found.";
+        // }
+
+        // unlink($dir.$file_name);
+        
+
         $confirm_box = <<<DELIMETER
         <div class="alert alert-warning" role="alert">
     <h4 class="alert-heading">Warning: </h4>
@@ -1079,7 +1094,24 @@ function delete_book() {
             $target_cover_image = $row["cover_img"];
             $_SESSION['prevent_reload_data'] = "set";
 
-            $file_dir = "../assets/references/pdf/";
+            $file_dir = "";
+
+            //Prepare associated files for deletion
+            
+            $file_extension = pathinfo($target_file, PATHINFO_EXTENSION);
+
+            if ($file_extension == "pdf") {
+                $file_dir = "../assets/references/pdf/";
+             
+            } elseif ($file_extension == "mp4"){
+                $file_dir = "../assets/references/videos/";
+               
+            } elseif ($file_extension == "pptx") {
+                $file_dir = "./pptx_player/file/";
+               
+            } else {
+                NULL;
+            }
 
             $delete_book_query = $conn->query("DELETE FROM tbl_books WHERE book_id = $book_id; ") or 
             die(jm_error('Delete reference Query Failed').$conn->error."<h2>At line: ".__LINE__."</h2>");
