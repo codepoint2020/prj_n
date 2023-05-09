@@ -102,7 +102,7 @@ signin_user();
                                     <button id="signIn" name="btn_signin"></button>
                                 </div>
                                 <div class="col-lg-12 text-center mt-5">
-                                    Don't have an account? <a href="#" class="text-danger">Sign Up</a>
+                                    <!-- Don't have an account? <a href="#" class="text-danger">Sign Up</a> -->
                                 </div>
                             </div>
                         </form>
