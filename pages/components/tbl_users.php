@@ -1,3 +1,9 @@
+<style>
+    .fa-window-close {
+        color: #fff;
+    }
+</style>
+
 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Users' Table</h4>

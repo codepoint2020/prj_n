@@ -299,7 +299,12 @@ function delete_user() {
             $row = $query_id->fetch_assoc();
             $target_user = ucwords($row['first_name'] . " " .$row['last_name']);
             $user_type = $row['user_type'];
+            $profile_pic = $row['profile_pic'];
             $_SESSION['prevent_reload_data'] = "set";
+
+            $file_dir = "../assets/images/users/";
+
+            
 
             $delete_query = $conn->query("DELETE FROM tbl_users WHERE user_id = $id; ") or 
             die(jm_error('Delete Query Failed').$conn->error."<h2>At line: ".__LINE__."</h2>");
@@ -307,6 +312,7 @@ function delete_user() {
             if ($delete_query) {
                 jemor_log("deleted", $user_type, $target_user);
                 redirect("panel.php?load_users=true&user_deleted=true&uname=".$target_user);
+                unlink($file_dir . $profile_pic);
             }
         } 
     
