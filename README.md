@@ -1,3 +1,11 @@
+<!-- Main image of Template -->
+<a target="_blank" href="http://jeromemorales.rf.gd/?i=1">
+  Database design, back-end functionalities authored by: Jerome Morales
+</a>
+
+
+
+
 # <a href="https://demos.adminmart.com/free/bootstrap/freedash-lite/src/html/index.html/?ref=5">Freedash-bootstrap-lite</a>
 FreeDash Bootstrap 5 Admin Template
 
@@ -80,4 +88,5 @@ FreeDash Bootstrap 5 Admin Template
 - <p>Quora: <a href="https://www.quora.com/profile/Adminmart/?ref=5">https://www.quora.com/profile/Adminmart</a></p>
 - <p>Stack-Overflow: <a href="https://stackoverflow.com/users/20055119/adminmart/?ref=5">https://stackoverflow.com/users/20055119/adminmart</a></p>
 - <p>Reddit: <a href="https://www.reddit.com/user/adminmart/?ref=5">https://www.reddit.com/user/adminmart</a></p>
+
 
