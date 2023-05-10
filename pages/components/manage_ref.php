@@ -69,7 +69,7 @@ display_notification();
                                     $get_categories = $conn->query("SELECT * FROM tbl_categories ") or die(jm_error('Categories query failed: ').$conn->error."<h2>At line: ".__LINE__."</h2>");
                                     while ($row = $get_categories->fetch_assoc()):
                                 ?>
-                                    <option value="<?php echo $row['name']; ?>"><?php echo ucwords($row['name']); ?></option>
+                                    <option value="<?php echo $row['category_id']."_".$row['name']; ?>"><?php echo ucwords($row['name']); ?></option>
                                 <?php endwhile; ?>
                                
                             </select>

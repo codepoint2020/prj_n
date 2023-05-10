@@ -496,8 +496,13 @@ function add_book() {
         $user_id = $_SESSION['user_id'];
         $title = escape_string($_POST['title']);
         $details = escape_string($_POST['details']);
-        $category = escape_string($_POST['category']);
+        $category_id = explode('_', escape_string($_POST['category']));
+        $category_id = $category_id[0];
 
+        $category = explode('_', escape_string($_POST['category']));
+        $category = $category[1];
+
+      
         $formFile = $_FILES['formFile']['name'];
         $formFile_temp = $_FILES['formFile']['tmp_name'];
         $author = escape_string($_POST['author']);
@@ -587,6 +592,7 @@ function add_book() {
                 file_type,
                 title, 
                 details, 
+                category_id,
                 category,
                 author,
                 cover_img,
@@ -598,6 +604,7 @@ function add_book() {
                     '$file_type',
                     '$title',
                     '$details',
+                    $category_id,
                     '$category',
                     '$author',
                     '$cover_image',
@@ -1148,7 +1155,7 @@ function add_category() {
 
     global $conn;
     if (isset($_POST['btn_add_category'])) {
-        $cat_title = escape_string($_POST['cat_title']);
+        $cat_title = escape_string(strtolower($_POST['cat_title']));
         $register_date = time();
   
 

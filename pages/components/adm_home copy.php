@@ -47,83 +47,46 @@
                             <canvas id="myChart" style="width:100%;"></canvas>
 
                             <script>
-                                // var xValues = [ "test1", "test2", "test3"];
-                                var xValues = [<?php
+                                var xValues = [
+                                    <?php
                                         $all_cat_query = $conn->query("SELECT * FROM tbl_categories ORDER BY category_id ASC; ");
                                         $total_category = $all_cat_query->num_rows;
-
-                                        $query_books = $conn->query("SELECT * FROM tbl_books");
-                                        $total_books= $query_books->num_rows;
-
                                         while ($row = $all_cat_query->fetch_assoc()) {
                                             echo "'" . $row['name'] . "',";
                                         }
+                                    ?> 
+                                ];
 
-                                       
-                                    ?>];
-                                
-                               
-
-                                // var yValues = [5,4,3];
                                 var yValues = [
 
-                                    <?php
+                                <?php
                                 $books_by_category = $conn->query("SELECT tbl_categories.name AS category, COUNT(tbl_books.book_id) AS num_books
                                 FROM tbl_categories
                                 LEFT JOIN tbl_books ON tbl_categories.category_id = tbl_books.category_id
                                 GROUP BY tbl_categories.category_id ORDER BY tbl_categories.category_id ASC
                                 ");
 
-                                //highest number of books in a category
-                                $highest_category_query = $conn->query("SELECT tbl_categories.name AS category, COUNT(tbl_books.book_id) AS num_books
-                                FROM tbl_categories
-                                LEFT JOIN tbl_books ON tbl_categories.category_id = tbl_books.category_id
-                                GROUP BY tbl_categories.category_id
-                                ORDER BY num_books DESC
-                                LIMIT 1
-                            ");
-
-                                if ($highest_category_query->num_rows > 0) {
-                                    
-                                    $num_books_highest = $row['num_books'];
-
-                                   
-                                } 
-                                
-                            
                                 while ($books_category_record = $books_by_category->fetch_assoc()) {
                                     echo $books_category_record['num_books'] . ", ";
 
                                 } 
-                                echo 0;
+                                echo 2;
                                 ?>
 
+                            
+                            
                                 ];
-                                
-                                
-
-                            
-                            
-                               
-                                // var barColors = ["red","blue", "yellow"];
                                 var barColors = [
                                     <?php
                                         $colorArray = ["#FF6D60", "#03C988","#088395","#FFD56F","#FF7B54","#13005A","#86C8BC","#FFBF00", "#009EFF", "#EB6440","#E97777","#8D72E1","#9ED5C5","#54B435","#3C4048"];
-                                        
-                                        for ($i = 0; $i < $total_books; $i++) {
-                                            shuffle($colorArray);
-                                            $randomColors = array_slice($colorArray, 0, $total_category);
-                                            foreach($randomColors as $color) {
-                                                echo "'" . $color . "',";
-                                            }
-                                        }
-                                        
-                                    ?>
-                                    ];
-                                    
-                                
 
-                                
+                                        shuffle($colorArray);
+                                        $randomColors = array_slice($colorArray, 0, $total_category);
+                                        foreach($randomColors as $color) {
+                                            echo "'" . $color . "',";
+                                        }
+                                    ?>
+                                ];
 
                                 new Chart("myChart", {
                                 type: "bar",
