@@ -239,8 +239,8 @@ $user_address = $query_address->fetch_assoc();
                       <div class="card h-100">
                         <div class="card-body">
                           <h4 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2"></i>Recently Viewed References</h4>
-                          <a href="#"><div>Web Design</div></a>
-                          <small>Category: Technology</small>
+                          <a href="#"><div>Under construction</div></a>
+                          <small>Under construction</small>
                           <hr>
 
                           <p class="text-secondary">No record found</p>
@@ -254,8 +254,8 @@ $user_address = $query_address->fetch_assoc();
                       <div class="card h-100">
                         <div class="card-body">
                         <h4 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2"></i>Recent Communications</h4>
-                            <a href="#"><div>Web Design</div></a>
-                            <small>From: </small>
+                            <a href="#"><div>Under construction</div></a>
+                            <small>Under construction</small>
                             <hr>
 
 
