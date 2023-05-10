@@ -35,8 +35,6 @@
                             $query_references = $conn->query("SELECT * FROM tbl_books");
                             $num = 0;           
                             while($row = $query_references->fetch_assoc()):
-                                $num++;
-
                                 $file_format = pathinfo($row['file_name'], PATHINFO_EXTENSION);
 
                                 $cover_img_default = "../assets/images/default_cover2.png";
@@ -46,24 +44,35 @@
                                 $cover_img_pdf = "../assets/references/pdf/" . $cover_img;
                                 $cover_img_pptx = "./pptx_player/file/" . $cover_img;
                                 $cover_img_vids = "../assets/references/videos/" . $cover_img;
+                                // $num++;
 
-                                if ($file_format == "pdf") {
+                                // $file_format = pathinfo($row['file_name'], PATHINFO_EXTENSION);
 
-                                    $cover_img = $cover_img_pdf;
-
-                                } elseif ($file_format == "mp4") {
+                                // $cover_img_default = "../assets/images/default_cover2.png";
+                                // $cover_img = $row['cover_img'];
+                          
                                 
-                                    $cover_img = $cover_img_vids;
+                                // $cover_img_pdf = "../assets/references/pdf/" . $cover_img;
+                                // $cover_img_pptx = "./pptx_player/file/" . $cover_img;
+                                // $cover_img_vids = "../assets/references/videos/" . $cover_img;
 
-                                } elseif ($file_format == "pptx") {
+                                // if ($file_format == "pdf") {
 
-                                    $cover_img = $cover_img_pptx;
+                                //     $cover_img = $cover_img_pdf;
+
+                                // } elseif ($file_format == "mp4") {
                                 
-                                } else {
+                                //     $cover_img = $cover_img_vids;
 
-                                    NULL;
+                                // } elseif ($file_format == "pptx") {
 
-                                }
+                                //     $cover_img = $cover_img_pptx;
+                                
+                                // } else {
+
+                                //     NULL;
+
+                                // }
                         
                         ?>
                         <tr>
@@ -71,7 +80,66 @@
                      
 
                             <td><?php echo  $num; ?></td>
-                            <td><?php echo "[".$row['book_id']."] " . short_desc_title(ucwords($row['title'])); ?></td>
+                            <td><a <?php 
+        
+        if ($file_format == "pptx") {
+          echo 'target="_blank"';
+        }
+        
+        ?>href="<?php 
+        
+    
+                    $file_format = pathinfo($row['file_name'], PATHINFO_EXTENSION);
+
+                    if ($file_format == "pdf") {
+
+                      if (file_exists($cover_img_pdf)) {
+                         $cover_img = $cover_img_pdf;
+                      } else {
+                         $cover_img = $cover_img_default;
+                      }
+
+             
+
+                      echo 'panel.php?load_pdf=true&';
+                      
+                    } elseif ($file_format == "mp4") {
+                      if (file_exists($cover_img_vids)) {
+                         $cover_img = $cover_img_vids;
+                      } else {
+                         $cover_img = $cover_img_default;
+                      }
+
+
+                      echo 'panel.php?load_video=true&';
+                      
+                    } elseif ($file_format == "pptx") {
+
+                     if (file_exists($cover_img_pptx)) {
+                        $cover_img = $cover_img_pptx;
+                     } else {
+                        $cover_img = $cover_img_default;
+                     }
+
+                      echo 'panel.php?load_pptx=true&';
+
+                    } elseif ($file_format == "docx") {
+                      echo '#';
+                    } else {
+                      NULL;
+                    }
+                  
+        
+        
+        ?>id=<?php echo $row['book_id']?>&file=<?php echo $row['file_name']; ?>&title=<?php echo $row['title']; ?>">
+                                            
+                                           
+                                           
+                                           
+                                            <p class="jm-underline " style="min-width: 400px"><?php echo $row['title']; ?></p>
+                              
+                            </a>
+                            </td>
                             <td><?php echo ucwords($row['category']); ?></td>
                             
                             <td><?php echo ucwords($row['author']); ?></td>
