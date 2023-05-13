@@ -35,9 +35,22 @@ function redirect($location)
 
 
 //limit the number of text to based on character string on the description/details of references/books
+function short_title($string)
+{
+    $max_length = 27;
+    $current_length = strlen($string);
+
+    if ($current_length <= $max_length) {
+        return $string;
+    } else {
+        return substr($string, 0, $max_length) . "...";
+    }
+}
+
+//limit the number of text to based on character string on the description/details of references/books
 function very_short_desc($string)
 {
-    $max_length = 28;
+    $max_length = 40;
     $current_length = strlen($string);
 
     if ($current_length <= $max_length) {
@@ -499,8 +512,11 @@ function add_book() {
         $category_id = explode('_', escape_string($_POST['category']));
         $category_id = $category_id[0];
 
+        // $category = explode('_', escape_string($_POST['category']));
+        // $category = $category[1];
+
         $category = explode('_', escape_string($_POST['category']));
-        $category = $category[1];
+$category = isset($category[1]) ? $category[1] : '';
 
       
         $formFile = $_FILES['formFile']['name'];
@@ -551,12 +567,6 @@ function add_book() {
             $cover_image = "";    
         }
 
-
-     
-        
-
-    
-        
         $errorArray = [];
     
         if (empty($title)) {
@@ -575,17 +585,8 @@ function add_book() {
             array_push($errorArray, "empty_formFile");
         }
 
-        if (empty($formFile_temp)) {
-            array_push($errorArray, "empty_formFile_temp");
-        }
-
-   
-        if ($file_type == "not_allowed") {
-            array_push($errorArray, "unsupported_file");
-        }
-
+      
         
-
         if (empty($errorArray)) {
             $add_book_query = $conn->query("INSERT INTO tbl_books (
                 file_name,
@@ -628,12 +629,9 @@ function add_book() {
                 
                 redirect('panel.php?manage_references=true&file_added='.$title);
               
-               
             }
            
-        } else {
-            $_SESSION['error_array'] = $errorArray; 
-        }
+        } 
     
     } 
 
@@ -1184,7 +1182,7 @@ function delete_category_confirm_box()
         $confirm_box = <<<DELIMETER
         <div class="alert alert-warning" role="alert">
     <h4 class="alert-heading">Warning: </h4>
-    <h4>You are about to PERMANENTLY delete this REFERENCE:</h4>
+    <h4>You are about to PERMANENTLY delete this CATEGORY:</h4>
     <h3>{$category}</h3>
     <hr>
    
@@ -1200,8 +1198,6 @@ function delete_category() {
     global $conn;
     if (isset($_GET['confirm_category_delete'])) {
         $category_id = html_ent($_GET['confirm_category_delete']);
-
-
         $query_category = $conn->query("SELECT * FROM tbl_categories WHERE category_id = $category_id") or 
                     die(jm_error('Query category id failed').$conn->error."<h2>At line: ".__LINE__."</h2>");
 

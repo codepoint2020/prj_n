@@ -56,11 +56,25 @@
                                         $total_books= $query_books->num_rows;
 
                                         while ($row = $all_cat_query->fetch_assoc()) {
-                                            echo "'" . $row['name'] . "',";
+                                            echo "'" . short_title($row['name']) . "',";
                                         }
 
                                        
-                                    ?>];
+                                    ?>]
+                                var xValues2 = [<?php
+                                        $all_cat_query = $conn->query("SELECT * FROM tbl_categories ORDER BY category_id ASC; ");
+                                        $total_category = $all_cat_query->num_rows;
+
+                                        $query_books = $conn->query("SELECT * FROM tbl_books");
+                                        $total_books= $query_books->num_rows;
+
+                                        while ($row = $all_cat_query->fetch_assoc()) {
+                                            echo "'" . short_title($row['name']) . "',";
+                                        }
+
+                                       
+                                    ?>    
+                                ];
                                 
                                
 
@@ -135,12 +149,22 @@
                                     }]
                                 },
                                 options: {
-                                    legend: {display: false},
+                                    legend: {
+                                        display: false, // Display the legend
+                                        labels: {
+                                            // Modify legend labels here
+                                          
+                                            fontSize: 12, // Set the font size for the legend labels
+                                           
+                                        }
+                                    },
+
                                     title: {
                                         display: true,
                                         text: "Comparison on available references per category"
                                     }
                                 }
+                              
                                 });
 
                             </script>
@@ -404,7 +428,7 @@
                             </a>
                         </div>
                         <div class="ms-3 mt-2">
-                            <h5 class="text-dark font-weight-medium mb-2"><?php echo ucwords($log['activity']) . " " . strtolower($log['affected']) . " " . ucwords($log['item']); ?></h5>
+                            <h5 class="font-18 mb-2" style="color: black;"><?php echo very_short_desc(ucwords($log['activity']) . ": " . strtolower($log['affected']) . ", " . ucwords($log['item'])); ?></h5>
                             <p class="font-14 mb-2 text-muted">Performed by:  <?php echo $log['first_name'] . " " .$log["last_name"]; ?>
                             </p>
                             <span class="font-weight-light font-14 text-muted"><?php 

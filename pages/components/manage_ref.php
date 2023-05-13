@@ -1,21 +1,8 @@
 <?php
 
-if(!isset($_SESSION['error_array'])) {
-    $_SESSION['array_array'] = "";
-} else {
-    $retreived_error_array = $_SESSION['error_array'];
-};
-unset($_SESSION['error_array']);
-
-
-
-if (isset($_GET['invalid_file_upload']) && isset($_SESSION["prevent_reload"]) && $_SESSION["prevent_reload"] == 'set') {
-    set_alert_danger("Please upload supported files only, <a style='text-decoration: underline;' href='panel.php?manage_references=true'>refresh</a> the page and try again.");
-    $_SESSION["prevent_reload"] == 'disabled';
-    unset($_SESSION["prevent_reload"]);
-}
 
 display_notification();
+
 
 ?>
 <div class="error_handler"></div>
@@ -30,13 +17,7 @@ display_notification();
                         <div class="mb-2">
                             <label class="form-label" for="title">Title</label>
                             <!-- <h6 class="card-subtitle"><code>Required</code></h6> -->
-                            <input type="text" id="title" name="title" class="form-control mb-4  
-                            <?php 
-                                if (in_array("empty_title", $retreived_error_array)) {
-                                    echo "is-invalid";
-                                }
-                            ?>
-                            " placeholder="Enter reference/book title...">
+                            <input type="text" id="title" name="title" class="form-control mb-4" placeholder="Enter reference/book title...">
                             
                         </div>
                         <div class="mb-2">
@@ -45,9 +26,7 @@ display_notification();
                                 <textarea id="details" name="details" class="form-control mb-4 
                                   
                             <?php 
-                                if (in_array("empty_details", $retreived_error_array)) {
-                                    echo "is-invalid";
-                                }
+                            
                             ?>
                                 " rows="3" placeholder="Text Here..."></textarea>
                             </div>
@@ -58,10 +37,7 @@ display_notification();
                             <label class="form-label" for="selectCategory">Category</label>  
                             <select class="form-select mr-sm-2 
                             <?php 
-                                if (in_array("empty_category", $retreived_error_array)) {
-                                    echo "is-invalid";
-                                   
-                                }
+                               
                             ?>
                             " id="selectCategory" name="category">
                                 <option selected value="">Choose category...</option>
@@ -84,15 +60,7 @@ display_notification();
                             <input class="form-control
                               
                             <?php 
-                                if (in_array("empty_formFile", $retreived_error_array)) {
-                                    echo "is-invalid";
-                                }
-
-                                if (in_array("unsupported_file", $retreived_error_array)) {
-                                    echo "is-invalid";
-                                    redirect("panel.php?manage_references=true&invalid_file_upload=true");
-                                    $_SESSION["prevent_reload"] = 'set';
-                                }
+                           
                             ?>
                             
                             " type="file" id="formFile" name="formFile" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="File supported .mp4, .pdf, .pptx">
@@ -105,11 +73,7 @@ display_notification();
                             <label class="form-label" for="upload_file">Cover Image</label>
                             <input class="form-control
                             <?php 
-                            if (in_array("unsupported_file", $retreived_error_array)) {
-                                echo "is-invalid";
-                                redirect("panel.php?manage_references=true&invalid_file_upload=true");
-                                $_SESSION["prevent_reload"] = 'set';
-                            }
+                        
                             ?>
                             " type="file" id="upload_file" name="cover_image" onchange="getImagePreviewBook(event)">
                         </div>
@@ -140,12 +104,13 @@ display_notification();
                             <input type="text" class="form-control" placeholder="Enter reference/book title...">
                         </div> -->
                         <div class="mb-3">
-                            <button class="btn btn-primary btn-lg" name="add_book">Submit</button>
+                            <button type="button" class="btn btn-primary btn-lg" id="addBookTrigger">Submit</button>
                         </div>
 
                     </div>
                     
                 </div>
+                <button class="btn btn-primary btn-lg" id="addBook" name="add_book" >PreSubmit</button>
             </form>
         </div>
     </div>
@@ -156,6 +121,12 @@ display_notification();
     const formFile = document.getElementById('formFile');
     let error_handler = document.querySelector('.error_handler');
     const fileInput = document.getElementById('upload_file');
+    const title = document.getElementById("title");
+    const details = document.getElementById("details");
+    const selectCategory = document.getElementById("selectCategory");
+    const addBook = document.getElementById("addBook");
+    const addBookTrigger = document.getElementById("addBookTrigger");
+
 
     formFile.addEventListener('change', function() {
         const allowedExtensions = ['mp4', 'pdf', 'pptx'];
@@ -192,7 +163,63 @@ display_notification();
         var filenamePreview = document.getElementById("filenamePreview");
         var filename = upload_file.files[0].name
 
-        filenamePreview.textContent = filename;    
+        filenamePreview.textContent = filename;   
+        ht 
     }
+
+    addBook.style.display = "none";
+
+    addBookTrigger.addEventListener("click", () => {
+
+        // alert("button works!");
+
+    errorArray = [];
+
+    if (title.value.trim() == "") {
+        errorArray.push("empty_title");
+    }
+
+    if (details.value.trim() == "") {
+        errorArray.push("empty_details");
+    }
+
+    if (selectCategory.value.trim() == "") {
+        errorArray.push("empty_category");
+    }
+
+    if (formFile.files.length == 0) {
+        errorArray.push("empty_file");
+    }
+
+    if (errorArray.length == 0) {
+        addBook.click();
+    } else {
+       errorList();
+    }
+
+    function errorList() {
+
+        if (errorArray.includes("empty_title")) {
+            title.classList.toggle("is-invalid");
+        }
+
+        if (errorArray.includes("empty_details")) {
+            details.classList.toggle("is-invalid");
+        }
+
+        if (errorArray.includes("empty_category")) {
+            selectCategory.classList.toggle("is-invalid");
+        }
+
+        if (errorArray.includes("empty_file")) {
+            formFile.classList.toggle("is-invalid");
+        }
+
+
+    }
+
+    })
+
+   
 
 </script>

@@ -1,6 +1,7 @@
 <?php
 
-if (isset($_GET['file'])) {
+
+if (isset($_GET['file']) || isset($_GET['val'])) {
   $pdf_location = '../assets/references/pdf/';
   $pdf_file = $pdf_location . $_GET['file'];
   $file = $_GET['file'];
@@ -27,10 +28,11 @@ if (isset($_GET['save_complete']) && isset($_SESSION['prevent_reload'])) {
 
 }
 
+
 display_notification();
 
 
-?>
+?>  
 
 <!DOCTYPE html>
 <html lang="en">
@@ -103,136 +105,36 @@ display_notification();
     <title><?php echo $title; ?></title>
   </head>
 
-  <a class="btn btn-primary mb-4 download" href="<?php echo $pdf_file; ?>" download>Download</a>
-
   <a  class="btn btn-dark mb-4 add_to_list" href="panel.php?load_pdf=true&id=<?php echo $book_id; ?>&file=<?php echo $file; ?>&title=<?php echo $title; ?>&saved=true">Add To My Study List</a>
 
-  <body oncontextmenu="return false">
-    <div class="top-bar">
-      <button class="btn" id="prev-page">
-        <i class="fas fa-arrow-circle-left"></i> Prev Page
-      </button>
-      <button class="btn" id="next-page">
-        Next Page <i class="fas fa-arrow-circle-right"></i>
-      </button>
-      <span class="page-info">
-        Page <span id="page-num"></span> of <span id="page-count"></span>
-      </span>
+  <a data-bs-toggle="tooltip" title="View with toolbars" class="btn btn-primary mb-4 download" href="
+  panel.php?load_pdf=true&id=<?php echo $book_id; ?>&file=<?php echo $file; ?>&title=<?php echo $title; ?>
+  "> <i class="icon-refresh"></i></a>
 
-      
-    </div>
+  <a data-bs-toggle="tooltip" title="View with toolbars" class="btn btn-primary mb-4 download" href="
+  panel.php?load_pdf=true&id=<?php echo $book_id; ?>&file=<?php echo $file; ?>&title=<?php echo $title; ?>&pdf_toolbars=true
+  "> <i class=" fas fa-file-pdf"></i></a>
 
-    <canvas id="pdf-render"></canvas>
+  <a target = "_blank" data-bs-toggle="tooltip" title="View document in new tab" class="btn btn-primary mb-4 download" href="<?php echo $pdf_file; ?>"> <i class=" fas fa-sticky-note"></i></a>
 
-    <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+  <a data-bs-toggle="tooltip" title="Download this document." class="btn btn-primary mb-4 download" href="<?php echo $pdf_file; ?>" download> <i class="fas fa-download"></i></a>
 
-<?php
-
-$js_script = <<<DELIMETER
-
-<script>
-
-let url = '{$pdf_file}';
-
-let pdfDoc = null,
-pageNum = 1,
-pageIsRendering = false,
-pageNumIsPending = null;
-
-const scale = 2,
-canvas = document.querySelector('#pdf-render'),
-ctx = canvas.getContext('2d');
-
-// Render the page
-const renderPage = num => {
-pageIsRendering = true;
-
-// Get page
-pdfDoc.getPage(num).then(page => {
-// Set scale
-const viewport = page.getViewport({ scale });
-canvas.height = viewport.height;
-canvas.width = viewport.width;
-
-const renderCtx = {
-  canvasContext: ctx,
-  viewport
-};
-
-page.render(renderCtx).promise.then(() => {
-  pageIsRendering = false;
-
-  if (pageNumIsPending !== null) {
-    renderPage(pageNumIsPending);
-    pageNumIsPending = null;
-  }
-});
-
-// Output current page
-document.querySelector('#page-num').textContent = num;
-});
-};
-
-// Check for pages rendering
-const queueRenderPage = num => {
-if (pageIsRendering) {
-pageNumIsPending = num;
-} else {
-renderPage(num);
-}
-};
-
-// Show Prev Page
-const showPrevPage = () => {
-if (pageNum <= 1) {
-return;
-}
-pageNum--;
-queueRenderPage(pageNum);
-};
-
-// Show Next Page
-const showNextPage = () => {
-if (pageNum >= pdfDoc.numPages) {
-return;
-}
-pageNum++;
-queueRenderPage(pageNum);
-};
-
-// Get Document
-pdfjsLib
-.getDocument(url)
-.promise.then(pdfDoc_ => {
-pdfDoc = pdfDoc_;
-
-document.querySelector('#page-count').textContent = pdfDoc.numPages;
-
-renderPage(pageNum);
-})
-.catch(err => {
-// Display error
-const div = document.createElement('div');
-div.className = 'error';
-div.appendChild(document.createTextNode(err.message));
-document.querySelector('body').insertBefore(div, canvas);
-// Remove top bar
-document.querySelector('.top-bar').style.display = 'none';
-});
-
-// Button Events
-document.querySelector('#prev-page').addEventListener('click', showPrevPage);
-document.querySelector('#next-page').addEventListener('click', showNextPage);
-
-
-</script>
+  
 
 
 
-DELIMETER;
+  <?php
+    if (isset($_GET['pdf_toolbars'])) {
+      include 'pdf_reader_component_embed.php';
+    } else {
+      include 'pdf_reader_default_view.php';
+    }
+  ?>
 
-echo $js_script
-?>
+
+
+
+  
 
   </body>
 </html>
