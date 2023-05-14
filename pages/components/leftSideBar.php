@@ -19,6 +19,7 @@
                         <li class="list-divider"></li>
                     
                         <li class="nav-small-cap"><span class="hide-menu">Menu</span></li>
+                       
                         <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
                                 aria-expanded="false"><i data-feather="file-text" class="feather-icon"></i><span
                                     class="hide-menu">References </span></a>
@@ -36,7 +37,9 @@
                                             class="hide-menu"> Categories
                                         </span></a>
                                 </li>
+                                
                             -->
+                            
                                 <li class="sidebar-item"><a href="panel.php?all_references=true" class="sidebar-link"><span
                                             class="hide-menu"> All References
                                         </span></a>
@@ -83,6 +86,9 @@
                                             class="hide-menu"> Categories
                                         </span></a>
                                 </li>
+                                <li class="sidebar-item"><a href="panel.php?announcement_form=true" class="sidebar-link"><span
+                                            class="hide-menu"> Announcement </span></a>
+                                </li>
                                 <!-- <li class="sidebar-item"><a href="chart-knob.html" class="sidebar-link"><span
                                             class="hide-menu">
                                             Settings
@@ -103,6 +109,8 @@
                                 <li class="sidebar-item"><a href="panel.php?text_editor=true" class="sidebar-link"><span
                                             class="hide-menu"> Scratch Pad </span></a>
                                 </li>
+
+                               
                                
                             </ul>
                         </li>
@@ -129,6 +137,7 @@
                             </li>
 
                         <?php //endif; ?> -->
+                
 
                         <li class="nav-small-cap"><span class="hide-menu">STATUS: <?php echo (isset($_SESSION['is_in'])) ? "LOGGED IN" : ""; ?></span></li>
                         

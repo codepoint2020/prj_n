@@ -20,8 +20,13 @@
     <script src="../assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="../assets/extra-libs/datatables.net-bs4/js/dataTables.responsive.min.js"></script>
     <script src="../dist/js/pages/datatable/datatable-basic.init.js"></script>
+    <script src="../assets/libs/latest.chart.js"></script>
+    
     
     <!-- <script src="../dist/js/jmpw_gen.js"></script> -->
+
+
+
     
 </body>
 

@@ -14,12 +14,13 @@
                                 <a href="panel.php?manage_references=true" class="btn btn-info">Add New Reference</a>
                             </div>
             <div class="table-responsive">
-                <table id="default_order" class="table border table-striped table-bordered text-nowrap"
+                <table id="default_order" class="table border table-striped table-bordered text-wrap"
                                 style="width:100%">
                     <thead class="bg-primary text-white">
                         <tr>
-                            <th>#</th>
-                            <th >[UID] Reference Title</th>
+                         
+                            <th>Cover Image</th>
+                            <th>Reference Title</th>
                             <th>Category</th>
                             
                             
@@ -37,17 +38,6 @@
                             while($row = $query_references->fetch_assoc()):
                                 $file_format = pathinfo($row['file_name'], PATHINFO_EXTENSION);
 
-                                $cover_img_default = "../assets/images/default_cover2.png";
-                                $cover_img = $row['cover_img'];
-                          
-                                
-                                $cover_img_pdf = "../assets/references/pdf/" . $cover_img;
-                                $cover_img_pptx = "./pptx_player/file/" . $cover_img;
-                                $cover_img_vids = "../assets/references/videos/" . $cover_img;
-                                $num++;
-
-                                // $file_format = pathinfo($row['file_name'], PATHINFO_EXTENSION);
-
                                 // $cover_img_default = "../assets/images/default_cover2.png";
                                 // $cover_img = $row['cover_img'];
                           
@@ -55,31 +45,45 @@
                                 // $cover_img_pdf = "../assets/references/pdf/" . $cover_img;
                                 // $cover_img_pptx = "./pptx_player/file/" . $cover_img;
                                 // $cover_img_vids = "../assets/references/videos/" . $cover_img;
+                                // $num++;
 
-                                // if ($file_format == "pdf") {
+                                $file_format = pathinfo($row['file_name'], PATHINFO_EXTENSION);
 
-                                //     $cover_img = $cover_img_pdf;
-
-                                // } elseif ($file_format == "mp4") {
+                                $cover_img_default = "../assets/images/default_cover2.png";
+                                $cover_img = $row['cover_img'];
+                          
                                 
-                                //     $cover_img = $cover_img_vids;
+                                $cover_img_pdf = "../assets/references/pdf/" . $cover_img;
+                                $cover_img_pptx = "./pptx_player/file/" . $cover_img;
+                                $cover_img_vids = "../assets/references/videos/" . $cover_img;
 
-                                // } elseif ($file_format == "pptx") {
+                                if ($file_format == "pdf") {
 
-                                //     $cover_img = $cover_img_pptx;
+                                    $cover_img = $cover_img_pdf;
+
+                                } elseif ($file_format == "mp4") {
                                 
-                                // } else {
+                                    $cover_img = $cover_img_vids;
 
-                                //     NULL;
+                                } elseif ($file_format == "pptx") {
 
-                                // }
+                                    $cover_img = $cover_img_pptx;
+                                
+                                } else {
+                                    NULL;
+                                }
+
+                                if (empty($row["cover_img"])) {
+                                    $cover_img = $cover_img_default;
+                                }
                         
                         ?>
                         <tr>
 
                      
 
-                            <td><?php echo  $num; ?></td>
+                          
+                            <td><img src="<?php echo $cover_img; ?>" alt=""></td>
                             <td><a <?php 
         
         if ($file_format == "pptx") {
@@ -143,7 +147,7 @@
                             <td><?php echo ucwords($row['category']); ?></td>
                             
                             <td><?php echo ucwords($row['author']); ?></td>
-                            <td><?php echo ucwords($row['register_date']); ?></td>
+                            <td><?php echo date("M j, Y, g:i a D",$row['register_date']); ?></td>
                             <td>
                                 <a href="panel.php?manage_all_ref=true&delete_ref=true&id=<?php echo $row['book_id']; ?>" class="btn btn-danger btn-sm"><i class="fas fa-window-close"></i></a>
                                 <a href="panel.php?edit_ref=true&edit_form=true&book_id=<?php echo $row['book_id']; ?>" class="btn btn-warning btn-sm"><i class=" fas fa-edit"></i></a>

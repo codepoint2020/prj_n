@@ -62,6 +62,7 @@
 <!-- FIND WAYS TO DISPLAY SOMETHING WHEN PURELY PANEL.PHP IS LOADED -->
         
         <div class="row">
+            
             <?php if (isset($_SESSION['is_admin']) && $_SESSION['user_type'] == 'administrator' && isset($_GET['adm_home'])): ?>
                 <?php 
                     include 'components/adm_home.php';
@@ -76,6 +77,16 @@
                     </div>
                 </div> -->
             <?php endif; ?>
+
+            <?php if (isset($_GET['announcement_form'])):?>
+                    <?php include 'components/annoucement_form.php'; ?>
+            <?php endif; ?>
+
+            <?php if (isset($_GET['all_announcements'])):?>
+                    <?php include 'components/announcement_table.php'; ?>
+            <?php endif; ?>
+
+            
          
 
             <?php if (isset($_GET['manage_references']) && $_SESSION['user_type'] == 'administrator'): ?>

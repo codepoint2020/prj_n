@@ -8,7 +8,7 @@
                                         <thead>
                                             <tr>
                                               
-                                              
+                                              <th>Cover Image</th>
                                                 <th>Title</th>
                                                 <th>Category</th>
                                                 <th>File type</th>
@@ -25,19 +25,47 @@
                                                     while ($row = $all_ref_query->fetch_assoc()):
                                                         $file_format = pathinfo($row['file_name'], PATHINFO_EXTENSION);
 
-                                                        $cover_img_default = "../assets/images/default_cover2.png";
-                                                        $cover_img = $row['cover_img'];
+                                                        // $cover_img_default = "../assets/images/default_cover2.png";
+                                                        // $cover_img = $row['cover_img'];
                                                   
                                                         
-                                                        $cover_img_pdf = "../assets/references/pdf/" . $cover_img;
-                                                        $cover_img_pptx = "./pptx_player/file/" . $cover_img;
-                                                        $cover_img_vids = "../assets/references/videos/" . $cover_img;
+                                                        // $cover_img_pdf = "../assets/references/pdf/" . $cover_img;
+                                                        // $cover_img_pptx = "./pptx_player/file/" . $cover_img;
+                                                        // $cover_img_vids = "../assets/references/videos/" . $cover_img; $file_format = pathinfo($row['file_name'], PATHINFO_EXTENSION);
+
+                                $cover_img_default = "../assets/images/default_cover2.png";
+                                $cover_img = $row['cover_img'];
+                          
+                                
+                                $cover_img_pdf = "../assets/references/pdf/" . $cover_img;
+                                $cover_img_pptx = "./pptx_player/file/" . $cover_img;
+                                $cover_img_vids = "../assets/references/videos/" . $cover_img;
+
+                                if ($file_format == "pdf") {
+
+                                    $cover_img = $cover_img_pdf;
+
+                                } elseif ($file_format == "mp4") {
+                                
+                                    $cover_img = $cover_img_vids;
+
+                                } elseif ($file_format == "pptx") {
+
+                                    $cover_img = $cover_img_pptx;
+                                
+                                } else {
+                                    NULL;
+                                }
+
+                                if (empty($row["cover_img"])) {
+                                    $cover_img = $cover_img_default;
+                                }
                                                
                                         ?>
                                          <tr>
                                         
                                    
-                                           
+                                           <td><img style="max-width: 200px" src="<?php echo $cover_img; ?>" alt=""></td>
                                            <td>
 
                                            <a <?php 
@@ -96,28 +124,20 @@
                                            
                                            
                                            
-                                            <p class="jm-underline " style="min-width: 400px"><?php echo $row['title']; ?></p>
+                                            <p class="jm-underline " style="max-width: 380px"><?php echo $row['title']; ?></p>
                                            </a>
                                         
                                         </td>
                                            <td><?php echo $row['category']; ?></td>
                                            <td><?php echo $row['file_type']; ?></td>
                                            <td><?php echo $row['details']; ?></td>
-                                           
-                                          
+
                                            <td><?php echo $row['author']; ?></td>
-                                           <td><?php echo $row['register_date']; ?></td>
-                                      
+                                           <td><?php echo date("M j, Y, g:i a D", $row['register_date']); ?></td>
                                        </tr>
-           
-       
-                                            
 
                                             <?php endwhile; ?>
-                                   
-                                         
-                                        
-                                        
+
                                         </tbody>
                                  
                                     </table>

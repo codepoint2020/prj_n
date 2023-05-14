@@ -190,3 +190,16 @@
   color: rgb(186, 6, 6);
 }
 
+
+
+    .jm-dark h5, p {
+        color: black !important;
+    }   
+
+    .jm-dark h5 {
+        font-size: larger;
+        margin-bottom: 1.5rem;
+        text-decoration: underline;
+    }
+
+

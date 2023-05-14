@@ -14,6 +14,20 @@
                 <?php 
 
                 $panel_title = "";
+
+                if (isset($_GET['announcement_form'])) {
+                    echo $panel_title = "Announcement";
+                }
+
+                if (isset($_GET['all_announcements'])) {
+                    echo $panel_title = "Announcements";
+                }
+                
+
+            
+                if (isset($_GET['pie_chart'])) {
+                    echo $panel_title =  "Data Monitoring w/ Pie chart";
+                }
                 
 
                 
@@ -42,7 +56,7 @@
                 }
 
                 if (isset($_GET['adm_home']) && $_GET['adm_home'] =='true') {
-                    echo  $panel_title = "Data Monitoring";
+                    echo  $panel_title = "Data Monitoring w/ Bar Graph";
                 }
 
                 if (isset($_GET['manage_all_ref']) && $_GET['manage_all_ref'] =='true') {

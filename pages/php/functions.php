@@ -35,6 +35,19 @@ function redirect($location)
 
 
 //limit the number of text to based on character string on the description/details of references/books
+function very_short_title($string)
+{
+    $max_length = 15;
+    $current_length = strlen($string);
+
+    if ($current_length <= $max_length) {
+        return $string;
+    } else {
+        return substr($string, 0, $max_length) . "...";
+    }
+}
+
+//limit the number of text to based on character string on the description/details of references/books
 function short_title($string)
 {
     $max_length = 27;
@@ -50,7 +63,7 @@ function short_title($string)
 //limit the number of text to based on character string on the description/details of references/books
 function very_short_desc($string)
 {
-    $max_length = 40;
+    $max_length = 38;
     $current_length = strlen($string);
 
     if ($current_length <= $max_length) {
@@ -361,6 +374,78 @@ DELIMETER;
 }
 
 
+
+// delete announcement start
+function delete_announcement() {
+    global $conn;
+    if (isset($_GET['confirm_delete_announcement'])) {
+        $id = html_ent($_GET['confirm_delete_announcement']);
+
+        
+        $delete_announcement_query = $conn->query("SELECT * FROM tbl_announcement WHERE announcement_id = $id") or 
+                    die(jm_error('Query announcement failed').$conn->error."<h2>At line: ".__LINE__."</h2>");
+
+        if ($delete_announcement_query->num_rows > 0) {
+
+            $row = $delete_announcement_query->fetch_assoc();
+
+            $target_title = ucwords($row['title']);
+    
+           
+
+            $delete_query = $conn->query("DELETE FROM tbl_announcement WHERE announcement_id = $id; ") or 
+            die(jm_error('Delete Query Failed').$conn->error."<h2>At line: ".__LINE__."</h2>");
+
+            if ($delete_query) {
+                $_SESSION['prevent_reload'] = "set";
+                jemor_log("deleted", "an announcement, title: ", $target_title);
+                redirect("panel.php?all_announcements&announcement_deleted=true&a_title=".$target_title);
+            }
+        } 
+    
+    }
+}
+
+if (isset($_GET['announcement_deleted'])) {
+   
+    $title = html_ent($_GET['a_title']);
+    set_alert_success("Announcement deleted! Title: ".$title);
+    unset($_SESSION['prevent_reload']);
+    
+
+}
+
+
+//DELETE USER WITH CONFIRMATION
+function delete_announcement_confirm_box()
+{
+
+    global $conn;
+
+    if (isset($_GET['delete_announcement'])) {
+        $id = html_ent($_GET['announcement_id']);
+
+        $query_announcement = $conn->query("SELECT * FROM tbl_announcement WHERE announcement_id = $id; ") or die("FAILED TO QUERY STUDENT" . $conn->error . __LINE__);
+
+        $row = $query_announcement->fetch_assoc();
+        $title = ucwords($row['title']);
+
+        $confirm_box = <<<DELIMETER
+        <div class="alert alert-warning" role="alert">
+    <h4 class="alert-heading">Warning: </h4>
+    <h4>You are about to PERMANENTLY delete this announcement:</h4>
+    <h3>{$title}</h3>
+    <hr>
+   
+    <a href="panel.php?all_announcements" class="btn btn-sm btn-secondary">Cancel</a>
+    <a href="panel.php?all_announcements&confirm_delete_announcement={$id}" class="btn btn-sm btn-danger">Proceed</a>
+</div>
+DELIMETER;
+        echo $confirm_box;
+    }
+}
+//delete announcement end
+
 function signin_user()
 {
 
@@ -560,11 +645,22 @@ $category = isset($category[1]) ? $category[1] : '';
 
         if (!empty($formFile)) {
             $formFile = "id_" . $next_id. "_" . filenameAppend() .$formFile;
-            $cover_image = "id_" . $next_id. "_" . filenameAppend() .$cover_image;
+            // $cover_image = "id_" . $next_id. "_" . filenameAppend() .$cover_image;
             
         } else {
             $formFile = "";
-            $cover_image = "";    
+            // $cover_image = "";    
+        }
+
+        if (empty($cover_image)) {
+            // $formFile = "id_" . $next_id. "_" . filenameAppend() .$formFile;
+            $cover_image = "";  
+            
+            
+        } else {
+            // $formFile = "";
+            $cover_image = "id_" . $next_id. "_" . filenameAppend() .$cover_image;
+              
         }
 
         $errorArray = [];
@@ -1895,6 +1991,31 @@ function add_to_list($id) {
     $log_date = time();
 
     $conn->query("INSERT INTO tbl_save (book_id, user_id, log_date) VALUES ($book_id, $user_id, '$log_date'); ") or die("Add to my list query failed: ". $conn->error.__LINE__);
+}
+
+function post_announcement() {
+
+    global $conn;
+
+    if (isset($_POST['post_announcement'])) {
+        $title = escape_string($_POST['title']);
+        $content = escape_string($_POST['content']);
+        $user_id = $_SESSION['user_id'];
+        $date_posted = time();
+
+        $insert_record = $conn->query("INSERT INTO tbl_announcement (title, content, user_id, date_posted) VALUES ('$title', '$content', $user_id, '$date_posted'); ") or die("Failed to post announcement: ".$conn->error.__LINE__);
+
+        if ($insert_record) {
+            $_SESSION['prevent_reload'] = 'set';
+            redirect("panel.php?announcement_form=true&posted_announcement=true");
+        }
+        
+    }
+}
+
+if (isset($_GET['posted_announcement'])) {
+    unset($_SESSION['prevent_reload']);
+    set_alert_success("Announcement successfully posted!");
 }
 
 
