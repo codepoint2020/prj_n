@@ -67,27 +67,25 @@
                 <?php 
                     include 'components/adm_home.php';
                 ?>
-
-                <!-- <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <h1>Panel Main Page</h1>
-                            <?php //include 'components/under_construction.php'; ?>
-                        </div>
-                    </div>
-                </div> -->
             <?php endif; ?>
 
-            <?php if (isset($_GET['announcement_form'])):?>
-                    <?php include 'components/annoucement_form.php'; ?>
+            <?php if (isset($_GET['data_changes']) && $_SESSION['user_type'] == 'administrator'): ?>
+            <div class="col-12">
+          
+                <?php include 'components/data_changes.php'; ?>
+                
+            </div>
             <?php endif; ?>
 
-            <?php if (isset($_GET['all_announcements'])):?>
-                    <?php include 'components/announcement_table.php'; ?>
+            <?php if (isset($_GET['view']) && $_SESSION['user_type'] == 'administrator'): ?>
+            <div class="col-12">
+                <?php  
+               
+                ?>
+                <?php include 'components/view_user.php'; ?>
+                
+            </div>
             <?php endif; ?>
-
-            
-         
 
             <?php if (isset($_GET['manage_references']) && $_SESSION['user_type'] == 'administrator'): ?>
                 <?php  add_book(); display_notification();  ?>
@@ -99,28 +97,56 @@
                 <?php include 'components/manage_all_ref.php'?>
             <?php endif; ?>
 
-
-            <?php if (isset($_GET['home']) && isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === 'no' ): ?>
-                           
+            
+            <!-- =========================Load edit reference page========================== -->
+            <?php if (isset($_GET['edit_ref']) && $_SESSION['user_type'] == 'administrator'): ?>
+                
                 <div class="col-12">
-                    <!-- <h1>Users' Panel Main Page</h1> -->
-                    <?php include 'components/welcome_student.php'; ?>
+                    <div class="card-body">
+                    <?php  ?>
+                    <?php include 'components/edit_reference.php'?>
+                    </div>
                 </div>
-               
-            <?php endif; ?>
-
-       
-    
-
+                <?php endif; ?>
 
             <?php if (isset($_GET['categories']) && $_SESSION['user_type'] == 'administrator'): ?>
                 <?php add_category(); display_notification(); delete_category_confirm_box(); delete_category(); editCategory(); ?>
                 <?php include 'components/categories.php'?>
             <?php endif; ?>
 
-            <!-- ============================================================== -->
+
+
+            <?php if (isset($_GET['home']) && isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === 'no' ): ?>
+                           
+                <div class="col-12">
+                    <?php include 'components/welcome_student.php'; ?>
+                </div>
+                          
+            <?php endif; ?>
+
+
+            <!-- route users to all references if panel.php has no query parameters -->
+            <?php if (empty($_GET)): ?>
+                <?php redirect("panel.php?all_references=true"); ?>
+            <?php endif; ?>
+
+           
+
+
+            <?php if (isset($_GET['announcement_form'])):?>
+                    <?php include 'components/annoucement_form.php'; ?>
+            <?php endif; ?>
+
+            <?php if (isset($_GET['all_announcements'])):?>
+                    <?php include 'components/announcement_table.php'; ?>
+            <?php endif; ?>
+
+            
+          
+
+   
             <!-- UNDER CONSTRUCTION START -->
-            <!-- ============================================================== -->
+
 
             <?php 
 
@@ -128,54 +154,31 @@
                     include 'components/under_construction.php';
                 }
             ?>
-
-            <?php 
-
-            if (isset($_GET['underconstruction'])) {
-                include 'components/under_construction.php';
-            }
-            ?>
-             <!-- ============================================================== -->
+             
             <!-- UNDER CONSTRUCTION END -->
-            <!-- ============================================================== -->
+         
 
         
             
 
-            <!-- =========================Load edit reference page========================== -->
-            <?php if (isset($_GET['edit_ref']) && $_SESSION['user_type'] == 'administrator'): ?>
-                
-            <div class="col-12">
-                <div class="card-body">
-                <?php  ?>
-                <?php include 'components/edit_reference.php'?>
-                </div>
-            </div>
-            <?php endif; ?>
+            
      
             
-            <!-- ============================================================== -->
+      
             <!-- CARDS START -->
-            <!-- ============================================================== -->
+       
             <?php if (isset($_GET['all_references']) || isset($_GET['card_view']) || isset($_GET['default_view'])): ?>
             <div class="col-12">
                 <?php include 'components/cards.php'?>
             </div>
             <?php endif; ?>
 
-            <!-- ============================================================== -->
-            <!-- LIST VIEW START -->
-            <!-- ============================================================== -->
 
-     
-            
+    
 
-
-      
-
-             <!-- ============================================================== -->
+       
             <!-- TABLE VIEW START -->
-            <!-- ============================================================== -->
+       
             <?php if (isset($_GET['table_view'])): ?>
          
                 <?php include 'components/table_view.php'?>
@@ -218,12 +221,6 @@
                
             </div>
             <?php endif; ?>
-
-  
-         
-
-
-         
 
 
             <!-- =========================LOAD VIDEO PLAYER========================== -->
@@ -275,14 +272,6 @@
             </div>
             <?php endif; ?>
 
-
-
-            
-            
-            <!-- ============================================================== -->
-            <!-- USERS' END START -->
-            <!-- ============================================================== -->
-
             <!-- ============================================================== -->
             <!-- USERS' TABLE START -->
             <!-- ============================================================== -->
@@ -299,23 +288,9 @@
             <?php endif; ?>
 
 
-            <?php if (isset($_GET['view']) && $_SESSION['user_type'] == 'administrator'): ?>
-            <div class="col-12">
-                <?php  
-               
-                ?>
-                <?php include 'components/view_user.php'; ?>
-                
-            </div>
-            <?php endif; ?>
+            
 
-            <?php if (isset($_GET['data_changes']) && $_SESSION['user_type'] == 'administrator'): ?>
-            <div class="col-12">
-          
-                <?php include 'components/data_changes.php'; ?>
-                
-            </div>
-            <?php endif; ?>
+            
 
             <?php if (isset($_GET['study_list'])): ?>
             <div class="col-12">
