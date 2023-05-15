@@ -506,6 +506,11 @@ function signin_user()
         
                     $_SESSION['user_type'] = strtolower($_SESSION['user_type']);
 
+                    //Convert staff, nsstc personnel to have administrator access
+                    if ($_SESSION['user_type'] === "staff" || $_SESSION['user_type'] === "nsstc_personnel") {
+                        $_SESSION['user_type'] = "administrator";
+                    }
+
                     if (empty(['house_no'])) {
                         $house_no = "";
                     }
@@ -1813,6 +1818,7 @@ function update_profile() {
 
         $first_name = escape_string($_POST['first_name']);
         $last_name = escape_string($_POST['last_name']);
+        $username = escape_string($_POST['username']);
 
         $address_id = escape_string($_POST['address_id']);
 
@@ -1871,6 +1877,7 @@ function update_profile() {
                                     SET 
                                         tbl_users.first_name = '$first_name',
                                         tbl_users.last_name = '$last_name',
+                                        tbl_users.username = '$username',
                                         tbl_users.contact_no = '$contact_no',
                                         tbl_users.contact_no2 = '$contact_no2',
                                         tbl_users.sex = '$sex',
