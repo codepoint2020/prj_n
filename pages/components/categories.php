@@ -4,7 +4,7 @@
 
 
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-9">
         <div class="card">
             <div class="card-body">
                 
@@ -107,7 +107,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="card shadow-1">
             <div class="card-body">
                 <form action="panel.php?categories=true" method="POST">

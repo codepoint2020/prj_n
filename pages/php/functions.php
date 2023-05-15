@@ -506,9 +506,14 @@ function signin_user()
         
                     $_SESSION['user_type'] = strtolower($_SESSION['user_type']);
 
-                    //Convert staff, nsstc personnel to have administrator access
-                    if ($_SESSION['user_type'] === "staff" || $_SESSION['user_type'] === "nsstc_personnel") {
-                        $_SESSION['user_type'] = "administrator";
+                    // Convert staff, nsstc personnel to have administrator access
+                    // if ($_SESSION['user_type'] === "e-librarian" || $_SESSION['user_type'] === "administrator") {
+                    //     $_SESSION['user_type'] = "administrator";
+                    // }
+
+                     //Convert staff, nsstc personnel to have administrator access
+                     if ($_SESSION['user_type'] === "guest" || $_SESSION['user_type'] === "student") {
+                        $_SESSION['user_type'] = "student";
                     }
 
                     if (empty(['house_no'])) {

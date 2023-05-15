@@ -87,12 +87,12 @@
             </div>
             <?php endif; ?>
 
-            <?php if (isset($_GET['manage_references']) && $_SESSION['user_type'] == 'administrator'): ?>
+            <?php if (isset($_GET['manage_references']) && $_SESSION['user_type'] == 'administrator' || isset($_GET['manage_references']) && $_SESSION['user_type'] == 'e-librarian'): ?>
                 <?php  add_book(); display_notification();  ?>
                 <?php include 'components/manage_ref.php'?>
             <?php endif; ?>
 
-            <?php if (isset($_GET['manage_all_ref']) && $_SESSION['user_type'] == 'administrator'): ?>
+            <?php if (isset($_GET['manage_all_ref']) && $_SESSION['user_type'] == 'administrator' || isset($_GET['manage_all_ref']) && $_SESSION['user_type'] == 'e-librarian'): ?>
                 <?php  add_book(); display_notification(); delete_book_confirm_box(); delete_book()?>
                 <?php include 'components/manage_all_ref.php'?>
             <?php endif; ?>
@@ -104,12 +104,12 @@
                 <div class="col-12">
                     <div class="card-body">
                     <?php  ?>
-                    <?php include 'components/edit_reference.php'?>
+                    <?php include 'components/edit_reference.php'?> 
                     </div>
                 </div>
                 <?php endif; ?>
 
-            <?php if (isset($_GET['categories']) && $_SESSION['user_type'] == 'administrator'): ?>
+            <?php if (isset($_GET['categories']) && $_SESSION['user_type'] == 'administrator' || isset($_GET['categories']) && $_SESSION['user_type'] == 'e-librarian'): ?>
                 <?php add_category(); display_notification(); delete_category_confirm_box(); delete_category(); editCategory(); ?>
                 <?php include 'components/categories.php'?>
             <?php endif; ?>
@@ -275,7 +275,7 @@
             <!-- ============================================================== -->
             <!-- USERS' TABLE START -->
             <!-- ============================================================== -->
-            <?php if (isset($_GET['load_users']) && $_SESSION['user_type'] == 'administrator'): ?>
+            <?php if (isset($_GET['load_users']) && $_SESSION['user_type'] === 'administrator' || isset($_GET['load_users']) && $_SESSION['user_type'] === "e-librarian" || isset($_GET['load_users']) && $_SESSION['user_type'] === "nsstc_personnel"): ?>
             <div class="col-12">
                 <?php  
                 add_user(); delete_user(); delete_user_confirm_box(); display_notification(); 

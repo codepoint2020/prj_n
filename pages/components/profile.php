@@ -76,12 +76,23 @@ $user_info = $current_user_query->fetch_assoc();
                         <img src="../assets/images/users/<?php echo $user_info['profile_pic']; ?>" alt="Admin" class="mt-4" width="200">
                         <div class="mt-3">
                           <h4><?php echo ucwords($user_info['first_name'] . " " . $user_info['last_name']); ?></h4>
-                          <p class="text-secondary mb-4"><?php echo ucwords($user_info['user_type']); ?></p>
+                          <p class="text-secondary mb-4">
+                            
+                          <?php 
+                          if (strpos($user_info['user_type'], '_') !== false) { 
+                            
+                            echo ucwords(str_replace('_',' ',$user_info['user_type']));
+                          
+                          } else {
+                            echo ucwords($user_info['user_type']);
+                          }
+                          
+                          ?></p>
                     
                           <!-- <button class="btn btn-outline-primary">Message</button> -->
                           <div class="row">
                         <div class="col-sm-12">
-                          <a class="btn btn-info mb-4" data-bs-toggle="tooltip" title="Click here to update your information" href="panel.php?update_profile=true&user_id=<?php echo $user_info['user_id']?>">Edit Profile</a>
+                          <a class="btn btn-info mb-4" data-bs-toggle="tooltip" title="Click here to update your information" href="panel.php?update_profile=true&user_id=<?php echo $user_info['user_id']; ?>">Edit Profile</a>
                         </div>
                       </div>
                         </div>

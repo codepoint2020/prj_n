@@ -9,8 +9,10 @@
                         <h4 class="card-title">Users' Table</h4>
                         <div class="row">
                             <div class="col-md-2 mb-4">
+                                <?php if ($_SESSION['user_type'] === "administrator" || $_SESSION['user_type'] === "e-librarian"):?>
                                 <button type="button" class="btn btn-info" data-bs-toggle="modal"
                                 data-bs-target="#bs-example-modal-lg">Add User</button>
+                                <?php endif; ?>
                                 
                             </div>
                             <div class="col-md-10">
@@ -97,9 +99,11 @@
                                         <i class="fas fa-eye"></i>
                                     </a>
 
+                                    <?php if ($_SESSION['user_type'] === "administrator" || $_SESSION['user_type'] === "e-librarian"):?>
                                         <a href="panel.php?load_users=true&del=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="PERMANENTLY Delete this account of: <?php echo ucwords($student_data['first_name'] . " " . $student_data['last_name']) ?>">
                                         <i class="fas fa-window-close"></i>
                                     </a>
+                                    <?php endif; ?>
 
                                   
 

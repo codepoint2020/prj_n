@@ -63,7 +63,7 @@
                             </ul>
                         </li>
 
-                        <?php if ($_SESSION['user_type'] == 'administrator'): ?>
+                        <?php if ($_SESSION['user_type'] == 'administrator' || $_SESSION['user_type'] === "nsstc_personnel" || $_SESSION['user_type'] === "e-librarian"): ?>
                    
                         <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
                                 aria-expanded="false"><i data-feather="settings"
@@ -74,18 +74,21 @@
                                             class="hide-menu"> Users
                                         </span></a>
                                 </li>
-                                <li class="sidebar-item"><a href="panel.php?manage_references=true" class="sidebar-link"><span
-                                            class="hide-menu"> Add New Reference
-                                        </span></a>
-                                </li>
-                                <li class="sidebar-item"><a href="panel.php?manage_all_ref=true" class="sidebar-link"><span
-                                            class="hide-menu"> Manage References
-                                        </span></a>
-                                </li>
-                                <li class="sidebar-item"><a href="panel.php?categories=true" class="sidebar-link"><span
-                                            class="hide-menu"> Categories
-                                        </span></a>
-                                </li>
+                                    <?php if ($_SESSION['user_type'] === "e-librarian" || $_SESSION['user_type'] === "administrator"): ?>
+                                    <li class="sidebar-item"><a href="panel.php?manage_references=true" class="sidebar-link"><span
+                                                class="hide-menu"> Add New Reference
+                                            </span></a>
+                                    </li>
+                                    <li class="sidebar-item"><a href="panel.php?manage_all_ref=true" class="sidebar-link"><span
+                                                class="hide-menu"> Manage References
+                                            </span></a>
+                                    </li>
+                                    <li class="sidebar-item"><a href="panel.php?categories=true" class="sidebar-link"><span
+                                                class="hide-menu"> Categories
+                                            </span></a>
+                                    </li>
+                                <?php endif; ?>
+
                                 <li class="sidebar-item"><a href="panel.php?announcement_form=true" class="sidebar-link"><span
                                             class="hide-menu"> Announcement </span></a>
                                 </li>
