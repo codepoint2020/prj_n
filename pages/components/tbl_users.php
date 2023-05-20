@@ -2,16 +2,29 @@
     .fa-window-close {
         color: #fff;
     }
+
+    #multiple_del_trigger {
+        display: none !important;
+    }
 </style>
 
+
+<form action="panel.php?load_users=true" method="POST">
 <div class="card">
+    <?php delete_multiple_users(); display_notification(); ?>
                     <div class="card-body">
                         <h4 class="card-title">Users' Table</h4>
                         <div class="row">
-                            <div class="col-md-2 mb-4">
-                                <?php if ($_SESSION['user_type'] === "administrator" || $_SESSION['user_type'] === "e-librarian"):?>
-                                <button type="button" class="btn btn-info" data-bs-toggle="modal"
+                            <div class="col-12">
+                            <?php if ($_SESSION['user_type'] === "administrator" || $_SESSION['user_type'] === "e-librarian"):?>
+                                   
+                                
+                                    <button type="button" class="btn btn-info float-end" data-bs-toggle="modal"
                                 data-bs-target="#bs-example-modal-lg">Add User</button>
+                                
+                               
+                                <button type="button" id="initiate_batch_delete" class="btn btn-danger" data-bs-toggle="tooltip" title="Enable the checkboxes for the desired user to be deleted and click this button">Batch Delete</button>
+                                <button id="multiple_del_trigger" name="delete_multiple_users">btn_del</button>
                                 <?php endif; ?>
                                 
                             </div>
@@ -30,6 +43,8 @@
                                 style="width:100%">
                                 <thead>
                                     <tr>
+                                        
+                                        <th>Select</th>
                                         <th>#</th>
                                         <th>User Type</th>
                                         <th>Name</th>
@@ -37,6 +52,7 @@
                                         <th>Status</th>
                                    
                                         <th>Operations</th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -57,6 +73,12 @@
     
                                     ?>
                                     <tr>
+                                    <td>
+                                       
+                                       <input type="checkbox" name="id_<?php echo $student_data['user_id']; ?>" value="id_<?php echo $student_data['user_id']; ?>">
+                                           
+                                       </td>
+                                       </form>
                                    
                                     <td><?php echo $num; ?></td>
                                     <td><?php echo $student_data['user_type']; ?></td>
@@ -103,13 +125,12 @@
                                         <a href="panel.php?load_users=true&del=<?php echo $student_data['user_id']; ?>" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="PERMANENTLY Delete this account of: <?php echo ucwords($student_data['first_name'] . " " . $student_data['last_name']) ?>">
                                         <i class="fas fa-window-close"></i>
                                     </a>
+                                    
                                     <?php endif; ?>
 
-                                  
-
-                              
-                                    
+                                
                                     </td>
+                                   
                                     </tr>
                                     <?php endwhile; ?>
                                 </tbody>
@@ -118,5 +139,21 @@
                         </div>
                     </div>
                 </div>
+
+        <script>
+            let multiple_del_trigger = document.getElementById("multiple_del_trigger");
+            let initiate_batch_delete = document.getElementById("initiate_batch_delete");
+            initiate_batch_delete.addEventListener("click", function () {
+                var result = window.confirm("You are about to delete multiple users, continue?");
+                if (result) {
+                    multiple_del_trigger.click();
+                } else {
+                    alert("Operation aborted.");
+                }
+              
+            })
+        </script>
+
+
 
 

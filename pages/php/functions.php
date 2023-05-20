@@ -2031,6 +2031,160 @@ if (isset($_GET['posted_announcement'])) {
 }
 
 
+//delete multiple users
+
+function delete_multiple_users() {
+
+    global $conn;
+
+    if (isset($_POST["delete_multiple_users"])) {
+  
+        $array = ($_POST);
+
+        $character = 'id';
+        $count = 0;
+    
+        foreach ($array as $item) {
+            if (strpos($item, $character) !== false) {
+                $count++;
+            }
+        }
+
+        if ($count === 0) {
+
+            set_alert_warning("Please select a user by ticking the corresponding checkbox under the select column of the table below");
+ 
+        } else {
+
+            $array_2 = [];
+            $array = $_POST;
+            
+            foreach ($array as $item) {
+      
+                $number = substr($item, 3);
+    
+                if (strpos($item, "id") !== false) {
+                    array_push($array_2, $number);
+                }
+                
+            }
+        
+    
+            foreach ($array_2 as $id) {
+                $current_id = $id;
+    
+                $get_record = $conn->query("SELECT * FROM tbl_users WHERE user_id = $current_id");
+                $row = $get_record->fetch_assoc();  
+    
+                $multiple_delete_query = $conn->query("DELETE FROM tbl_users WHERE user_id = $id");
+                if ($multiple_delete_query) {
+
+                    $filename = "../assets/images/users/".$row["profile_pic"];
+
+                    if (file_exists($filename)) {
+                    unlink($filename);
+                        
+                    } 
+
+                    set_alert_success($count." record(s) has been deleted!");
+                    jemor_log("Deleted", $count, " users");
+                }
+            }
+
+        }
+
+       
+    }
+
+}
+
+
+
+function delete_multiple_references() {
+
+    global $conn;
+
+    if (isset($_POST["delete_multiple_references"])) {
+  
+        $array = ($_POST);
+
+        $character = 'id';
+        $count = 0;
+    
+        foreach ($array as $item) {
+            if (strpos($item, $character) !== false) {
+                $count++;
+            }
+        }
+
+        if ($count === 0) {
+
+            set_alert_warning("Please a reference to be deleted.");
+ 
+        } else {
+
+            $array_2 = [];
+            $array = $_POST;
+            
+            foreach ($array as $item) {
+      
+                $number = substr($item, 3);
+    
+                if (strpos($item, "id") !== false) {
+                    array_push($array_2, $number);
+                }
+                
+            }
+        
+    
+            foreach ($array_2 as $id) {
+                $current_id = $id;
+    
+                $get_record = $conn->query("SELECT * FROM tbl_books WHERE book_id = $current_id");
+                $row = $get_record->fetch_assoc(); 
+                $cover_img = $row["cover_img"];
+                $file_name = $row["file_name"];
+                $file_extension = $row["file_type"];
+                $dir = '../assets/references/';
+          
+                if ($file_extension == "pdf") {
+                    $dir = "../assets/references/pdf/";
+               
+                } elseif ($file_extension == "mp4"){
+                    $dir = "../assets/references/videos/";
+         
+                } elseif ($file_extension == "pptx") {
+                    $dir = "./pptx_player/file/";
+               
+                } else {
+                    NULL;
+                }
+                
+                $multiple_delete_query = $conn->query("DELETE FROM tbl_books WHERE book_id = $id");
+                if ($multiple_delete_query) {
+
+                    $file_name = $dir.$file_name;
+                    $cover_img = $dir.$cover_img;
+
+                    if (file_exists($file_name)) {
+                        unlink($file_name);
+                    } 
+
+                    if (file_exists($cover_img)) {
+                        unlink($cover_img);
+                    } 
+
+                    set_alert_success($count." reference(s) has been deleted!");
+                    jemor_log("Deleted", $count, " references");
+                }
+            }
+
+        }
+
+       
+    }
+
+}
 
 ?>
 

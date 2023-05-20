@@ -3,22 +3,34 @@
     .fa-window-close {
         color: #fff;
     }
+
+    #delete_multiple_references {
+        display: none;
+    }
 </style>
 
 <div class="row">
-    
+<form action="panel.php?manage_all_ref=true" method="POST">
     <div class="card shadow-1">
+    <?php delete_multiple_references(); display_notification(); ?>
         <div class="card-body">
             <h4 class="card-title">All References</h4>
-                            <div class="col-md-3 mb-4">
-                                <a href="panel.php?manage_references=true" class="btn btn-info">Add New Reference</a>
+            
+                            <div class="col-12">
+                                <a href="panel.php?manage_references=true" class="btn btn-info float-end mb-4">Add New Reference</a>
+                            
+
+                            <button type="button" id="initiate_references_delete" class="btn btn-danger mb-4" data-bs-toggle="tooltip" title="Enable the checkboxes for the desired user to be deleted and click this button">Batch Delete</button>
+                            <button id="delete_multiple_references" name="delete_multiple_references">btn_del</button>
                             </div>
-            <div class="table-responsive">
+           
+                            
+                            <div class="table-responsive">
                 <table id="default_order" class="table border table-striped table-bordered text-wrap"
                                 style="width:100%">
                     <thead class="bg-primary text-white">
                         <tr>
-                         
+               
                             <th>Cover Image</th>
                             <th>Reference Title</th>
                             <th>Category</th>
@@ -83,8 +95,12 @@
                      
 
                           
-                            <td><img src="<?php echo $cover_img; ?>" alt=""></td>
-                            <td><a <?php 
+                            <td>  
+                            <input type="checkbox" name="id_<?php echo $row['book_id']; ?>" value="id_<?php echo $row['book_id']; ?>">    
+                            <img src="<?php echo $cover_img; ?>" alt=""></td>
+                            <td>
+                            </form>
+                                <a <?php 
         
         if ($file_format == "pptx") {
           echo 'target="_blank"';
@@ -142,7 +158,7 @@
                                            
                                             <p class="jm-underline " style="min-width: 400px"><?php echo $row['title']; ?></p>
                               
-                            </a>
+                            </a><?php echo " ".$row["file_type"]?>
                             </td>
                             <td><?php echo ucwords($row['category']); ?></td>
                             
@@ -164,6 +180,22 @@
     </div>
 
 </div>
+
+<script>
+
+let delete_multiple_references = document.getElementById("delete_multiple_references");
+            let initiate_references_delete = document.getElementById("initiate_references_delete");
+            initiate_references_delete.addEventListener("click", function () {
+                var result = window.confirm("You are about to delete multiple references, continue?");
+                if (result) {
+                    delete_multiple_references.click();
+                } else {
+                    alert("Command cancelled.");
+                }
+              
+            })
+
+</script>
 
 
 
