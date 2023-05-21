@@ -4,7 +4,34 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <?php
+        $num_videos = $conn->query("SELECT * FROM tbl_books WHERE file_type = 'mp4' ");
+        $total_vids = $num_videos->num_rows;
+    ?>
+    <script>
+        //jquery here
+        $(document).ready(function () {
+            var dataCount = 8;
+            $("#btnLoad").click(function() {
+                var btnLoader = $("#btnLoad");
+                var title = $(".title");
+
+                dataCount = dataCount + 1;
+                $("#data").load("components/loadmore.php", {
+                    dataCountNew: dataCount
+                })
+
+                if (title.length == <?php echo $total_vids; ?>) {
+                    btnLoader.html("All videos loaded");
+                    btnLoader.prop("disabled", true);
+                }
+                console.log(title.length);
+            })
+        })
+
+    </script>
     <title>Document</title>
     <style>
         * {
@@ -196,7 +223,7 @@ body {
 
                 <?php else: ?>
 
-                <div class="main-video">
+                <div class="main-video" >
                     <?php
                     $query_videos = $conn->query("SELECT * FROM tbl_books WHERE file_type = 'mp4' ORDER BY book_id DESC");
                     $first_vid = $query_videos->fetch_assoc();
@@ -211,45 +238,58 @@ body {
 
                 <?php endif; ?>
 
-                <div class="video-list card-handle">
+                <div class="row">
+                    <div class="col-12">
+                    <div class="video-list card-handle" id="data">
                     <?php
-                    $query_videos = $conn->query("SELECT * FROM tbl_books WHERE file_type = 'mp4' ORDER BY book_id DESC");
-                    while ($row = $query_videos->fetch_assoc()):
+                    $query_videos = $conn->query("SELECT * FROM tbl_books WHERE file_type = 'mp4' ORDER BY book_id DESC LIMIT 8");
+
+                    if($query_videos->num_rows > 0) {
+                        while ($row = $query_videos->fetch_assoc()){
+                            $video_list = <<<DELIMETER
+                            <a href="panel.php?load_gallery=true&video_selected=true&id={$row['book_id']}">
+                            <div class="vid active">
+                                <video src="../assets/references/videos/{$row['file_name']}" muted></video>
+                                <h3 class="title" >{$row['title']}</h3>
+                            </div>
+                            </a>
+    
+DELIMETER;
+echo $video_list;
+                        }
+                    } else {
+                        $message = <<<DELIMETER
+                        <h3 class="title">No videos uplaoded yet</h3>
+                        
+DELIMETER;
+                    }
+                    
                     ?>
-                    <a href="panel.php?load_gallery=true&video_selected=true&id=<?php echo $row['book_id']; ?>">
-                    <div class="vid active">
-                        
-                        <video src="../assets/references/videos/<?php echo $row['file_name']; ?>" muted></video>
-                        <h3 class="title"><?php echo ucwords($row['title']); ?></h3>
-                        
-                    </div>
-                    </a>
-                    <?php endwhile; ?>
                 </div>
+
+                    </div>
+                    <div class="col-12">
+                    <?php
+
+                   
+
+                    if ($total_vids > 8):
+                     
+                    ?>
+                    <div class="row p-4">
+                        <button class="btn btn-primary text-center" id="btnLoad">Load more videos</button>
+                    </div>
+                     
+                    <?php endif; ?>
+
+                    </div>
+                </div>
+                
+               
             </div>
         </div>
     </div>
 </div>
-
-<!-- <script>
-        let listVideo = document.querySelectorAll('.video-list .vid');
-        let mainVideo = document.querySelector('.main-video video');
-        let title = document.querySelector('.main-video .title');
-
-        listVideo.forEach(video => {
-            video.onclick = () => {
-                listVideo.forEach(vid => vid.classList.remove('active'));
-                video.classList.add('active');
-                if (video.classList.contains('active')) {
-                    let src = video.children[0].getAttribute('src');
-                    mainVideo.src = src;
-                    let text=video.children[1].innerHTML;
-                    title.innerHTML = text;    
-                }
-            }
-        })
-</script> -->
-
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -269,6 +309,8 @@ $(document).ready(function() {
         });
     });
 });
+
+
 </script>
 
 </body>
