@@ -2081,10 +2081,11 @@ function delete_multiple_users() {
 
                     $filename = "../assets/images/users/".$row["profile_pic"];
 
-                    if (file_exists($filename)) {
-                    unlink($filename);
-                        
-                    } 
+                    if ($filename == "../assets/images/users/") {
+                        NULL;
+                    } else {
+                        unlink($filename);
+                    }
 
                     set_alert_success($count." record(s) has been deleted!");
                     jemor_log("Deleted", $count, " users");
@@ -2166,13 +2167,17 @@ function delete_multiple_references() {
                     $file_name = $dir.$file_name;
                     $cover_img = $dir.$cover_img;
 
-                    if (file_exists($file_name)) {
+                    if ($file_name == $dir) {
+                       NULL;
+                    } else {
                         unlink($file_name);
-                    } 
+                    }
 
-                    if (file_exists($cover_img)) {
+                    if ($cover_img == $dir) {
+                        NULL;
+                    } else {
                         unlink($cover_img);
-                    } 
+                    }
 
                     set_alert_success($count." reference(s) has been deleted!");
                     jemor_log("Deleted", $count, " references");
